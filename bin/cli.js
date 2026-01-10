@@ -105,10 +105,13 @@ Examples:
   npx agent-kit --prompts           # Install only prompts
   npx agent-kit -d ./my-project     # Install to specific directory
 
-Installation via package manager:
-  npm install github:rakaadi/agent-kit
-  pnpm add github:rakaadi/agent-kit
-  bun add github:rakaadi/agent-kit
+Installation via package manager (recommended as optional dependency):
+  npm install github:rakaadi/agent-kit -O
+  pnpm add github:rakaadi/agent-kit -O
+  bun add github:rakaadi/agent-kit --optional
+
+Note: Install with optional flags (-O/--optional) since agent-kit is for
+development use and the project remains fully functional without it.
 `)
 }
 

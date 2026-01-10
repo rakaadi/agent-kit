@@ -10,17 +10,17 @@ Still, it can be easily adjusted for a bare React Native workflow, or even React
 
 # Installation
 
-Install directly from GitHub using your preferred package manager:
+Install directly from GitHub using your preferred package manager. **Use the optional flag** (`-O` / `--optional`) since agent-kit is for development use:
 
 ```bash
 # npm
-npm install github:rakaadi/agent-kit
+npm install github:rakaadi/agent-kit -O
 
 # pnpm
-pnpm add github:rakaadi/agent-kit
+pnpm add github:rakaadi/agent-kit -O
 
 # bun
-bun add github:rakaadi/agent-kit
+bun add github:rakaadi/agent-kit --optional
 ```
 
 This will automatically copy agents and skills to your `.github/` folder (if they don't already exist).
