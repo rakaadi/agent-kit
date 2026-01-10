@@ -1,0 +1,32 @@
+{
+  "name": "agent-kit",
+  "version": "1.0.0",
+  "description": "Custom AI agent definitions and skills for development workflows",
+  "type": "module",
+  "bin": {
+    "agent-kit": "./bin/cli.js"
+  },
+  "scripts": {
+    "postinstall": "node bin/cli.js --auto"
+  },
+  "files": [
+    "agents",
+    "skills",
+    "prompts",
+    "instructions",
+    "bin"
+  ],
+  "keywords": [
+    "copilot",
+    "ai-agents",
+    "github-copilot",
+    "prompts",
+    "vscode"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakaadi/agent-kit.git"
+  }
+}
