@@ -3,7 +3,7 @@ name: code-debugging
 description: Guide for debugging issue on a specific code sections, pattern, or files. Used this skill when user asking for assistant when debugging an issues or explaining a code. 
 ---
 
-# Ecalyptus Code Review & Debugging Skill
+# Code Debugging Skill
 
 ## Skill Purpose
 
