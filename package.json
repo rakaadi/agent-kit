@@ -1,25 +1,35 @@
 {
   "name": "agent-kit",
-  "version": "0.0.2-beta",
-  "description": "Custom AI agent definitions and skills for development workflows",
+  "version": "0.0.3-beta",
+  "description": "Shared GitHub Copilot plugin with custom agents and skills for development workflows",
   "type": "module",
   "bin": {
     "agent-kit": "./bin/cli.js"
   },
   "scripts": {
-    "postinstall": "node bin/cli.js --auto"
+    "test": "node --test"
   },
   "files": [
+    ".github",
     "agents",
-    "skills",
-    "prompts",
+    "bin",
+    "commands",
+    "compat",
+    "copilot-instructions.md",
+    "docs",
+    "hooks.json",
     "instructions",
-    "bin"
+    "plugin.json",
+    "scripts",
+    "skills"
   ],
   "keywords": [
     "copilot",
     "ai-agents",
     "github-copilot",
+    "github-copilot-cli",
+    "agent-plugin",
+    "agent-skills",
     "prompts",
     "vscode"
   ],

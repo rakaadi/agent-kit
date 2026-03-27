@@ -1,0 +1,22 @@
+{
+  "name": "agent-kit",
+  "description": "Shared GitHub Copilot plugin with custom agents and agent skills for development workflows",
+  "version": "0.0.3-beta",
+  "author": {
+    "name": "Raka Adinugraha"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/rakaadi/agent-kit",
+  "keywords": [
+    "copilot",
+    "github-copilot",
+    "github-copilot-cli",
+    "agent-plugin",
+    "agent-skills",
+    "vscode"
+  ],
+  "agents": "agents/",
+  "commands": "commands/",
+  "hooks": "hooks.json",
+  "skills": "skills/"
+}

@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node ./scripts/pre-tool-use-python.mjs",
+        "timeout": 5
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "node ./scripts/post-tool-use-eslint.mjs",
+        "timeout": 30
+      }
+    ]
+  }
+}

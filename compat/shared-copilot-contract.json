@@ -1,0 +1,113 @@
+{
+  "reviewedAt": "2026-03-19",
+  "sources": [
+    {
+      "target": "copilot-cli-plugin-creation",
+      "url": "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating",
+      "reviewedAt": "2026-03-19"
+    },
+    {
+      "target": "copilot-cli-plugin-reference",
+      "url": "https://docs.github.com/en/copilot/reference/cli-plugin-reference",
+      "reviewedAt": "2026-03-19"
+    },
+    {
+      "target": "vscode-agent-plugins",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/agent-plugins",
+      "reviewedAt": "2026-03-19"
+    },
+    {
+      "target": "vscode-agent-skills",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/agent-skills",
+      "reviewedAt": "2026-03-19"
+    },
+    {
+      "target": "vscode-custom-agents",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/custom-agents",
+      "reviewedAt": "2026-03-19"
+    }
+  ],
+  "pluginManifest": {
+    "manifestFile": "plugin.json",
+    "requiredFields": [
+      "name"
+    ],
+    "recommendedFields": [
+      "description",
+      "version",
+      "author",
+      "license",
+      "repository",
+      "keywords",
+      "agents",
+      "commands",
+      "hooks",
+      "skills"
+    ],
+    "requiredComponentPaths": {
+      "agents": "agents/",
+      "commands": "commands/",
+      "hooks": "hooks.json",
+      "skills": "skills/"
+    }
+  },
+  "agents": {
+    "requiredFrontmatter": [
+      "name",
+      "description"
+    ],
+    "recommendedFrontmatter": [
+      "model",
+      "tools",
+      "handoffs",
+      "user-invocable",
+      "disable-model-invocation",
+      "argument-hint",
+      "target",
+      "agents",
+      "hooks"
+    ],
+    "sharedToolPolicy": {
+      "mode": "omit-unconfirmed-tools",
+      "allowOmitted": true,
+      "confirmedSharedToolExamples": [
+        "fetch",
+        "search",
+        "agent"
+      ],
+      "legacyToolIdsToRemove": [
+        "read/problems",
+        "read/readFile",
+        "web/fetch",
+        "web/githubRepo",
+        "edit/createFile",
+        "edit/editFiles"
+      ],
+      "notes": [
+        "VS Code custom agents ignore unavailable tools, but this plugin MVP avoids shipping legacy repo-specific tool identifiers.",
+        "If a tool name is not confirmed against current Copilot docs for both targets, omit the tools field rather than guessing."
+      ]
+    }
+  },
+  "skills": {
+    "requiredFrontmatter": [
+      "name",
+      "description"
+    ],
+    "directoryNameMustMatchName": true
+  },
+  "instructions": {
+    "canonicalPath": "copilot-instructions.md",
+    "compatibilityMirrorPath": ".github/copilot-instructions.md",
+    "promptMirrorPath": ".github/prompts",
+    "forbiddenLegacyReferences": [
+      ".github/copilot-instructions.md",
+      "CLAUDE.md"
+    ]
+  },
+  "manualSmokePrerequisites": [
+    "GitHub Copilot CLI installed and authenticated",
+    "VS Code build with agent plugins support available",
+    "chat.plugins.enabled set to true before VS Code smoke testing"
+  ]
+}
