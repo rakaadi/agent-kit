@@ -2,8 +2,6 @@
 
 Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom agents, agent skills, and shared guidance for both GitHub Copilot CLI and GitHub Copilot in VS Code.
 
-Most of the content still reflects the author's React Native and Expo workflow, but the packaging model is now plugin-first instead of copying files into a workspace `.github/` folder.
-
 ## Supported Targets
 
 - GitHub Copilot CLI
@@ -28,19 +26,11 @@ The current plugin MVP covers `agents/`, `commands/`, `skills/`, `copilot-instru
 
 For prompt-style workflows, `commands/` is the canonical source of truth. The repository exposes the same files to VS Code through `.github/prompts`, so local workspace prompt discovery and plugin command packaging stay aligned.
 
-## Built-in PostToolUse ESLint Hook
+## Built-in Hooks
 
-The plugin also ships with a `PostToolUse` hook for coding agents. After successful file-modifying tool calls, it tries to lint only the currently touched JS/TS files instead of encouraging a repo-wide ESLint run.
+The plugin ships with small `PreToolUse` and `PostToolUse` helpers under `scripts/`.
 
-Behavior:
-
-- only reacts to file-modifying tool calls
-- filters to lintable touched files
-- runs repo-local ESLint directly on those files
-- caches successful results for the current changed file set
-- tells the agent when ESLint already passed, so it does not need to rerun repo-wide lint
-
-If ESLint is unavailable in the target repository, the hook skips cleanly.
+See [`scripts/README.md`](scripts/README.md) for the hook overview, the current hook list, and the behavior of the ESLint and Python command checks.
 
 ## Install the Shared Plugin
 
@@ -113,15 +103,6 @@ Browse the ecosystem at `https://skills.sh`.
 | `vercel-react-best-practices` | [`vercel-labs/agent-skills`](https://github.com/vercel-labs/agent-skills) |
 | `writing-clearly-and-concisely` | [`softaworks/agent-toolkit`](https://github.com/softaworks/agent-toolkit) |
 | `writing-plans` | [`obra/superpowers`](https://github.com/obra/superpowers) |
-
-## Legacy CLI Status
-
-`npx agent-kit` no longer copies files into `.github/`. It now prints migration guidance and points users to:
-
-- `copilot plugin install <path-or-repo>` for the shared plugin flow
-- `npx skills add ...` for standalone skill installation
-
-This compatibility wrapper is temporary and will be removed after the migration window.
 
 ## Manual Verification Checklist
 
