@@ -90,23 +90,29 @@ npx skills add <owner/repo@skill-name>
 
 Browse the ecosystem at `https://skills.sh`.
 
-## Recommended Global Companion Skills
+## Recommended Companion Skills
 
-On this machine, the plugin is paired with a set of globally installed skills managed by the Skills CLI:
-
-```bash
-npx skills list -g
-```
-
-Recommended companion skills:
-
-- Workflow and planning: `brainstorming`, `writing-plans`, `verification-before-completion`, `writing-clearly-and-concisely`
-- Code quality and implementation: `code-debugging`, `code-refactoring`, `javascript-testing-patterns`, `tdd`, `git-commit`, `typescript-advanced-types`
-- React Native and Expo: `react-native-best-practices`, `building-native-ui`, `expo-deployment`, `upgrading-expo`, `vercel-react-best-practices`
-- Discovery and tooling: `find-skills`, `mcp-builder`, `prd`, `agent-device`
-- Also installed globally on this machine: `art-of-comment`
-
-These skills work well alongside the plugin because they cover planning, testing, verification, React Native guidance, deployment, and tooling workflows that are useful across projects, not just inside this repository.
+| Skills | GitHub repository source |
+| --- | --- |
+| `agent-device` | [`callstackincubator/agent-device`](https://github.com/callstackincubator/agent-device) |
+| `art-of-comment` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
+| `building-native-ui` | [`expo/skills`](https://github.com/expo/skills) |
+| `code-debugging` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
+| `code-refactoring` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
+| `expo-deployment` | [`expo/skills`](https://github.com/expo/skills) |
+| `find-skills` | [`vercel-labs/skills`](https://github.com/vercel-labs/skills) |
+| `git-commit` | [`github/awesome-copilot`](https://github.com/github/awesome-copilot) |
+| `javascript-testing-patterns` | [`wshobson/agents`](https://github.com/wshobson/agents) |
+| `mcp-builder` | [`anthropics/skills`](https://github.com/anthropics/skills) |
+| `prd` | [`github/awesome-copilot`](https://github.com/github/awesome-copilot) |
+| `react-native-best-practices` | [`callstackincubator/agent-skills`](https://github.com/callstackincubator/agent-skills) |
+| `tdd` | [`mattpocock/skills`](https://github.com/mattpocock/skills) |
+| `typescript-advanced-types` | [`wshobson/agents`](https://github.com/wshobson/agents) |
+| `upgrading-expo` | [`expo/skills`](https://github.com/expo/skills) |
+| `verification-before-completion` | [`obra/superpowers`](https://github.com/obra/superpowers) |
+| `vercel-react-best-practices` | [`vercel-labs/agent-skills`](https://github.com/vercel-labs/agent-skills) |
+| `writing-clearly-and-concisely` | [`softaworks/agent-toolkit`](https://github.com/softaworks/agent-toolkit) |
+| `writing-plans` | [`obra/superpowers`](https://github.com/obra/superpowers) |
 
 ## Legacy CLI Status
 
