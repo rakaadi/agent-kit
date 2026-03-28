@@ -1,21 +1,13 @@
 {
   "name": "agent-kit",
-  "version": "0.0.3-beta",
-  "description": "Shared GitHub Copilot plugin with custom agents and skills for development workflows",
+  "version": "2026.3.0",
+  "description": "Shared GitHub Copilot plugin with custom agents, skills, prompts, hooks, and reference docs",
   "type": "module",
-  "bin": {
-    "agent-kit": "./bin/cli.js"
-  },
-  "scripts": {
-    "test": "node --test"
-  },
   "files": [
     ".github",
     "agents",
-    "bin",
     "commands",
     "compat",
-    "copilot-instructions.md",
     "docs",
     "hooks.json",
     "instructions",
@@ -24,17 +16,25 @@
     "skills"
   ],
   "keywords": [
-    "copilot",
-    "ai-agents",
-    "github-copilot",
-    "github-copilot-cli",
     "agent-plugin",
     "agent-skills",
+    "copilot",
+    "custom-agents",
+    "github-copilot",
+    "github-copilot-cli",
+    "hooks",
     "prompts",
     "vscode"
   ],
   "author": "Raka Adinugraha",
   "license": "MIT",
+  "homepage": "https://github.com/rakaadi/agent-kit#readme",
+  "bugs": {
+    "url": "https://github.com/rakaadi/agent-kit/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rakaadi/agent-kit.git"
