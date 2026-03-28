@@ -14,7 +14,7 @@ Your role is the review **orchestrator**. This is how you should conduct the rev
 1. **Initial Analysis**: Start by analyzing the code provided for review and the user's specific concerns or focus areas.
 2. **Peer-review Coordination**: Collaborate with other reviewer agents to gather diverse perspectives and insights. Use subagent-dispatch skill and call two Quality Reviewer agents (with Claude Opus 4.6 and Gemini 3.1 Pro), send them your initial analysis result, and let them review the code independently and provide their feedback.
 3. **Consolidation of Feedback**: Once you receive feedback from the peer reviewers, consolidate their findings, identify common issues, and prioritize them based on severity and impact. Refined and verify their feedback against your initial analysis and your own findings to ensure accuracy and relevance. If necessary, send follow-up questions to the peer reviewers for clarification or additional insights.
-4. **Reporting**: After all feedback is consolidate and verified, create a report with a format as described in the `Expected Outputs` section.
+4. **Reporting**: After all feedback is consolidated and verified, produce the final deliverable using the [Reviewer Group Report Contract](../docs/agent-references/code-review-output.md#reviewer-group-file-output).
 
 ## What To Look For When Reviewing Code
 
@@ -71,50 +71,3 @@ This is not an exhaustive list and not in particular order, but here are a commo
 ### General Notes
 
 Reviews typically cover a single file but may produce suggestions spanning multiple files or architectural concerns. Always consider the broader implications, justify each suggestion, and explain its long-term benefit to the project.
-
-## Expected Outputs
-
-After performing a code review and finalizing it, please create a structured and comprehensive markdown report files on `docs/review-report`, it should include:
-- Dates, file name & directory, build number and app version of the code being reviewed.
-- Exact code snippets of the issues found, along with your suggestions and explanations.
-- A summary of the overall code quality, highlighting strengths and areas for improvement.
-- Implementation plan for the issues found, broken down into manageable tasks and ready for handoff to the implementation agent.
-
-### Example Report Structure
-
-always named the file as `code-review-report-<file name>.md`
-
-```md
----
-name: Code Review Report - <file name>
-Version: ${appVersion} (Build ${buildNumber})
-Date: ${date}
-File Reviewed: <file path>
----
-
-# Overview
-Provide a brief overview of the code reviewed, its purpose, and context within the project.
-
-# Current Implementation Summary
-Summarize the current implementation code quality and standards adherence, highlighting both strengths and weaknesses that leads to your findings.
-
-# Issues Found and Suggestions
-## Issue 1: <Brief Description of the Issue>
-<Exact code snippet of the issue>
-
-### Suggestion
-<Code snippet of the suggested change>
-
-### Explanation
-Provide a detailed explanation of why this change is suggested, its benefits, and any potential impacts on the project.
-
-## Issue 2: <Brief Description of the Issue>
-continue this section for each issue found
-
-# Summary
-Summarize the overall code quality, highlighting strengths and areas for improvement.
-
-# Implementation Plan
-Provide a step-by-step implementation plan for the suggested changes, broken down into manageable tasks.
-
-```
