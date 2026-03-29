@@ -1,0 +1,121 @@
+name: Release on Version Change
+
+'on':
+  pull_request:
+    branches:
+      - main
+    paths:
+      - package.json
+  push:
+    branches:
+      - main
+    paths:
+      - package.json
+
+concurrency:
+  group: release-on-version-change-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate-version-change:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version bump for main
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+
+          head_version="$(node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')).version")"
+          base_version="$(git show "${BASE_SHA}:package.json" | node -e 'let data="";process.stdin.on("data", chunk => data += chunk);process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
+          tag="v${head_version}"
+
+          if [ "${head_version}" = "${base_version}" ]; then
+            echo "::error title=Version unchanged::package.json changed, but version is still ${head_version}. Update the version before merging into main."
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "::error title=Tag already exists::${tag} already exists on origin. Choose a new package version before merging."
+            exit 1
+          fi
+
+          {
+            echo "### Release validation passed"
+            echo
+            echo "- Base version: \`${base_version}\`"
+            echo "- Proposed version: \`${head_version}\`"
+            echo "- Pending tag: \`${tag}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+  create-release:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create tag and GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          package_name="$(node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')).name")"
+          current_version="$(node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')).version")"
+          tag="v${current_version}"
+
+          previous_version=""
+          if [ "${BEFORE_SHA}" != "0000000000000000000000000000000000000000" ]; then
+            previous_version="$(git show "${BEFORE_SHA}:package.json" | node -e 'let data="";process.stdin.on("data", chunk => data += chunk);process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
+          fi
+
+          if [ -n "${previous_version}" ] && [ "${current_version}" = "${previous_version}" ]; then
+            echo "package.json changed without a version bump. Skipping release creation."
+            exit 0
+          fi
+
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            echo "Release ${tag} already exists. Skipping release creation."
+            exit 0
+          fi
+
+          notes=$(cat <<EOF
+          Automated release for ${package_name} ${current_version}.
+
+          - Version: ${current_version}
+          - Commit: ${CURRENT_SHA}
+          EOF
+          )
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            gh release create "${tag}" --verify-tag --title "${tag}" --notes "${notes}"
+            echo "Created release ${tag} from existing tag."
+          else
+            gh release create "${tag}" --target "${CURRENT_SHA}" --title "${tag}" --notes "${notes}"
+            echo "Created tag and release ${tag}."
+          fi
+
+          {
+            echo "### Release created"
+            echo
+            echo "- Package: \`${package_name}\`"
+            echo "- Version: \`${current_version}\`"
+            echo "- Tag: \`${tag}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
