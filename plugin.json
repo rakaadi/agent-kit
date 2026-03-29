@@ -1,7 +1,7 @@
 {
   "name": "agent-kit",
   "description": "Shared GitHub Copilot plugin with custom agents and agent skills for development workflows",
-  "version": "2026.3.0",
+  "version": "2026.3.1",
   "author": {
     "name": "Raka Adinugraha"
   },
