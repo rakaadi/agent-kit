@@ -1,13 +1,12 @@
 ---
 name: subagent-dispatch
 description: >
-  Mandatory protocol for dispatching any custom agent in this project via the task tool.
-  Use this skill EVERY TIME you are about to call the task tool with a custom agent_type
-  (ui-composer, generalist, compliance-reviewer, code-reviewer, or any agent defined in
-  .github/agents/). This skill ensures the agent's intended model (declared in its YAML
-  frontmatter) is respected rather than overridden by a default. Also encodes prompting
-  best practices for subagent context and quality. ALWAYS invoke before any task tool call
-  that targets a custom agent — even if the agent name seems obvious.
+  Mandatory protocol for dispatching any built-in and custom agent in this project via the task tool.
+  Use this skill EVERY TIME you are about to call the task tool with a custom agent_type.
+  This skill ensures the agent's intended model (declared in its YAML frontmatter) is
+  respected rather than overridden by a default. Also encodes prompting best practices
+  for subagent context and quality. ALWAYS invoke before any task tool call that targets
+  a custom agent — even if the agent name seems obvious.
 ---
 
 # Subagent Dispatch Protocol
@@ -43,19 +42,27 @@ YAML frontmatter at the top.
 
 ### Step 3 — Map to the task tool's model ID
 
-| Agent frontmatter `model` value             | `task` tool `model` parameter |
-|---------------------------------------------|-------------------------------|
-| `Gemini 3.1 Pro (Preview) (copilot)`        | `gemini-3.1-pro-preview`      |
-| `Gemini 3 Pro (Preview) (copilot)`          | `gemini-3-pro-preview`        |
-| `Gemini 3 Flash (Preview) (copilot)`        | `gemini-3-flash-preview`      |
-| `Claude Opus 4.6 (copilot)`                 | `claude-opus-4.6`             |
-| `Claude Sonnet 4.6 (copilot)`               | `claude-sonnet-4.6`           |
-| `Claude Haiku 4.5 (copilot)`                | `claude-haiku-4.5`            |
-| `GPT-5.4 (copilot)`                         | `gpt-5.4`                     |
-| `GPT-5.4 mini`                              | `gpt-5.4-mini`                |
-| `GPT-5.3-Codex (copilot)`                   | `gpt-5.3-codex`               |
+| Agent frontmatter `model` value      | `task` tool `model` parameter | Model Fallback      |
+|--------------------------------------|-------------------------------|---------------------|
+| `Gemini 3.1 Pro (Preview) (copilot)` | `gemini-3.1-pro-preview`      | Claude Opus 4.6     |
+| `Gemini 3 Pro (Preview) (copilot)`   | `gemini-3-pro-preview`        | Claude Opus 4.6     |
+| `Gemini 3 Flash (Preview) (copilot)` | `gemini-3-flash-preview`      |                     |
+| `Claude Opus 4.6 (copilot)`          | `claude-opus-4.6`             | GPT-5.4             |
+| `Claude Sonnet 4.6 (copilot)`        | `claude-sonnet-4.6`           | GPT-5.4             |
+| `Claude Haiku 4.5 (copilot)`         | `claude-haiku-4.5`            |                     |
+| `GPT-5.4 (copilot)`                  | `gpt-5.4`                     |                     |
+| `GPT-5.4 mini (copilot) `            | `gpt-5.4-mini`                | Claude Haiku 4.5    |
+| `GPT-5.3-Codex (copilot)`            | `gpt-5.3-codex`               |                     |
 
 > **Pattern**: strip ` (copilot)`, lowercase, replace spaces with hyphens.
+
+> **Fallbacks**: If the intended model isn't available, use the fallback. Otherwise, default to the platform's default for that agent type.
+
+> Some built-in agent types (`task`, `code-review`) have no
+> `.agent.md` file. Skip model resolution for these — use platform defaults or override
+> manually based on task complexity.
+
+**Important**: Prefer `GPT-5.4 mini` and `GPT-5.3-Codex` for `explore` and `general-purpose` built-in agents respectively.
 
 ### Step 4 — Pass `model` to the task tool
 
@@ -69,26 +76,6 @@ task({
   prompt: "..."
 })
 ```
-
----
-
-## Agent Registry
-
-Quick-reference for all current project agents. **Prefer this table over re-reading files.**
-Update it whenever a new agent is added to `.github/agents/`.
-
-| `agent_type`           | Agent file                                    | `model` parameter      |
-|------------------------|-----------------------------------------------|------------------------|
-| `ui-composer`          | `.github/agents/ui-composer.agent.md`         | `gemini-3.1-pro-preview`|
-| `generalist`           | `.github/agents/generalist.agent.md`          | `gpt-5.3-codex`    |
-| `compliance-reviewer`  | `.github/agents/compliance-reviewer.agent.md` | `gpt-5.4`              |
-| `code-reviewer`        | `.github/agents/code-reviewer.agent.md`       | `claude-opus-4.6`      |
-
-> Built-in agent types (`explore`, `task`, `general-purpose`, `code-review`) have no
-> `.agent.md` file. Skip model resolution for these — use platform defaults or override
-> manually based on task complexity.
-
----
 
 ## Core Dispatch Principles
 
