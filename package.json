@@ -4,6 +4,7 @@
   "description": "Shared GitHub Copilot plugin with custom agents, skills, prompts, hooks, and reference docs",
   "type": "module",
   "files": [
+    ".claude-plugin",
     ".github",
     "agents",
     "commands",

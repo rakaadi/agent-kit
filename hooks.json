@@ -3,14 +3,14 @@
     "PreToolUse": [
       {
         "type": "command",
-        "command": "node ./scripts/pre-tool-use-python.mjs",
+        "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/pre-tool-use-python.mjs\"",
         "timeout": 5
       }
     ],
     "PostToolUse": [
       {
         "type": "command",
-        "command": "node ./scripts/post-tool-use-eslint.mjs",
+        "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/post-tool-use-eslint.mjs\"",
         "timeout": 30
       }
     ]

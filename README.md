@@ -12,6 +12,7 @@ Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom a
 ```text
 .
 ├── plugin.json                  # Shared plugin manifest
+├── .claude-plugin/plugin.json   # VS Code / Claude-compatible manifest mirror
 ├── agents/                      # Custom agents
 ├── commands/                    # Canonical reusable slash-command content
 ├── skills/                      # Agent Skills-compatible skill folders
@@ -23,6 +24,8 @@ Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom a
 ```
 
 The current plugin MVP covers `agents/`, `commands/`, `skills/`, `copilot-instructions.md`, and supporting docs they reference. The `instructions/` folder remains in the repo, but it is not yet packaged as a plugin-specific feature.
+
+`plugin.json` at the repository root remains the canonical Copilot CLI manifest. The `.claude-plugin/plugin.json` file mirrors the same metadata for VS Code's preview agent-plugin loader and other Claude-compatible scanners.
 
 For prompt-style workflows, `commands/` is the canonical source of truth. The repository exposes the same files to VS Code through `.github/prompts`, so local workspace prompt discovery and plugin command packaging stay aligned.
 
@@ -66,6 +69,8 @@ Then install the plugin from source:
 For local development, you can also register a local checkout with `chat.pluginLocations`.
 
 Once installed and enabled, the plugin's agents and skills should appear in the Chat customizations surfaces.
+
+If VS Code reports that no plugins were found in the repository, make sure you are testing a revision that includes the `.claude-plugin/plugin.json` compatibility mirror. Copilot CLI accepts a root-level `plugin.json`, but VS Code's preview loader is more reliable when the Claude-compatible manifest location is present too.
 
 For local workspace development, VS Code can also discover the same reusable prompts through `.github/prompts`, which points at the plugin's canonical `commands/` directory.
 
@@ -112,6 +117,9 @@ Use this checklist before calling a release ready:
 # Copilot CLI
 copilot plugin install ./
 copilot plugin list
+
+# Manifest parity
+diff -u plugin.json .claude-plugin/plugin.json
 ```
 
 In VS Code:

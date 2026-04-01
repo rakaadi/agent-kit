@@ -29,6 +29,7 @@
   ],
   "pluginManifest": {
     "manifestFile": "plugin.json",
+    "compatibilityManifestFile": ".claude-plugin/plugin.json",
     "requiredFields": [
       "name"
     ],
@@ -51,6 +52,10 @@
       "skills": "skills/"
     }
   },
+  "compatibilityNotes": [
+    "Keep plugin.json and .claude-plugin/plugin.json metadata aligned so Copilot CLI direct installs and VS Code preview plugin discovery both work.",
+    "Plugin hook commands should resolve plugin-local scripts through ${CLAUDE_PLUGIN_ROOT} rather than workspace-relative paths."
+  ],
   "agents": {
     "requiredFrontmatter": [
       "name",
