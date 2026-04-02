@@ -1,0 +1,20 @@
+{
+  "name": "agent-kit",
+  "metadata": {
+    "description": "Shared GitHub Copilot plugin with custom agents and agent skills for development workflows",
+    "version": "2026.3.1"
+  },
+  "owner": {
+    "name": "Raka Adinugraha"
+  },
+  "plugins": [
+    {
+      "name": "agent-kit",
+      "source": ".",
+      "description": "Shared GitHub Copilot plugin with custom agents and agent skills for development workflows",
+      "version": "2026.3.1",
+      "license": "MIT",
+      "repository": "https://github.com/rakaadi/agent-kit"
+    }
+  ]
+}

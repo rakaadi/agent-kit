@@ -30,6 +30,8 @@
   "pluginManifest": {
     "manifestFile": "plugin.json",
     "compatibilityManifestFile": ".claude-plugin/plugin.json",
+    "marketplaceFile": ".github/plugin/marketplace.json",
+    "compatibilityMarketplaceFile": ".claude-plugin/marketplace.json",
     "requiredFields": [
       "name"
     ],
@@ -54,6 +56,7 @@
   },
   "compatibilityNotes": [
     "Keep plugin.json and .claude-plugin/plugin.json metadata aligned so Copilot CLI direct installs and VS Code preview plugin discovery both work.",
+    "The .github/plugin/marketplace.json and .claude-plugin/marketplace.json files enable VS Code 'Chat: Install Plugin From Source' and Copilot CLI marketplace discovery (copilot plugin marketplace add) from the repository URL.",
     "Plugin hook commands should resolve plugin-local scripts through ${CLAUDE_PLUGIN_ROOT} rather than workspace-relative paths."
   ],
   "agents": {
