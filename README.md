@@ -70,12 +70,12 @@ copilot plugin list
 
 VS Code agent plugins are currently preview-gated. Enable the `chat.plugins.enabled` setting first.
 
-Then install the plugin from the marketplace:
+Then install the plugin from its repository source:
 
 - Run `Chat: Install Plugin From Source`
 - Enter the repository URL, for example `https://github.com/rakaadi/agent-kit`
 
-VS Code discovers plugins via the `.github/plugin/marketplace.json` file. This repository includes that file, so VS Code will find the `agent-kit` plugin and install it automatically.
+When you provide the repository URL, VS Code reads the `.github/plugin/marketplace.json` file in that repository to discover the `agent-kit` plugin and install it automatically.
 
 For local development, you can also register a local checkout with `chat.pluginLocations`.
 
