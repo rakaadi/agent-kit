@@ -11,21 +11,23 @@ Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom a
 
 ```text
 .
-├── plugin.json                  # Shared plugin manifest
-├── .claude-plugin/plugin.json   # VS Code / Claude-compatible manifest mirror
-├── agents/                      # Custom agents
-├── commands/                    # Canonical reusable slash-command content
-├── skills/                      # Agent Skills-compatible skill folders
+├── plugin.json                         # Shared plugin manifest (Copilot CLI)
+├── .github/plugin/marketplace.json     # VS Code plugin marketplace listing
+├── .claude-plugin/plugin.json          # Claude-compatible manifest mirror
+├── .claude-plugin/marketplace.json     # Claude-compatible marketplace mirror
+├── agents/                             # Custom agents
+├── commands/                           # Canonical reusable slash-command content
+├── skills/                             # Agent Skills-compatible skill folders
 ├── .github/prompts -> ../commands
-│                               # VS Code workspace prompt discovery bridge
-├── copilot-instructions.md      # Canonical shared guidance for plugin content
-├── docs/                        # Supporting reference docs used by agents/skills
-└── instructions/                # Kept in repo, outside the plugin MVP
+│                                       # VS Code workspace prompt discovery bridge
+├── copilot-instructions.md             # Canonical shared guidance for plugin content
+├── docs/                               # Supporting reference docs used by agents/skills
+└── instructions/                       # Kept in repo, outside the plugin MVP
 ```
 
 The current plugin MVP covers `agents/`, `commands/`, `skills/`, `copilot-instructions.md`, and supporting docs they reference. The `instructions/` folder remains in the repo, but it is not yet packaged as a plugin-specific feature.
 
-`plugin.json` at the repository root remains the canonical Copilot CLI manifest. The `.claude-plugin/plugin.json` file mirrors the same metadata for VS Code's preview agent-plugin loader and other Claude-compatible scanners.
+`plugin.json` at the repository root is the canonical Copilot CLI manifest. `.github/plugin/marketplace.json` enables VS Code's "Chat: Install Plugin From Source" and the Copilot CLI marketplace command (`copilot plugin marketplace add`). The `.claude-plugin/` directory mirrors both files for Claude Code and other compatible scanners.
 
 For prompt-style workflows, `commands/` is the canonical source of truth. The repository exposes the same files to VS Code through `.github/prompts`, so local workspace prompt discovery and plugin command packaging stay aligned.
 
@@ -51,6 +53,13 @@ Install from GitHub:
 copilot plugin install rakaadi/agent-kit
 ```
 
+Or add the repository as a marketplace and install from it:
+
+```bash
+copilot plugin marketplace add rakaadi/agent-kit
+copilot plugin marketplace browse agent-kit
+```
+
 After installation, verify the plugin is present:
 
 ```bash
@@ -61,16 +70,16 @@ copilot plugin list
 
 VS Code agent plugins are currently preview-gated. Enable the `chat.plugins.enabled` setting first.
 
-Then install the plugin from source:
+Then install the plugin from its repository source:
 
 - Run `Chat: Install Plugin From Source`
 - Enter the repository URL, for example `https://github.com/rakaadi/agent-kit`
 
+When you provide the repository URL, VS Code reads the `.github/plugin/marketplace.json` file in that repository to discover the `agent-kit` plugin and install it automatically.
+
 For local development, you can also register a local checkout with `chat.pluginLocations`.
 
 Once installed and enabled, the plugin's agents and skills should appear in the Chat customizations surfaces.
-
-If VS Code reports that no plugins were found in the repository, make sure you are testing a revision that includes the `.claude-plugin/plugin.json` compatibility mirror. Copilot CLI accepts a root-level `plugin.json`, but VS Code's preview loader is more reliable when the Claude-compatible manifest location is present too.
 
 For local workspace development, VS Code can also discover the same reusable prompts through `.github/prompts`, which points at the plugin's canonical `commands/` directory.
 
@@ -118,14 +127,20 @@ Use this checklist before calling a release ready:
 copilot plugin install ./
 copilot plugin list
 
-# Manifest parity
+# Marketplace registration (CLI)
+copilot plugin marketplace add rakaadi/agent-kit
+copilot plugin marketplace browse agent-kit
+
+# Manifest and marketplace parity
 diff -u plugin.json .claude-plugin/plugin.json
+diff -u .github/plugin/marketplace.json .claude-plugin/marketplace.json
 ```
 
 In VS Code:
 
 - Enable `chat.plugins.enabled`
 - Run `Chat: Install Plugin From Source`
+- Enter `https://github.com/rakaadi/agent-kit`
 - Confirm the plugin appears in the Agent Plugins view
 - Confirm the shared agents and skills appear in chat customization UI
 - Confirm the PostToolUse hook runs after file edits and reports touched-file ESLint status

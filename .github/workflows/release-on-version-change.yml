@@ -6,12 +6,16 @@ name: Release on Version Change
       - main
     paths:
       - .claude-plugin/plugin.json
+      - .claude-plugin/marketplace.json
+      - .github/plugin/marketplace.json
       - plugin.json
   push:
     branches:
       - main
     paths:
       - .claude-plugin/plugin.json
+      - .claude-plugin/marketplace.json
+      - .github/plugin/marketplace.json
       - plugin.json
 
 concurrency:
@@ -42,7 +46,20 @@ jobs:
             exit 1
           fi
 
+          if ! cmp -s .github/plugin/marketplace.json .claude-plugin/marketplace.json; then
+            echo "::error title=Marketplace mismatch::.github/plugin/marketplace.json and .claude-plugin/marketplace.json must stay identical."
+            exit 1
+          fi
+
           head_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
+          marketplace_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).plugins[0].version")"
+          marketplace_metadata_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).metadata.version")"
+
+          if [ "${head_version}" != "${marketplace_plugin_version}" ] || [ "${head_version}" != "${marketplace_metadata_version}" ]; then
+            echo "::error title=Version mismatch::plugin.json version (${head_version}), .github/plugin/marketplace.json plugins[0].version (${marketplace_plugin_version}), and .github/plugin/marketplace.json metadata.version (${marketplace_metadata_version}) must match."
+            exit 1
+          fi
+
           base_version="$(git show "${BASE_SHA}:plugin.json" | node -e 'let data="";process.stdin.on("data", chunk => data += chunk);process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
           tag="v${head_version}"
 
@@ -89,9 +106,20 @@ jobs:
             exit 1
           fi
 
+          if ! cmp -s .github/plugin/marketplace.json .claude-plugin/marketplace.json; then
+            echo ".github/plugin/marketplace.json and .claude-plugin/marketplace.json differ. Skipping release creation."
+            exit 1
+          fi
+
           plugin_name="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).name")"
           current_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
+          marketplace_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).plugins[0].version")"
           tag="v${current_version}"
+
+          if [ "${current_version}" != "${marketplace_plugin_version}" ]; then
+            echo "plugin.json version and marketplace.json plugins[0].version differ. Skipping release creation."
+            exit 1
+          fi
 
           previous_version=""
           if [ "${BEFORE_SHA}" != "0000000000000000000000000000000000000000" ]; then
