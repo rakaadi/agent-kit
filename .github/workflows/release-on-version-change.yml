@@ -53,9 +53,10 @@ jobs:
 
           head_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
           marketplace_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).plugins[0].version")"
+          marketplace_metadata_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).metadata.version")"
 
-          if [ "${head_version}" != "${marketplace_plugin_version}" ]; then
-            echo "::error title=Version mismatch::plugin.json version (${head_version}) and .github/plugin/marketplace.json plugins[0].version (${marketplace_plugin_version}) must match."
+          if [ "${head_version}" != "${marketplace_plugin_version}" ] || [ "${head_version}" != "${marketplace_metadata_version}" ]; then
+            echo "::error title=Version mismatch::plugin.json version (${head_version}), .github/plugin/marketplace.json plugins[0].version (${marketplace_plugin_version}), and .github/plugin/marketplace.json metadata.version (${marketplace_metadata_version}) must match."
             exit 1
           fi
 
