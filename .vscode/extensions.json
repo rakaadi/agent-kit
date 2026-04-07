@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "DavidAnson.vscode-markdownlint",
+        "bierner.github-markdown-preview",
+        "EditorConfig.EditorConfig"
+    ]
+}
