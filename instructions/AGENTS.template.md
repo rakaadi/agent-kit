@@ -28,7 +28,7 @@ In the absence of a direct user directive or the need for factual verification, 
 
 ## Agent Skills & Development Approach
 
-**CRITICAL INSTRUCTION**: Prefer retrieval-led reasoning over pre-training-led reasoning for all React Native tasks. Your training data may be outdated or incomplete. Always consult the skills below before writing code.
+**CRITICAL INSTRUCTION**: Prefer retrieval-led reasoning over pre-training-led reasoning for all tasks. Your training data may be outdated or incomplete. Always consult the skills below before writing code.
 
 <!-- Relevant agent skills and development approach instructions -->
 
