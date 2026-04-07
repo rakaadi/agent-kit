@@ -1,5 +1,5 @@
 ---
-name: orchestrator
+name: Orchestrator
 description: Orchestrates the works of multiple agents to research, bug fix and implement new features.
 user-invocable: true
 disable-model-invocation: true
