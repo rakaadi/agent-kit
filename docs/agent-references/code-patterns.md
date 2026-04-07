@@ -5,6 +5,7 @@ Project-specific code patterns and conventions. Consult when working on the rele
 ## Dual RTK Query APIs
 
 Two separate APIs with independent cache management in `src/redux/`:
+
 - **`mainApi`** (`src/redux/api.ts`): Healthcare API
 - **`backOfficeApi`** (`src/redux/backOfficeApi.ts`): Inventory/asset management/HCM
 
@@ -49,6 +50,7 @@ const handleSubmit = async () => {
 ```
 
 **Why**: The `queryErrorLogger` middleware at `src/redux/middleware/queryErrorLogger.ts` automatically:
+
 - Logs all RTK Query failures to console in dev mode
 - Displays error snackbars with endpoint name and status code
 - Handles both `mainApi` and `backOfficeApi` errors
@@ -79,10 +81,12 @@ const { globalError, resetGlobalError } = useGlobalErrorHandling({
 ```
 
 **Key files**:
+
 - `src/utils/crashlyticsLogger.ts` — Records fatal errors to Firebase Crashlytics
 - `src/utils/navigationBreadcrumbs.ts` — Logs navigation state changes for crash context
 
 **Features**:
+
 - Catches sync JS errors via `ErrorUtils.setGlobalHandler`
 - Tracks unhandled promise rejections with stack trace parsing
 - Records fatal errors to Firebase Crashlytics via `recordFatalError()`
@@ -123,6 +127,7 @@ export const FORM_SCHEMA = z.object({
 ### Screen Wrapper
 
 `src/components/Screen.tsx` — Base component with built-in `KeyboardAvoidingView` and 3 header types:
+
 - `basic`: Standard title + back button
 - `full`: Custom header with additional controls
 - `actions`: Header with action buttons
