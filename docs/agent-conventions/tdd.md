@@ -14,7 +14,7 @@ Tests verify **behaviour through public interfaces**, never implementation detai
 
 **Vertical slices, always.** One test → one implementation → repeat. Never write all tests first and then all implementations. That produces tests that are coupled to imagined, not actual, behaviour.
 
-```
+```md
 WRONG (horizontal slicing):
   RED:   test1, test2, test3
   GREEN: impl1, impl2, impl3
@@ -25,6 +25,7 @@ RIGHT (vertical slicing):
 ```
 
 Best Practices
+
 1. **Write Tests First** - Always TDD
 2. **One Assert Per Test** - Focus on single behavior
 3. **Descriptive Test Names** - Explain what's tested
@@ -37,6 +38,7 @@ Best Practices
 10. **Review Coverage Reports** - Identify gaps
 
 Success Metrics
+
 - 80%+ code coverage achieved
 - All tests passing (green)
 - No skipped or disabled tests
@@ -58,7 +60,7 @@ When the user presents a feature request, work through the following before invo
 
 **Step 4 — Produce the handoff context.** Before invoking the Red subagent, prepare this exact block:
 
-```
+```md
 ### Handoff Context for Red Subagent
 
 **Feature:** [One sentence]
@@ -95,7 +97,7 @@ Once validated, present the failure report to the user and show the **"✅ Confi
 
 After user confirmation, invoke the Green agent as a subagent using `#tool:agent`. Pass the following handoff context:
 
-```
+```md
 ### Handoff Context for Green Subagent
 
 **Failing test:**
@@ -138,7 +140,7 @@ After each change, confirm: does the test from Phase 1 still pass? Do all other 
 
 ### Final Report
 
-```
+```md
 ## TDD Cycle Complete ✅
 
 ### Feature Implemented
