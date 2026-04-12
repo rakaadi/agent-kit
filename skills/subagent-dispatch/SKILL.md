@@ -1,99 +1,109 @@
 ---
 name: subagent-dispatch
 description: >
-  Mandatory protocol for dispatching any built-in and custom agent in this project via the task tool.
-  Use this skill EVERY TIME you are about to call the task tool with a custom agent_type.
-  This skill ensures the agent's intended model (declared in its YAML frontmatter) is
-  respected rather than overridden by a default. Also encodes prompting best practices
-  for subagent context and quality. ALWAYS invoke before any task tool call that targets
-  a custom agent — even if the agent name seems obvious.
+  Protocol for dispatching subagents effectively. Use this skill EVERY TIME you are
+  about to delegate work to a custom or built-in agent. Covers when to dispatch,
+  which agent to pick, how to write self-contained prompts, and parallel execution.
+  Trigger phrases: "delegate to agent", "dispatch subagent", "run agent", "use subagent",
+  "context isolation", "parallel agents".
 ---
 
 # Subagent Dispatch Protocol
 
-This skill governs how to correctly dispatch custom agents in this project. Its primary
-purpose is to ensure each agent runs with its **intended model** — declared in the agent's
-own YAML frontmatter — rather than a platform default.
-
-## Why This Matters
-
-Each agent in `.github/agents/` declares a `model` in its YAML frontmatter. That choice
-is deliberate: different agents are optimized for different models based on their role
-(e.g., the UI Composer on Gemini for creative work, the Compliance Reviewer on GPT-5.4
-for analytical rigor). Calling the `task` tool without passing `model` ignores that
-intent entirely.
+This skill governs **when and how** to dispatch subagents in this project. Its purpose
+is to help the main agent make effective delegation decisions and write high-quality,
+self-contained prompts for each specialist.
 
 ---
 
-## Model Resolution Protocol
+## When to Dispatch (vs Do It Yourself)
 
-Follow these steps **before every custom agent dispatch**:
+Dispatch a subagent when **any** of these apply:
 
-### Step 1 — Identify the agent file
+| Signal | Why dispatch? |
+|--------|---------------|
+| **Context isolation needed** | Command output, logs, or search results are verbose and would pollute the main conversation |
+| **Specialist expertise** | The task maps cleanly to an existing agent's domain (see registry below) |
+| **Parallelizable work** | Two or more independent tasks can run concurrently in separate agents |
+| **Review/validation gate** | A second opinion or compliance check is needed before accepting work |
 
-Custom agents live at `.github/agents/<agent-name>.agent.md`.
-The `agent_type` value maps directly to the filename (e.g., `ui-composer` → `ui-composer.agent.md`).
+**Do it yourself** when the task is trivial, already in-context, or requires tight
+back-and-forth with the user that a stateless subagent cannot provide.
 
-### Step 2 — Look up the model
+---
 
-Use the **Agent Registry** below for the four known agents. If the agent isn't listed
-(a new one was added), read its `.agent.md` file and extract the `model` field from the
-YAML frontmatter at the top.
+## Agent Registry
 
-### Step 3 — Map to the task tool's model ID
+Custom agents live at `agents/<agent-name>.agent.md`.
 
-| Agent frontmatter `model` value      | `task` tool `model` parameter | Model Fallback      |
-|--------------------------------------|-------------------------------|---------------------|
-| `Gemini 3.1 Pro (Preview) (copilot)` | `gemini-3.1-pro-preview`      | Claude Opus 4.6     |
-| `Gemini 3 Pro (Preview) (copilot)`   | `gemini-3-pro-preview`        | Claude Opus 4.6     |
-| `Gemini 3 Flash (Preview) (copilot)` | `gemini-3-flash-preview`      |                     |
-| `Claude Opus 4.6 (copilot)`          | `claude-opus-4.6`             | GPT-5.4             |
-| `Claude Sonnet 4.6 (copilot)`        | `claude-sonnet-4.6`           | GPT-5.4             |
-| `Claude Haiku 4.5 (copilot)`         | `claude-haiku-4.5`            |                     |
-| `GPT-5.4 (copilot)`                  | `gpt-5.4`                     |                     |
-| `GPT-5.4 mini (copilot) `            | `gpt-5.4-mini`                | Claude Haiku 4.5    |
-| `GPT-5.3-Codex (copilot)`            | `gpt-5.3-codex`               |                     |
+| Agent | Role | Key trait | Invocable |
+|-------|------|-----------|-----------|
+| **Bash Search Worker** | Shell-based repository search and filtering | Context isolation; read-only `execute` only | Subagent only |
+| **Code Simplifier** | Simplify and refine code for clarity | Preserves functionality; applies project standards | User + subagent |
+| **Compliance Reviewer** | Compare implementation against plan/spec | Deviation analysis; requirement verification | Subagent only |
+| **Generalist** | General-purpose coding, research, debugging | Broad skill set; retrieval-led reasoning | Subagent only |
+| **Green** (TDD) | Write minimal code to pass a failing test | Never modifies tests; minimal production code | Subagent only |
+| **Orchestrator** | Delegate and coordinate multi-agent workflows | Never implements; dispatches and consolidates | User only |
+| **Quality Reviewer** | In-depth code review and analysis | Security, patterns, maintainability | Subagent only |
+| **Red** (TDD) | Write one failing test for one behaviour | Never touches production code | Subagent only |
+| **Reviewer Group** | Orchestrate multi-perspective code review | Spawns multiple Quality Reviewers | User only |
+| **UI Composer** | Build visually polished, performant UI components | Styling, animation, layout expertise | User + subagent |
 
-> **Pattern**: strip ` (copilot)`, lowercase, replace spaces with hyphens.
+> If an agent is not listed (newly added), read its `.agent.md` file and extract the
+> `description` and `model` fields from the YAML frontmatter.
 
-> **Fallbacks**: If the intended model isn't available, use the fallback. Otherwise, default to the platform's default for that agent type.
+---
 
-> Some built-in agent types (`task`, `code-review`) have no
-> `.agent.md` file. Skip model resolution for these — use platform defaults or override
-> manually based on task complexity.
+## Model Fallback Reference
 
-**Important**: Prefer `GPT-5.4 mini` and `GPT-5.3-Codex` for `explore` and `general-purpose` built-in agents respectively.
+The platform now resolves model display names automatically. Use this table **only**
+when the agent's preferred model is temporarily unavailable:
 
-### Step 4 — Pass `model` to the task tool
+| Preferred model | Fallback |
+|-----------------|----------|
+| Gemini 3.1 Pro (Preview) | Claude Opus 4.6 |
+| Gemini 3 Pro (Preview) | Claude Opus 4.6 |
+| Claude Opus 4.6 | GPT-5.4 |
+| Claude Sonnet 4.6 | GPT-5.4 |
+| GPT-5.4 mini | Claude Haiku 4.5 |
 
-Always include the resolved model ID as the `model` parameter:
+> For built-in agent types (`explore`, `code-review`, etc.) that have no `.agent.md`,
+> skip model resolution — use platform defaults.
 
-```
-task({
-  agent_type: "ui-composer",
-  model: "gemini-3.1-pro-preview",   // resolved from frontmatter
-  description: "Build patient card component",
-  prompt: "..."
-})
-```
+---
 
 ## Core Dispatch Principles
 
-1. **One agent per problem domain.** Dispatch independent agents concurrently — don't
-   serialize work that can run in parallel.
+1. **One agent per problem domain.** Each dispatch targets exactly one specialist.
 2. **Subagents are stateless.** They have zero memory of the current conversation.
-   The prompt must be entirely self-contained with all the context needed.
-3. **Review before accepting.** Evaluate subagent output critically and request revisions
-   when quality or relevance falls short.
+   The prompt must be entirely self-contained.
+3. **Parallel when independent.** Dispatch agents concurrently when their tasks have
+   no data dependency (e.g., Quality Reviewer + Compliance Reviewer on the same diff).
+4. **Review before accepting.** Evaluate subagent output critically. Request revisions
+   or re-dispatch when quality or relevance falls short.
+
+---
+
+## Parallel Dispatch
+
+When two or more tasks are independent, dispatch them in the same turn:
+
+- **Do**: Quality Reviewer + Compliance Reviewer on the same changeset.
+- **Do**: Bash Search Worker for file discovery *while* Generalist researches docs.
+- **Don't**: Green (TDD) before Red (TDD) — Green depends on Red's failing test.
+
+> Rule of thumb: if task B does not need task A's output, they can run in parallel.
+
+---
 
 ## Prompting Checklist
 
-A subagent prompt should answer all of these before you send it:
+Every subagent prompt must answer **all four** of these:
 
-- **Context**: What is the project? What stack/conventions are relevant? Which files matter?
-- **Task**: What exactly needs to be done? What are the constraints and requirements?
-- **Direction**: Where should the agent look first? What references or docs should it consult?
-- **Success criteria**: What does "done" look like? What's the expected output format?
+- **Context**: What is the project? What stack, conventions, and files are relevant?
+- **Task**: What exactly needs to be done? What are the constraints?
+- **Direction**: Where should the agent look first? Which references or docs to consult?
+- **Success criteria**: What does "done" look like? What is the expected output format?
 
 Thin prompts produce thin results. If a subagent fails or produces something off-target,
 the root cause is almost always an underspecified prompt — not the agent's capability.
