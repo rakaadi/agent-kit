@@ -20,8 +20,8 @@ Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom a
 ├── skills/                             # Agent Skills-compatible skill folders
 ├── .github/prompts -> ../commands
 │                                       # VS Code workspace prompt discovery bridge
-├── copilot-instructions.md             # Canonical shared guidance for plugin content
 ├── docs/                               # Supporting reference docs used by agents/skills
+├── compat/                             # Shared Copilot contract for cross-tool compatibility
 └── instructions/                       # Kept in repo, outside the plugin MVP
 ```
 
@@ -85,7 +85,7 @@ For local workspace development, VS Code can also discover the same reusable pro
 
 ## Install Standalone Skills with `skills.sh`
 
-The legacy `agent-kit` installer is deprecated. If you want skills without the full shared plugin flow, use the Skills CLI from Vercel instead:
+If you want skills without the full shared plugin flow, use the Skills CLI from Vercel instead:
 
 ```bash
 npx skills add <owner/repo>
