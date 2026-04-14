@@ -2,7 +2,7 @@
   "name": "agent-kit",
   "metadata": {
     "description": "Shared GitHub Copilot plugin with custom agents and agent skills for development workflows",
-    "version": "2026.4.1"
+    "version": "2026.4.2"
   },
   "owner": {
     "name": "Raka Adinugraha"
