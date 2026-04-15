@@ -2,7 +2,7 @@
 name: phase-plan-from-spec
 description: Draft a plan for one implementation phase from a spec section.
 argument-hint: "phase=<phase> spec=<relative spec path> section=<spec section>"
-agent: plan
+agent: Plan
 ---
 
 Draft a plan for exactly one implementation phase. Do not implement.
@@ -42,7 +42,7 @@ Out of Scope when relevant.
 
 ### Template
 
-````markdown
+```markdown
 # Phase N — [Phase Name] Implementation Plan
 
 > **For agentic workers:** Prefer retrieval-led reasoning over pre-training-led

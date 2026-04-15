@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Pre-commit hook: validate that all plugin config file versions are aligned.
+# Only runs when at least one of the watched version-bearing config files is staged.
+#
+# Requires: jq (https://jqlang.org)
+
+set -euo pipefail
+
+WATCHED_FILES=(
+  "plugin.json"
+  ".claude-plugin/plugin.json"
+  ".github/plugin/marketplace.json"
+  ".claude-plugin/marketplace.json"
+)
+
+staged="$(git diff --cached --name-only)"
+any_staged=false
+
+for f in "${WATCHED_FILES[@]}"; do
+  if echo "$staged" | grep -qxF "$f"; then
+    any_staged=true
+    break
+  fi
+done
+
+if ! $any_staged; then
+  exit 0
+fi
+
+if ! command -v jq &>/dev/null; then
+  echo "husky pre-commit: jq is required for version validation. See https://jqlang.org/download/"
+  exit 1
+fi
+
+plugin_version="$(git show :plugin.json | jq -r '.version')"
+mismatch=false
+
+check() {
+  local label="$1"
+  local actual="$2"
+  if [[ "$actual" != "$plugin_version" ]]; then
+    echo "  Version mismatch — $label: expected $plugin_version, got $actual"
+    mismatch=true
+  fi
+}
+
+check ".claude-plugin/plugin.json (.version)"                  "$(git show :.claude-plugin/plugin.json | jq -r '.version')"
+check ".github/plugin/marketplace.json (.metadata.version)"    "$(git show :.github/plugin/marketplace.json | jq -r '.metadata.version')"
+check ".github/plugin/marketplace.json (.plugins[0].version)"  "$(git show :.github/plugin/marketplace.json | jq -r '.plugins[0].version')"
+check ".claude-plugin/marketplace.json (.metadata.version)"    "$(git show :.claude-plugin/marketplace.json | jq -r '.metadata.version')"
+check ".claude-plugin/marketplace.json (.plugins[0].version)"  "$(git show :.claude-plugin/marketplace.json | jq -r '.plugins[0].version')"
+
+if $mismatch; then
+  echo ""
+  echo "Fix with: npm run set-version -- <new-version>"
+  exit 1
+fi

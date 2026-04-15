@@ -1,6 +1,6 @@
 {
   "name": "agent-kit",
-  "version": "2026.3.1",
+  "version": "1.0.0",
   "description": "Shared GitHub Copilot plugin with custom agents, skills, prompts, hooks, and reference docs",
   "type": "module",
   "files": [
@@ -39,5 +39,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rakaadi/agent-kit.git"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "set-version": "bash scripts/update-version.sh"
   }
 }
