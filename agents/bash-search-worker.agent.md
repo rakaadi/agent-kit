@@ -1,6 +1,6 @@
 ---
 name: Bash Search Worker
-description: Use when you need verbose shell-based repository lookup (grep, rg, find, glob-like discovery), then return only distilled findings to avoid context pollution. Trigger phrases: "search with bash", "run grep", "run rg", "find files", "glob search", "summarize command output", "reduce noisy terminal output".
+description: 'Use when you need verbose shell-based repository lookup (grep, rg, find, glob-like discovery), then return only distilled findings to avoid context pollution. Trigger phrases: "search with bash", "run grep", "run rg", "find files", "glob search", "summarize command output", "reduce noisy terminal output".'
 tools: [execute]
 user-invocable: false
 disable-model-invocation: false

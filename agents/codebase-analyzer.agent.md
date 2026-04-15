@@ -1,7 +1,7 @@
 ---
 name: Codebase Analyzer
-description: Analyzes codebase implementation details. Call the codebase-analyzer agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
-tools: [read, search, agent, web, execute/runInTerminal, execute/getTerminalOutput, execute/sendToTerminal, execute/createAndRunTask]
+description: Analyzes codebase implementation details. Call the Codebase Analyzer agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
+tools: [read, search, agent, web, execute]
 user-invocable: false
 model: Claude Sonnet 4.6 (copilot)
 ---
