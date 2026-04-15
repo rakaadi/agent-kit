@@ -17,7 +17,7 @@ staged="$(git diff --cached --name-only)"
 any_staged=false
 
 for f in "${WATCHED_FILES[@]}"; do
-  if echo "$staged" | grep -qF "$f"; then
+  if echo "$staged" | grep -qxF "$f"; then
     any_staged=true
     break
   fi
@@ -32,7 +32,7 @@ if ! command -v jq &>/dev/null; then
   exit 1
 fi
 
-plugin_version="$(jq -r '.version' plugin.json)"
+plugin_version="$(git show :plugin.json | jq -r '.version')"
 mismatch=false
 
 check() {
@@ -44,11 +44,11 @@ check() {
   fi
 }
 
-check ".claude-plugin/plugin.json (.version)"                  "$(jq -r '.version'            .claude-plugin/plugin.json)"
-check ".github/plugin/marketplace.json (.metadata.version)"    "$(jq -r '.metadata.version'   .github/plugin/marketplace.json)"
-check ".github/plugin/marketplace.json (.plugins[0].version)"  "$(jq -r '.plugins[0].version' .github/plugin/marketplace.json)"
-check ".claude-plugin/marketplace.json (.metadata.version)"    "$(jq -r '.metadata.version'   .claude-plugin/marketplace.json)"
-check ".claude-plugin/marketplace.json (.plugins[0].version)"  "$(jq -r '.plugins[0].version' .claude-plugin/marketplace.json)"
+check ".claude-plugin/plugin.json (.version)"                  "$(git show :.claude-plugin/plugin.json | jq -r '.version')"
+check ".github/plugin/marketplace.json (.metadata.version)"    "$(git show :.github/plugin/marketplace.json | jq -r '.metadata.version')"
+check ".github/plugin/marketplace.json (.plugins[0].version)"  "$(git show :.github/plugin/marketplace.json | jq -r '.plugins[0].version')"
+check ".claude-plugin/marketplace.json (.metadata.version)"    "$(git show :.claude-plugin/marketplace.json | jq -r '.metadata.version')"
+check ".claude-plugin/marketplace.json (.plugins[0].version)"  "$(git show :.claude-plugin/marketplace.json | jq -r '.plugins[0].version')"
 
 if $mismatch; then
   echo ""
