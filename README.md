@@ -25,7 +25,7 @@ Agent Kit is now a shared GitHub Copilot plugin repository. It packages custom a
 └── instructions/                       # Kept in repo, outside the plugin MVP
 ```
 
-The current plugin MVP covers `agents/`, `commands/`, `skills/`, `copilot-instructions.md`, and supporting docs they reference. The `instructions/` folder remains in the repo, but it is not yet packaged as a plugin-specific feature.
+The current plugin MVP covers `agents/`, `commands/`, `skills/`, and supporting docs they reference. The `instructions/` folder remains in the repo, but it is not yet packaged as a plugin-specific feature.
 
 `plugin.json` at the repository root is the canonical Copilot CLI manifest. `.github/plugin/marketplace.json` enables VS Code's "Chat: Install Plugin From Source" and the Copilot CLI marketplace command (`copilot plugin marketplace add`). The `.claude-plugin/` directory mirrors both files for Claude Code and other compatible scanners.
 
@@ -99,12 +99,8 @@ Browse the ecosystem at `https://skills.sh`.
 | Skills | GitHub repository source |
 | --- | --- |
 | `agent-device` | [`callstackincubator/agent-device`](https://github.com/callstackincubator/agent-device) |
-| `art-of-comment` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
 | `building-native-ui` | [`expo/skills`](https://github.com/expo/skills) |
-| `code-debugging` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
-| `code-refactoring` | [`rakaadi/agent-kit`](https://github.com/rakaadi/agent-kit) |
 | `expo-deployment` | [`expo/skills`](https://github.com/expo/skills) |
-| `find-skills` | [`vercel-labs/skills`](https://github.com/vercel-labs/skills) |
 | `git-commit` | [`github/awesome-copilot`](https://github.com/github/awesome-copilot) |
 | `javascript-testing-patterns` | [`wshobson/agents`](https://github.com/wshobson/agents) |
 | `mcp-builder` | [`anthropics/skills`](https://github.com/anthropics/skills) |
