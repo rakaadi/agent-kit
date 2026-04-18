@@ -38,6 +38,9 @@ Every section marked **[required]** must appear with that exact heading.
 Sections marked **[optional]** may be added between Verification and
 Out of Scope when relevant.
 
+Use stable task IDs plus explicit `**Depends on**` metadata so agents can
+see what may run in parallel and humans can see what must wait.
+
 ---
 
 ### Template
@@ -50,6 +53,10 @@ Out of Scope when relevant.
 > incomplete. Always consult the skills before writing code.
 
 **Goal:** [One sentence — what this phase achieves when done.]
+
+**Architecture:** [2-3 sentences about the approach for this phase.]
+
+**Tech Stack:** [Key technologies, libraries, or tools used in this phase.]
 
 **Spec source:** `[spec file path]` — [section heading(s) referenced]
 
@@ -76,23 +83,36 @@ All files this phase will create or modify, listed once before the tasks.
 
 ## Tasks [required]
 
-Numbered sequence. Each task includes:
-- A title anchored to a spec step reference.
-- The files it touches (subset of the File Structure table).
-- A file-anchored summary: what to do and where, with spec section
-  references for detail. No pseudo-code or implementation blueprints.
+Dependency-aware task list. Each task includes:
+- A stable task ID.
+- An action-oriented title.
+- A short `Description` opener followed by actionable bullet points.
+- Explicit `Depends on`, `Produces`, and `Acceptance` fields.
+- File-anchored instructions and spec references inside the Description.
+- Enough separation that independent tasks can run in parallel when
+  dependencies allow.
 
-### Task 1: [Action verb] + [subject] (Spec §[X] Step [Y.Z])
+#### Task `task-id`
 
-**Files:**
-- Create: `path/to/new-file.ts`
-- Modify: `path/to/existing-file.ts`
+**Title**: [Action verb] + [subject].
 
-[Summary paragraph: what this task accomplishes, which spec sections
-contain the relevant detail, and any constraints the execution agent
-should respect.]
+**Description**: [One short sentence that explains what this task
+accomplishes and why it exists.]
 
-### Task 2: ...
+- Create or modify `path/to/file.ts` for [specific responsibility].
+- Reuse `path/to/reference.ts` as the reference surface for existing
+  patterns or types.
+- Preserve [named constraint, public API, or runtime behavior] while
+  making the change.
+- Use Spec §[X] and Spec §[Y.Z] as the detail sources for this task.
+
+**Depends on**: `upstream-task-id` or Nothing.
+
+**Produces**: `path/to/file.ts`; updated `path/to/other-file.ts`
+
+**Acceptance**: [Observable outcome that proves the task is done.]
+
+#### Task `next-task-id`
 
 [Continue for every task in the phase.]
 
@@ -119,3 +139,30 @@ Explicit list of work that belongs to later phases or is excluded.
 Reference the phase number or spec section where it belongs.
 
 - [item] → Phase [N] / Spec §[X]
+```
+
+## Structural rules
+
+1. **One phase per plan.** Never combine phases.
+2. **Spec traceability is required.** Every task must reference at least
+  one spec step or section in its Description.
+3. **Tasks must stay file-anchored.** Anchor each task to specific files
+  in its Description or Produces field.
+4. **`Depends on` is required.** Use `Nothing` only when the task can
+  start immediately.
+5. **Use concise descriptions.** Prefer a short opener plus actionable
+  bullets. If the task truly has one thing to do, one short paragraph is
+  acceptable.
+6. **Do not put implementation detail in the plan.** No code snippets,
+  pseudo-code, or step-by-step implementation sequences.
+7. **Expose safe parallel work.** Do not invent dependencies when two
+  tasks can proceed independently.
+
+## After writing the plan
+
+Summarize:
+- Whether all prerequisites are satisfied and any blocker that remains.
+- The task count and high-level task IDs.
+- Which tasks can start immediately and which wait on dependencies.
+
+Do not start implementation.
