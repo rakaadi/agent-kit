@@ -41,7 +41,7 @@ Custom agents live at `agents/<agent-name>.agent.md`.
 | **Bash Search Worker** | Shell-based repository search and filtering | Context isolation; read-only `execute` only | Subagent only |
 | **Code Simplifier** | Simplify and refine code for clarity | Preserves functionality; applies project standards | User + subagent |
 | **Compliance Reviewer** | Compare implementation against plan/spec | Deviation analysis; requirement verification | Subagent only |
-| **Codebase Analyzer** | Analyze implementation details of existing code | Precise file:line references; no speculation | Subagent only |
+| **Codebase Analyzer** | Analyze implementation details of existing code | Precise file:line references; no speculation | User + subagent |
 | **Generalist** | General-purpose coding, research, debugging | Broad skill set; retrieval-led reasoning | Subagent only |
 | **Green** (TDD) | Write minimal code to pass a failing test | Never modifies tests; minimal production code | Subagent only |
 | **Orchestrator** | Delegate and coordinate multi-agent workflows | Never implements; dispatches and consolidates | User only |
@@ -57,7 +57,7 @@ Custom agents live at `agents/<agent-name>.agent.md`.
 
 ## Model Fallback Reference
 
-The platform now resolves model display names automatically. Use this table **only**
+**Always** use the model specified in the frontmatter. Use this table **only**
 when the agent's preferred model is temporarily unavailable:
 
 | Preferred model | Fallback |

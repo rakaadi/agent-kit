@@ -28,12 +28,12 @@ This structure informs the task decomposition. Each task should produce self-con
 
 ## Bite-Sized Task Granularity
 
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+**Each task should be one coherent, reviewable slice:**
+- Small enough that an execution agent can complete it without broad repo-wide reasoning.
+- Large enough to produce a meaningful artifact, boundary, or verification point.
+- Prefer tasks that touch different files or domains so independent work can run in parallel.
+- Make dependencies explicit with stable task IDs and `**Depends on**`.
+- If a task is truly one action, say that plainly instead of padding the description.
 
 ## Plan Document Header
 
@@ -55,50 +55,51 @@ This structure informs the task decomposition. Each task should produce self-con
 
 ## Task Structure
 
+Use a stable task ID plus explicit dependency metadata so agents can see what may run in parallel and humans can see what must wait. Write `Description` as a short opening sentence followed by actionable bullet points. If the task only has one thing to do, a single short paragraph is fine.
+
 ````markdown
-### Task N: [Component Name]
+#### Task `task-id`
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+**Title**: [Action-oriented task title].
 
-- [ ] **Step 1: Write the failing test**
+**Description**: [One short sentence that explains what this task accomplishes and why it exists.]
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+- Create or modify `exact/path/to/file.ts` for [specific responsibility].
+- Reuse `exact/path/to/reference.ts` as the reference surface for existing patterns or types.
+- Preserve [named constraint, public API, or runtime behavior] while making the change.
+- Run `exact verification or lint command` if the task needs a concrete tooling step.
 
-- [ ] **Step 2: Run test to verify it fails**
+**Depends on**: `upstream-task-id` or Nothing.
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+**Produces**: `exact/path/to/file.ts`; updated `exact/path/to/other-file.ts`
 
-- [ ] **Step 3: Write minimal implementation**
+**Acceptance**: [Observable outcome that proves the task is done.]
 
-```python
-def function(input):
-    return expected
-```
+---
 
-- [ ] **Step 4: Run test to verify it passes**
+#### Task `shared-api-factory`
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
+**Title**: Build the shared authenticated API factory.
 
-- [ ] **Step 5: Commit**
+**Description**: Move the duplicated authenticated request lifecycle behind one shared factory so both API slices use the same boundary.
 
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
+- Create `src/redux/createAuthenticatedApi.ts`.
+- Define `AuthenticatedApiConfig` with only the configuration current callers need.
+- Centralize request normalization, URL resolution, auth header injection, 401 refresh and retry, and reset-on-refresh-failure.
+- Preserve existing concurrency and retry behavior instead of introducing a new refresh mechanism.
+- Run `bunx eslint src/redux/createAuthenticatedApi.ts src/redux/authSessionHelpers.ts --fix`.
+
+**Depends on**: `auth-session-helpers`
+
+**Produces**: `src/redux/createAuthenticatedApi.ts`
+
+**Acceptance**: `createAuthenticatedApi` is the only place that knows how authenticated requests are executed, retried, and reset after refresh failure.
 ````
 
 ## Remember
 - Exact file paths always
-- Complete code in plan (not "add validation")
+- Stable task IDs and explicit dependencies
+- Concrete, file-anchored instructions in plan (not "add validation")
 - Exact commands with expected output
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits

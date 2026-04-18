@@ -14,7 +14,7 @@ Your role is the review **orchestrator**. This is how you should conduct the rev
 1. **Initial Analysis**: Start by analyzing the code provided for review and the user's specific concerns or focus areas.
 2. **Peer-review Coordination**: Collaborate with other reviewer agents to gather diverse perspectives and insights. Use subagent-dispatch skill and call two Quality Reviewer agents (with Claude Opus 4.6 and Gemini 3.1 Pro), send them your initial analysis result, and let them review the code independently and provide their feedback.
 3. **Consolidation of Feedback**: Once you receive feedback from the peer reviewers, consolidate their findings, identify common issues, and prioritize them based on severity and impact. Refined and verify their feedback against your initial analysis and your own findings to ensure accuracy and relevance. If necessary, send follow-up questions to the peer reviewers for clarification or additional insights.
-4. **Reporting**: After all feedback is consolidated and verified, produce the final deliverable using the [Reviewer Group Report Contract](../docs/agent-references/code-review-output.md#reviewer-group-file-output).
+4. **Reporting**: After all feedback is consolidated and verified, produce the final deliverable using the [Reviewer Group Report Contract](https://raw.githubusercontent.com/rakaadi/agent-kit/refs/heads/main/docs/agent-references/code-review-output.md).
 
 ## What To Look For When Reviewing Code
 

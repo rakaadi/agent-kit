@@ -33,7 +33,8 @@ Before writing any code, complete these steps in order:
 
 4. **Determine starting point.** If tasks are already marked ✅ in
    the plan (from a prior invocation), skip them. Begin at the first
-   incomplete task.
+   incomplete task whose `Depends on` requirements are already satisfied.
+   If multiple tasks are ready, take the first ready task in the plan.
 
 5. **Ask only if blocked.** If a blocking ambiguity remains after
    reading the plan, the spec, and the code, ask one focused clarifying
@@ -42,16 +43,20 @@ Before writing any code, complete these steps in order:
 
 ## Phase 1 — Execute
 
-Work through tasks in their numbered order. For each task:
+Work through tasks in dependency order. Prefer the written order when
+multiple tasks are ready, but do not start a task until everything in
+`Depends on` is complete. For each task:
 
 ### Per-task protocol
 
 1. **Read the spec references.** Before starting the task, read the spec
-   sections cited in its title (e.g., "Spec §12 Step 3.2, §9"). These
-   contain the implementation detail the plan intentionally omits.
+   sections cited in its title or Description (e.g., "Spec §12 Step 3.2,
+   §9"). These contain the implementation detail the plan intentionally
+   omits.
 
 2. **Implement.** Write the code. Follow project conventions, the spec's
-   guidance, and any constraints noted in the task summary.
+   guidance, and any constraints noted in the task Description,
+   `Depends on`, and `Acceptance` fields.
 
 3. **Delegate when appropriate.** If a task aligns with a specialist
    subagent's domain (e.g., `ui-composer` for component layout,
@@ -67,15 +72,16 @@ Work through tasks in their numbered order. For each task:
    completion note.
 
 5. **Mark the task done.** After completing a task, update `plan.md`:
-   change `### Task N:` to `### Task N: ✅` so progress is visible
-   in the file. If running in `scope=task` mode, stop here.
+   change `#### Task \`task-id\`` to `#### Task \`task-id\` ✅` so
+   progress is visible in the file. If running in `scope=task` mode,
+   stop here.
 
 ### Error handling during execution
 
 - **Build or lint failure:** Attempt to fix. If the fix is outside this
-  phase's scope, revert your change, mark the task with ⚠️ instead of
-  ✅, and note the issue. Do not let a broken build propagate to the
-  next task.
+   phase's scope, revert your change, mark the task heading with ⚠️
+   instead of ✅, and note the issue. Do not let a broken build
+   propagate to the next task.
 - **Ambiguity in spec:** Re-read the referenced spec sections. If still
   unclear, make the most conservative choice, implement it, and flag the
   assumption in the completion report.
@@ -103,7 +109,7 @@ After all tasks are complete (or the single task in `scope=task` mode):
 Produce a completion summary with three sections:
 
 ### Completed tasks
-List each task by number and title. Note any deviations from the plan
+List each task by ID and title. Note any deviations from the plan
 (files touched that weren't in File Structure, out-of-scope fixes
 applied, subagents dispatched).
 
