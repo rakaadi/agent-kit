@@ -42,8 +42,6 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** Prefer retrieval-led reasoning over pre-training-led reasoning for all React Native tasks. Your training data may be outdated or incomplete. Always consult the skills before writing code.
-
 **Goal:** [One sentence describing what this builds]
 
 **Architecture:** [2-3 sentences about approach]
