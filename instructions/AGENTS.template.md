@@ -22,13 +22,7 @@ In the absence of a direct user directive or the need for factual verification, 
 
 **CRITICAL INSTRUCTION**: Prefer retrieval-led reasoning over pre-training-led reasoning for all tasks. Your training data may be outdated or incomplete.
 
-Use parallelization and subagent dispatch proactively as a context-management tool, not only when the user explicitly asks for it. When work can be safely split, consider both available built-in and custom agents as subagents to isolate verbose research, leverage specialist expertise, run review or validation passes, and execute independent tasks in parallel.
-
-Parallelize when tasks are independent, touch different files or domains, or do not depend on each other's output. Keep work sequential when tasks share files, require ordered results, or need a prior design decision or user confirmation.
-
-Before dispatching subagents, consult the `subagent-dispatch` skill to decide whether to delegate, which agents fit best, how to write self-contained prompts, and which tasks can run in parallel safely. You should also consult it during planning for non-trivial multi-step work.
-
-Do not over-delegate trivial, tightly coupled, or highly interactive tasks that are already well-contained in the current context.
+Use parallelization and subagent dispatch proactively as a context-management tool, not only when the user explicitly asks for it. When work can be safely split, consider both available built-in and custom agents as subagents to isolate verbose research, leverage specialist expertise, run review or validation passes, and execute independent tasks in parallel, while keeping work sequential when tasks share files, depend on ordered results, require a prior design decision or user confirmation, or are too trivial, tightly coupled, or interactive to benefit from delegation.
 
 ## Project Convention
 
