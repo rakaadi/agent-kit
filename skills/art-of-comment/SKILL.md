@@ -1,78 +1,33 @@
 ---
 name: art-of-comment
-description: Guide for writing inline comments and JSDoc in the codebase. Use when generating code for bug fixes, new components, refactoring, or feature implementation.
+description: Guide for editing existing and writing inline comments and JSDoc. Use when generating comments for documenting new components or functions, non-obvious code behaviour, or complex logic.
 ---
 
 # Overview
 
-Every comment should earn its place. A good comment provides context the code alone cannot convey — *why* a decision was made, what trade-off was accepted, or how a non-obvious piece fits the bigger picture. A comment that merely restates the code is noise; remove or avoid it. When in doubt, prefer no comment over a redundant one.
+Every comment should earn its place. A good comment adds context the code alone cannot convey: why a decision was made, what trade-off was accepted, what side effect or constraint matters, or how a non-obvious piece fits the bigger picture. A comment that merely restates the code is noise and adds maintenance burden. When in doubt, prefer no comment over a redundant one.
 
-# Guidelines
+## Guidelines
 
-- **Comment only when needed.** Do not add comments or JSDoc unless the code is non-obvious or you are explicitly asked. Self-explanatory code needs no narration.
-- **Inline comments: ≤ 2 lines.** Keep them terse — explain *why*, not *what*.
-- **JSDoc: comprehensive yet concise.** Document only what adds value: purpose, non-obvious parameters, return semantics, or usage examples. Omit what the signature already communicates.
-- **Use `/** ... */` for reusable symbols.** Functions, types, and constants referenced elsewhere should use JSDoc so IDE hover tooltips display the information.
-- **Document trade-offs.** When the implementation accepts a trade-off, explain the rationale and why it was worth taking.
-- **No assumptions.** Ground comments in library docs, project standards, or best practices — not guesses. Ask for clarification when unsure.
-- **Stay consistent; never contradict.** Match the tone and terminology of existing comments. Do not duplicate information already stated in a nearby comment — reference it instead.
+- **Comment only when needed.** Add comments or JSDoc only when the code alone does not make the intent clear. If the code is self-explanatory, prefer no comment.
+- **Explain intent, rationale, or consequences.** Good comments add information the code cannot: why a decision was made, what trade-off was accepted, what side effect, exception, or constraint a caller should know about.
+- **Do not restate the code.** If a comment only paraphrases names, conditions, or control flow, remove it. Use words that add meaning, not synonyms for the code.
+- **Use JSDoc for reusable interfaces.** Functions, types, and constants used elsewhere should use `/** ... */` when hover documentation would help a caller understand purpose, important parameters, return semantics, side effects, or usage constraints.
+- **Keep implementation detail out of interface docs.** Declaration-level comments should describe what the symbol promises or why it exists, not internal steps that only matter to the implementation.
+- **Keep inline comments short.** Inline comments should usually fit in 1-2 lines and explain *why* or *why not*, not narrate *what* the next line does.
+- **Document trade-offs and non-obvious behavior.** If the code accepts a compromise, workaround, minimum threshold, ordering rule, or other surprising behavior, explain the rationale briefly.
+- **Treat hard-to-write comments as a design signal.** If a comment is difficult to make both simple and clear, the code or API may need to be renamed, split, or refactored instead of further explained.
+- **Ground comments in evidence.** Do not invent rationale. Base comments on code behavior, library docs, project conventions, or explicit user requirements, and ask for clarification when intent is uncertain.
+- **Keep comments consistent with surrounding docs.** Do not contradict nearby comments, and do not duplicate information already explained elsewhere unless repetition helps the caller at that exact point.
+- **Update or remove stale comments.** An outdated comment is usually worse than no comment.
 
-# Example
+## Examples
 
-The annotated snippet below highlights common comment pitfalls alongside good practice.
+Read the example file that matches the kind of comment you are writing or reviewing.
 
-```typescript
-// (1) Calculate chart segments based on priority: verified > registered > rejected
-const getChartSegments = (): {
-  value: number
-  color: string
-  backgroundColor?: string
-  badgeLabel?: string
-}[] => {
-  const verified = data?.verified ?? 0
-  const registered = data?.registered ?? 0
-  const rejected = data?.rejected ?? 0
-  const total = verified + registered + rejected
+- `example-inline-comment-triage.md` — Inline comment keep/remove decisions, duplicate comments, and trade-off comments. Read when deciding whether an inline comment earns its place.
+- `example-reusable-interface-docs.md` — Reusable interface JSDoc that documents the caller-facing contract without leaking internals. Read when writing declaration-level docs for shared symbols.
+- `example-evidence-backed-comments.md` — Evidence-backed workaround and compatibility comments. Read when documenting a browser bug, platform limitation, or reproduction note.
+- `example-design-signal.md` — Cases where better names remove the need for comments. Read when a comment seems to compensate for unclear naming or structure.
 
-  // (2) If all values are 0, show full gray circle
-  if (total === 0) {
-    return [{ value: 1, color: colors.palette.lightGray }]
-  }
-
-  // (3) Filter out zero values to prevent empty segments
-  const segments = []
-
-  // (4) Priority order: verified > registered > rejected
-  if (verified > 0) {
-    segments.push({
-      value: verified,
-      color: '#01C58A',
-      backgroundColor: '#D6F6EC',
-      badgeLabel: `${verified} Aset Terdata`,
-    })
-  }
-  if (registered > 0) {
-    segments.push({
-      value: registered,
-      color: '#FF9E00',
-      backgroundColor: '#FFF1DB',
-      badgeLabel: `${registered} Belum Diverif`,
-    })
-  }
-  if (rejected > 0) {
-    segments.push({
-      value: rejected <= 2 ? 2 : rejected, // (5) Minimum visible segment size of 2
-      color: '#FF5264',
-      backgroundColor: '#FFECEC',
-      badgeLabel: `${rejected} Ditolak`,
-    })
-  }
-```
-
-| # | Verdict | Why |
-|---|---------|-----|
-| 1 | **Good intent, wrong syntax.** Clearly summarizes purpose and priority order — but should use `/** ... */` so the description appears on hover where `getChartSegments` is called. |
-| 2 | **Remove.** The condition and return value are self-explanatory; the comment adds nothing. |
-| 3 | **Borderline.** States the obvious, but may be acceptable as a signpost when debugging segment logic — acceptable only if it conveys intent the code cannot. |
-| 4 | **Remove — duplicates (1).** The priority order is already documented above; repeating it creates a maintenance burden. Reference the earlier comment if needed. |
-| 5 | **Good.** Concisely explains a non-obvious workaround and its effect. |
+The stale-comment rule does not need a dedicated example. Apply it whenever you modify code with existing comments.
