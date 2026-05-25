@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plan Artifact Panel Reference</title>
+    <style>
+      :root {
+        --bg: #0d1421;
+        --bg-accent: #1a2440;
+        --panel: #fffdf9;
+        --ink: #122033;
+        --muted: #556476;
+        --line: #cad4e0;
+        --accent-strong: #0f3b80;
+        --shadow: 0 20px 48px rgba(18, 32, 51, 0.08);
+        --radius: 18px;
+        --radius-sm: 8px;
+        --sans: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+        --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        --mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font: 16px/1.6 var(--sans);
+        background:
+          radial-gradient(circle at top left, rgba(64, 112, 219, 0.22), transparent 28%),
+          linear-gradient(180deg, var(--bg-accent) 0, var(--bg) 240px, #08101a 100%);
+      }
+
+      code {
+        font-family: var(--mono);
+        display: inline-block;
+        padding: 0.05rem 0.32rem;
+        font-size: 0.86em;
+        line-height: 1.25;
+        border-radius: 7px;
+        background: #edf2fa;
+        border: 1px solid #d5dfec;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-family: var(--serif);
+        font-size: clamp(2.1rem, 4vw, 3rem);
+        line-height: 1.15;
+      }
+
+      .layout {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 28px 20px 64px;
+      }
+
+      .panel {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.98));
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .hero,
+      section.panel {
+        padding: 24px;
+      }
+
+      .eyebrow {
+        margin-bottom: 0.75rem;
+        color: var(--accent-strong);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero-copy,
+      .section-copy,
+      .card-copy,
+      li {
+        color: var(--muted);
+      }
+
+      .hero-copy {
+        max-width: 68ch;
+        margin-top: 0.9rem;
+      }
+
+      .link-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1.1rem;
+      }
+
+      .link-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid #cfe0f7;
+        background: #eef4ff;
+        color: var(--accent-strong);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 20px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .card h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      .label {
+        display: inline-block;
+        margin-bottom: 0.55rem;
+        color: var(--accent-strong);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      ul {
+        margin: 0.8rem 0 0;
+        padding-left: 1.2rem;
+      }
+
+      li + li {
+        margin-top: 0.42rem;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .layout {
+          padding: 18px 14px 48px;
+        }
+
+        .hero,
+        section.panel {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <header class="panel hero">
+        <div class="eyebrow">Panel Purpose Map</div>
+        <h1>Plan Artifact Panel Reference</h1>
+        <p class="hero-copy">
+          This page extracts the main job of each panel from the working Firebase artifact so agents can keep the structure firm while still extending the content for a new plan.
+        </p>
+        <div class="link-row">
+          <a class="link-chip" href="./plan-artifact-skeleton.html">Open the full skeleton</a>
+        </div>
+      </header>
+
+      <section class="panel" style="margin-top: 20px;">
+        <div class="eyebrow">How To Use</div>
+        <h2>Stable panel intent</h2>
+        <p class="section-copy">
+          Do not invent new top-level sections just to rephrase the same content. If the source plan contains one of these concepts, extend the matching panel from the skeleton instead of moving it somewhere else.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <span class="label">Header Summary</span>
+            <h3>Orient the reviewer before the scroll starts.</h3>
+            <p class="card-copy">Carry the title, goal, architecture, tech stack, and execution metadata in a compact first screen.</p>
+            <ul>
+              <li>Must stay visible: title, goal, architecture, tech stack, status or scope metadata.</li>
+              <li>Good shapes: summary cards plus a metadata card.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Table of Contents</span>
+            <h3>Keep long plans skimmable.</h3>
+            <p class="card-copy">Mirror the real sections with anchor links so reviewers can jump without losing context.</p>
+            <ul>
+              <li>Must stay visible: the real section list, not a decorative outline.</li>
+              <li>Good shapes: sticky sidebar or compact top nav.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Locked Decisions</span>
+            <h3>Freeze the implementation constraints.</h3>
+            <p class="card-copy">This panel records the decisions that later tasks are not allowed to drift away from.</p>
+            <ul>
+              <li>Must stay visible: decision name and chosen constraint.</li>
+              <li>Good shapes: two-column comparison table.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Current-State Hotspots</span>
+            <h3>Explain why the refactor exists.</h3>
+            <p class="card-copy">Point to the current files, flows, or ownership tangles that create the migration pressure.</p>
+            <ul>
+              <li>Must stay visible: file or flow, current responsibility, reason it matters.</li>
+              <li>Good shapes: table or tightly structured cards.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Target Module Shape</span>
+            <h3>Show the destination structure.</h3>
+            <p class="card-copy">Use this panel to make the future file layout, key boundaries, and public surface concrete before task detail begins.</p>
+            <ul>
+              <li>Must stay visible: folder shape, boundary notes, planned public surface when applicable.</li>
+              <li>Good shapes: two-up panels plus a monospace API block.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">File Inventory</span>
+            <h3>Lock the file-level work slices.</h3>
+            <p class="card-copy">A reviewer should leave this panel knowing what gets created, what changes, and what will be deleted later.</p>
+            <ul>
+              <li>Must stay visible: exact file paths and the purpose of each change.</li>
+              <li>Good shapes: create and modify tables in a two-up layout.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Execution Flow</span>
+            <h3>Show order, gates, and parallelism together.</h3>
+            <p class="card-copy">Combine dependency flow and sequencing guidance into one readable section before task cards.</p>
+            <ul>
+              <li>Must stay visible: dependency order plus nearby text that preserves the same meaning.</li>
+              <li>Good shapes: Mermaid or static graph with sequencing notes beside it.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Phase Sections</span>
+            <h3>Turn the plan into executable work.</h3>
+            <p class="card-copy">Group tasks by a real rollout phase or workstream so review tracks how the work lands.</p>
+            <ul>
+              <li>Must stay visible: phase purpose and a repeatable task-card structure.</li>
+              <li>Good shapes: one panel per phase with a vertical stack of cards.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Task Card</span>
+            <h3>Make each task independently reviewable.</h3>
+            <p class="card-copy">This is the smallest execution unit. Keep the metadata obvious so reviewers can reason about scope without opening another section.</p>
+            <ul>
+              <li>Must stay visible: task ID, title, description, produces, acceptance, and exactly one dependency marker.</li>
+              <li>Good shapes: chips at the top, instructions in bullets, metadata grid at the bottom.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Verification</span>
+            <h3>State the release gate explicitly.</h3>
+            <p class="card-copy">Keep the verification checklist or matrix visible so the plan does not treat correctness as implied.</p>
+            <ul>
+              <li>Must stay visible: flow, expected behavior, special environment notes.</li>
+              <li>Good shapes: verification table or concise checklist.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Out of Scope</span>
+            <h3>Protect the plan boundary.</h3>
+            <p class="card-copy">Name the tempting adjacent work that this plan will not absorb, so execution does not widen silently.</p>
+            <ul>
+              <li>Must stay visible: explicit exclusions and the source-plan reminder.</li>
+              <li>Good shapes: numbered list plus a short source reference note.</li>
+            </ul>
+          </article>
+
+          <article class="card full">
+            <span class="label">Optional Panels</span>
+            <h3>Add only when the source plan actually contains new information.</h3>
+            <p class="card-copy">Risks, open questions, rollout notes, or ADR links can be added, but only when they carry new semantics that do not already belong in one of the stable panels above.</p>
+            <ul>
+              <li>Do not create new panels just to restate goal, architecture, or task information in a second format.</li>
+              <li>If the source plan has no locked decisions or hotspots, the related sections may be omitted, but the task, verification, and out-of-scope sections remain required.</li>
+              <li>When in doubt, extend the existing skeleton rather than designing a new information architecture.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
