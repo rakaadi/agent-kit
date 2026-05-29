@@ -5,7 +5,7 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## Overview
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+Assume the engineer is skilled but unfamiliar with this codebase, toolset, and problem domain, and may need explicit guidance on test design patterns used here. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
 
@@ -17,13 +17,13 @@ Choose exactly one output format for each plan request.
 
 1. If the user explicitly asks for HTML, an HTML artifact, or a file such as `plan-firebase-services.html`, produce HTML.
 2. If the user explicitly asks for Markdown, a Markdown plan, or a file such as `plan-firebase-services.md`, produce Markdown.
-3. If the request is ambiguous and the user is available, ask one focused clarifying question.
+3. If the request is ambiguous, ask one focused clarifying question before producing any output.
 4. If the user is unavailable for a decision, default to Markdown.
 5. Do not produce both formats unless the user explicitly asks for both.
 
 ## Semantic-First Authoring
 
-Plan content comes first, format comes second. Before rendering Markdown or HTML, lock the semantic structure of the plan:
+Plan content comes first, format comes second. Before writing any Markdown or HTML, output a brief unlabeled internal outline covering: Feature name, Goal, Architecture, Out of scope. Then proceed to render in the chosen format with the following semantic structure:
 
 - Feature name
 - Goal
@@ -32,6 +32,7 @@ Plan content comes first, format comes second. Before rendering Markdown or HTML
 - File structure
 - Dependency-aware tasks
 - Verification
+- Progress tracking
 - Out of scope
 
 The same plan must remain recognizable in either format. HTML may improve the presentation, but it must not drop implementation-critical detail.
@@ -47,7 +48,6 @@ The same plan must remain recognizable in either format. HTML may improve the pr
 - Write the plan to `plan-${implementation-task}.html`, using the same kebab-case task slug as the Markdown variant. Example: `plan-firebase-services.html`.
 - Keep the file self-contained with embedded CSS and only minimal JavaScript.
 - Preserve the full plan content. HTML may add navigation, summaries, diagrams, and layout, but it must not replace detailed task instructions with a summary.
-- Treat the HTML file as a review artifact in v1. Downstream execution flows still assume Markdown unless they are explicitly updated.
 - Follow the companion guide in [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md).
 - Use [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html) as the default structural scaffold for section order, panel hierarchy, and task-card anatomy.
 - Use [Plan Artifact Panel Reference](./example/plan-artifact-panel-reference.html) as the panel-intent map so each section keeps the same main job while the content changes per plan.
@@ -146,6 +146,25 @@ Use a stable task ID plus explicit dependency metadata so agents can see what ma
 
 For HTML plans, render the same task fields visibly inside task cards, tables, or sections. Do not hide dependency or acceptance information behind presentation-only affordances.
 
+## Progress Tracking
+
+Every plan must include a `Progress Tracking` section between `Verification` and `Out of Scope` in both Markdown and HTML. This section is the execution handoff state, not a narrative changelog.
+
+- `Current status`: `Not started` | `In progress` | `Blocked` | `Completed`
+- `Started on`: `YYYY-MM-DD` or `Not started`
+- `Completed on`: `YYYY-MM-DD` or `Not completed`
+- `Last executed tasks`: task IDs only, newest first, or `None`
+- `Current blocker or next focus`: one short line naming the blocker or the next runnable task
+- `Unplanned necessary work`: include only when execution required work outside the original task list
+
+Fresh plans should initialize this section with placeholders that make the starting state explicit:
+
+- `Current status`: `Not started`
+- `Started on`: `Not started`
+- `Completed on`: `Not completed`
+- `Last executed tasks`: `None`
+- `Current blocker or next focus`: the first runnable task, or `Waiting to start` when execution has not begun
+
 ## Remember
 
 - Exact file paths always
@@ -167,5 +186,5 @@ After writing the complete plan:
 **Review loop guidance:**
 
 - Same agent that wrote the plan fixes it (preserves context)
-- If loop exceeds 3 iterations, surface to human for guidance
+- If the review loop exceeds 3 iterations, stop, and output a numbered list of unresolved reviewer objections with your rebuttal for each, then ask the human to decide.
 - Reviewers are advisory — explain disagreements if you believe feedback is incorrect

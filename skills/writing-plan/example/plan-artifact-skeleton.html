@@ -398,6 +398,7 @@
             <li><a href="#phase-1">Phase 1</a></li>
             <li><a href="#phase-2">Phase 2</a></li>
             <li><a href="#verification">Verification</a></li>
+            <li><a href="#progress-tracking">Progress Tracking</a></li>
             <li><a href="#out-of-scope">Out of Scope</a></li>
           </ol>
           <p class="toc-note">
@@ -711,6 +712,47 @@ featureService.subscribe(listener)</pre>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </section>
+
+          <!-- Progress tracking is the execution handoff state. Keep it explicit so a fresh plan and an in-flight plan are both easy to scan. -->
+          <section class="panel" id="progress-tracking" aria-labelledby="progress-tracking-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Execution State</div>
+                <h2 id="progress-tracking-heading">Progress Tracking</h2>
+              </div>
+              <p class="section-copy">Main point: show the current execution state, the most recent task movement, and any blocker or necessary out-of-band work without forcing the reviewer to infer it from task cards.</p>
+            </div>
+            <div class="two-up">
+              <div class="subpanel">
+                <h3>Current Status</h3>
+                <div class="meta-grid">
+                  <div class="meta-item">
+                    <span class="meta-label">Current status</span>
+                    <p>Not started</p>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Started on</span>
+                    <p>Not started</p>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Completed on</span>
+                    <p>Not completed</p>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Last executed tasks</span>
+                    <p>None</p>
+                  </div>
+                </div>
+              </div>
+              <div class="subpanel">
+                <h3>Execution Notes</h3>
+                <ol class="list-tight">
+                  <li><strong>Current blocker or next focus:</strong> Waiting to start.</li>
+                  <li><strong>Unplanned necessary work:</strong> Omit this line when nothing outside the task list was required.</li>
+                </ol>
+              </div>
             </div>
           </section>
 
