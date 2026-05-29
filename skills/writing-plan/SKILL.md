@@ -21,7 +21,7 @@ Choose exactly one output format for each plan request.
 
 ## Semantic-First Authoring
 
-Plan content comes first, format comes second. Before writing any Markdown or HTML, output a brief unlabeled internal outline covering: Feature name, Goal, Architecture, Out of scope. Then proceed to render in the chosen format with the following semantic structure:
+Plan content comes first, format comes second. Before writing any Markdown or HTML, create an internal outline (do not emit it) using the same section order as the plan’s semantic structure below. Then render the plan in the chosen format:
 
 - Feature name
 - Goal
