@@ -7,8 +7,6 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 Assume the engineer is skilled but unfamiliar with this codebase, toolset, and problem domain, and may need explicit guidance on test design patterns used here. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
-
 **Announce at start:** "I'm using the writing-plan skill to create the implementation plan."
 
 ## Output Mode
