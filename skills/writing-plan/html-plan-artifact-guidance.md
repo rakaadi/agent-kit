@@ -25,7 +25,7 @@ Default to extending the skeleton instead of redesigning the artifact from scrat
 ## Output Rules
 
 - Write a single self-contained `plan-${implementation-task}.html` file, using the same kebab-case task slug as the source Markdown plan. Example: `plan-firebase-services.html`.
-- Keep CSS embedded in the document.
+- Use tailwind from the CDN for styling, keep the css embedded in the document.
 - Use JavaScript only for lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
 - Avoid remote assets, remote stylesheets, or a build step by default.
 - If the user explicitly asks for a higher-fidelity diagram renderer, a CDN-hosted Mermaid runtime is acceptable for the execution-flow section as long as nearby text notes or a fallback still preserve the sequencing meaning.
