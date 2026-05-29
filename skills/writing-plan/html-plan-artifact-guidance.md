@@ -25,9 +25,9 @@ Default to extending the skeleton instead of redesigning the artifact from scrat
 ## Output Rules
 
 - Write a single self-contained `plan-${implementation-task}.html` file, using the same kebab-case task slug as the source Markdown plan. Example: `plan-firebase-services.html`.
-- Use tailwind from the CDN for styling, keep the css embedded in the document.
+- Load Tailwind from the CDN (`<script src="https://cdn.tailwindcss.com"></script>`) for styling. Use `<style type="text/tailwindcss">` with `@apply` to define reusable component patterns. Keep any remaining custom CSS minimal and embedded.
 - Use JavaScript only for lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
-- Avoid remote assets, remote stylesheets, or a build step by default.
+- Tailwind CDN is the only permitted remote asset by default. Avoid all other remote scripts, remote stylesheets, or build steps.
 - If the user explicitly asks for a higher-fidelity diagram renderer, a CDN-hosted Mermaid runtime is acceptable for the execution-flow section as long as nearby text notes or a fallback still preserve the sequencing meaning.
 - If the diagram becomes dense enough that static rendering hurts readability, a CDN-hosted Panzoom runtime is acceptable for drag, wheel-zoom, pinch-zoom, and reset interactions on Mermaid-rendered SVGs.
 - Keep the document readable with JavaScript disabled.
