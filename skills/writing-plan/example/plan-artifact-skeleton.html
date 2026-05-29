@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Implementation Plan Artifact Skeleton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Avenir Next"', '"Trebuchet MS"', '"Segoe UI"', 'sans-serif'],
+              serif: ['"Iowan Old Style"', '"Palatino Linotype"', '"Book Antiqua"', 'Georgia', 'serif'],
+              mono: ['"SFMono-Regular"', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          margin: 0;
+          color: #122033;
+          font: 16px/1.6 theme('fontFamily.sans');
+          background:
+            radial-gradient(circle at top left, rgba(64, 112, 219, 0.22), transparent 28%),
+            radial-gradient(circle at top right, rgba(168, 112, 28, 0.12), transparent 22%),
+            linear-gradient(180deg, #1a2440 0, #0d1421 240px, #08101a 100%);
+        }
+        a {
+          color: #0f3b80;
+        }
+        code,
+        pre,
+        kbd {
+          @apply font-mono;
+        }
+        code {
+          display: inline-block;
+          padding: 0.05rem 0.32rem;
+          font-size: 0.86em;
+          line-height: 1.25;
+          border-radius: 7px;
+          background: #edf2fa;
+          border: 1px solid #d5dfec;
+          overflow-wrap: anywhere;
+        }
+        pre {
+          margin: 0;
+          padding: 1rem 1.1rem;
+          overflow-x: auto;
+          white-space: pre-wrap;
+          background: #111a2a;
+          color: #eef4ff;
+          border-radius: 8px;
+          border: 1px solid #26344d;
+          line-height: 1.55;
+        }
+        h1,
+        h2,
+        h3 {
+          margin: 0;
+          line-height: 1.2;
+        }
+        h1 {
+          @apply font-serif;
+          font-size: clamp(2.2rem, 4vw, 3.2rem);
+          letter-spacing: -0.03em;
+        }
+        h2 {
+          font-size: 1.45rem;
+        }
+        h3 {
+          font-size: 1.05rem;
+        }
+        p {
+          margin: 0;
+        }
+      }
+
+      @layer components {
+        .layout {
+          @apply max-w-[1460px] mx-auto;
+          padding: 28px 20px 72px;
+        }
+        .panel {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.98));
+          @apply border border-[#cad4e0] rounded-[18px] shadow-[0_20px_48px_rgba(18,32,51,0.08)];
+        }
+        .hero {
+          padding: 28px;
+        }
+        .overline {
+          margin-bottom: 0.65rem;
+          @apply text-[#0f3b80] text-[0.8rem] font-bold tracking-[0.16em] uppercase;
+        }
+        .hero-copy {
+          max-width: 72ch;
+          margin-top: 0.9rem;
+          @apply text-[#556476];
+        }
+        .callout {
+          margin-top: 1.25rem;
+          padding: 0.95rem 1rem;
+          @apply rounded-lg border-l-4 border-[#8a5a12] bg-[#fff6e8] text-[#5b431a];
+        }
+        .hero-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
+          gap: 18px;
+          margin-top: 1.4rem;
+        }
+        .summary-stack,
+        .content,
+        .task-group,
+        .flow-layout,
+        .flow-visual {
+          display: grid;
+          gap: 18px;
+        }
+        .summary-card,
+        .meta-card,
+        .subpanel,
+        .task-card,
+        .roadmap {
+          padding: 18px;
+          @apply border border-[#cad4e0] rounded-lg bg-[#fffdf9];
+        }
+        .meta-card h2,
+        .summary-card h2,
+        .subpanel h3 {
+          margin-bottom: 0.55rem;
+        }
+        .meta-grid,
+        .two-up,
+        .task-meta {
+          display: grid;
+          gap: 14px;
+        }
+        .meta-grid,
+        .two-up {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .meta-item,
+        .task-meta > div {
+          padding: 14px;
+          @apply rounded-lg bg-gradient-to-b from-[#fbfdff] to-[#f4f8ff] border border-[#d6e2f1];
+        }
+        .meta-label,
+        .kicker,
+        .task-meta dt {
+          display: block;
+          margin-bottom: 0.45rem;
+          @apply text-[#0f3b80] text-[0.77rem] font-bold tracking-[0.12em] uppercase;
+        }
+        .workspace {
+          display: grid;
+          grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+          gap: 20px;
+          margin-top: 20px;
+          align-items: start;
+        }
+        .toc {
+          @apply sticky top-[18px];
+          padding: 18px;
+        }
+        .toc h2 {
+          margin-bottom: 0.9rem;
+          font-size: 1rem;
+        }
+        .toc ol,
+        .list-tight {
+          margin: 0;
+          padding-left: 1.2rem;
+          display: grid;
+          gap: 0.55rem;
+        }
+        .toc-note,
+        .hero-copy,
+        .section-copy,
+        .flow-note,
+        .flow-hint,
+        .footer-note,
+        .summary-card p,
+        .meta-card p,
+        .meta-card li,
+        .task-description,
+        .task-meta dd,
+        .subpanel p,
+        .subpanel li {
+          @apply text-[#556476];
+        }
+        .toc a {
+          text-decoration: none;
+          @apply text-[#556476];
+        }
+        .toc a:hover,
+        .toc a:focus-visible {
+          @apply text-[#0f3b80] underline;
+        }
+        .toc-note {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          @apply border-t border-[#cad4e0];
+          font-size: 0.92rem;
+        }
+        section.panel {
+          padding: 24px;
+        }
+        .section-head,
+        .task-top {
+          @apply flex flex-wrap gap-[0.85rem];
+        }
+        .section-head {
+          @apply items-end justify-between;
+          margin-bottom: 1rem;
+        }
+        .section-copy {
+          max-width: 78ch;
+        }
+        .table-wrap {
+          @apply overflow-x-auto;
+        }
+        table {
+          width: 100%;
+          @apply border-collapse;
+          min-width: 720px;
+        }
+        th,
+        td {
+          padding: 0.85rem 0.9rem;
+          @apply border-b border-[#cad4e0] text-left align-top;
+        }
+        th {
+          @apply text-[#0f3b80] text-[0.82rem] font-bold tracking-[0.1em] uppercase bg-[#f3f7fe];
+        }
+        tr:last-child td {
+          border-bottom: 0;
+        }
+        .task-id,
+        .task-phase,
+        .task-dep {
+          @apply inline-flex items-center;
+          min-height: 2rem;
+          padding: 0.2rem 0.7rem;
+          border-radius: 999px;
+          font-size: 0.8rem;
+          font-weight: 700;
+        }
+        .task-id {
+          color: #ffffff;
+          @apply bg-[#0f3b80];
+        }
+        .task-phase {
+          @apply text-[#285e45] bg-[#e8f5ee] border border-[#cfe5d9];
+        }
+        .task-dep {
+          @apply text-[#6b4a14] bg-[#fff3df] border border-[#efd7aa];
+        }
+        .task-title {
+          margin-bottom: 0.8rem;
+        }
+        .task-meta .wide {
+          @apply col-span-full;
+        }
+        .task-meta dd,
+        .task-meta ul,
+        .subpanel ul,
+        .subpanel ol {
+          margin: 0.45rem 0 0;
+          padding-left: 1.2rem;
+        }
+        .flow-shell {
+          padding: 16px;
+          @apply rounded-lg border border-[#d5e0ee] bg-gradient-to-b from-[#f8fbff] to-[#eff5fd];
+        }
+        .flow-diagram {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 10px;
+          margin-top: 0.85rem;
+        }
+        .flow-node {
+          padding: 0.9rem;
+          border-radius: 12px;
+          @apply border border-[#cddbf0] bg-white text-center font-bold;
+        }
+        .flow-node.phase-2 {
+          @apply bg-[#fff6e8] border-[#ead0a0];
+        }
+        .flow-node.gate {
+          @apply bg-[#edf8ef] border-[#c6ddcc];
+        }
+        .footer-note {
+          font-size: 0.95rem;
+        }
+        @media (max-width: 1120px) {
+          .workspace {
+            grid-template-columns: 1fr;
+          }
+          .toc {
+            @apply static;
+          }
+        }
+        @media (max-width: 900px) {
+          .hero-grid,
+          .two-up,
+          .meta-grid,
+          .flow-diagram {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (max-width: 720px) {
+          .layout {
+            padding: 18px 14px 48px;
+          }
+          .hero,
+          section.panel,
+          .toc {
+            padding: 18px;
+          }
+          table {
+            min-width: 0;
+          }
+          th,
+          td {
+            padding: 0.72rem;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- Keep the exact plan title first. The summary row should answer what changes, how it changes, and what environment matters. -->
+      <header class="panel hero" id="top">
+        <div class="overline">Plan Artifact Skeleton</div>
+        <h1>Feature Implementation Plan</h1>
+        <p class="hero-copy">
+          Start from this scaffold when generating <code>plan-${implementation-task}.html</code>. Extend the content, but keep the panel order and the card anatomy stable unless the user explicitly asks for a different layout.
+        </p>
+        <p class="callout">
+          Main job of the header: give a reviewer the title, the goal, the target architecture shape, the relevant stack, and the execution metadata before they scroll into task detail.
+        </p>
+
+        <div class="hero-grid">
+          <div class="summary-stack">
+            <section class="summary-card" aria-labelledby="goal-heading">
+              <h2 id="goal-heading">Goal</h2>
+              <p>State the concrete change and the runtime behavior that must not regress.</p>
+            </section>
+            <section class="summary-card" aria-labelledby="architecture-heading">
+              <h2 id="architecture-heading">Architecture</h2>
+              <p>Describe the target boundary, the migration strategy, and the end-state shape in one compact paragraph.</p>
+            </section>
+            <section class="summary-card" aria-labelledby="stack-heading">
+              <h2 id="stack-heading">Tech Stack</h2>
+              <p>List the frameworks, runtime versions, and core libraries that materially affect implementation or verification.</p>
+            </section>
+          </div>
+
+          <section class="meta-card" aria-labelledby="metadata-heading">
+            <h2 id="metadata-heading">Task Metadata</h2>
+            <div class="meta-grid">
+              <div class="meta-item">
+                <span class="meta-label">Status</span>
+                <p>Ready</p>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Scope</span>
+                <p>Briefly define the shape and size of the workstream.</p>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Source</span>
+                <p>Point back to the canonical Markdown plan or upstream report.</p>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Execution Notes</span>
+                <p>Call out skills, guardrails, or dependencies that affect how an agent should execute the plan.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <!-- Keep navigation compact. It should mirror real sections and remain useful with JavaScript disabled. -->
+        <aside class="panel toc" aria-label="Table of contents">
+          <h2>Contents</h2>
+          <ol>
+            <li><a href="#decisions">Locked Decisions</a></li>
+            <li><a href="#hotspots">Current-State Hotspots</a></li>
+            <li><a href="#module-shape">Target Module Shape</a></li>
+            <li><a href="#inventory">File Inventory</a></li>
+            <li><a href="#execution-flow">Execution Flow</a></li>
+            <li><a href="#phase-1">Phase 1</a></li>
+            <li><a href="#phase-2">Phase 2</a></li>
+            <li><a href="#verification">Verification</a></li>
+            <li><a href="#out-of-scope">Out of Scope</a></li>
+          </ol>
+          <p class="toc-note">
+            The contents list is not decorative. It is the stable navigation contract for long plans.
+          </p>
+        </aside>
+
+        <main class="content">
+          <!-- Freeze the non-negotiable constraints here so later task cards do not quietly drift. -->
+          <section class="panel" id="decisions" aria-labelledby="decisions-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Plan Contract</div>
+                <h2 id="decisions-heading">Locked Decisions</h2>
+              </div>
+              <p class="section-copy">Main point: capture the choices that shape implementation and should stay stable unless a follow-up plan explicitly reopens them.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Decision</th>
+                    <th scope="col">Choice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Primary boundary</td>
+                    <td>Name the target module or ownership boundary.</td>
+                  </tr>
+                  <tr>
+                    <td>Migration strategy</td>
+                    <td>Explain the order of change and any temporary compatibility surface.</td>
+                  </tr>
+                  <tr>
+                    <td>Validation style</td>
+                    <td>State whether the release gate is manual, automated, or both.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Explain the current coupling or technical debt so the proposed structure has concrete justification. -->
+          <section class="panel" id="hotspots" aria-labelledby="hotspots-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Context</div>
+                <h2 id="hotspots-heading">Current-State Hotspots</h2>
+              </div>
+              <p class="section-copy">Main point: show which current files or flows make this plan necessary and what behavior they currently own.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">File or flow</th>
+                    <th scope="col">Current responsibility</th>
+                    <th scope="col">Why it matters</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src/example/current-owner.ts</code></td>
+                    <td>Summarize the overloaded or coupled behavior.</td>
+                    <td>Explain the migration pressure or review risk.</td>
+                  </tr>
+                  <tr>
+                    <td><code>src/example/consumer.tsx</code></td>
+                    <td>Summarize the behavior-sensitive consumer.</td>
+                    <td>Explain why sequencing or runtime behavior matters here.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Use this section to make the target shape legible before the reviewer sees file-by-file tasks. -->
+          <section class="panel" id="module-shape" aria-labelledby="module-shape-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Target Design</div>
+                <h2 id="module-shape-heading">Target Module Shape</h2>
+              </div>
+              <p class="section-copy">Main point: define the future structure, the important boundaries, and the public surface the migration is moving toward.</p>
+            </div>
+            <div class="two-up">
+              <div class="subpanel">
+                <h3>Folder Shape</h3>
+                <pre>src/services/example/
+|- core.ts
+|- types.ts
+|- featureA.ts
+`- featureB.ts</pre>
+              </div>
+              <div class="subpanel">
+                <h3>Important Boundaries</h3>
+                <ol class="list-tight">
+                  <li>Explain which module owns SDK or infrastructure access.</li>
+                  <li>Explain what callers should import directly.</li>
+                  <li>Explain what must stay orchestration-only in the caller.</li>
+                </ol>
+              </div>
+            </div>
+            <div class="subpanel" style="margin-top: 18px;">
+              <h3>Planned Public Surface</h3>
+              <pre>createFeatureService(deps?)
+featureService.initialize(options?)
+featureService.getValue(key)
+featureService.subscribe(listener)</pre>
+            </div>
+          </section>
+
+          <!-- File inventory should be concrete. Reviewers should leave this section knowing what gets created, changed, and deleted. -->
+          <section class="panel" id="inventory" aria-labelledby="inventory-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">File Structure</div>
+                <h2 id="inventory-heading">File Inventory</h2>
+              </div>
+              <p class="section-copy">Main point: lock the file-level slice boundaries so later tasks stay reviewable.</p>
+            </div>
+            <div class="two-up">
+              <div class="subpanel">
+                <h3>Files to Create</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">File</th>
+                        <th scope="col">Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>src/services/example/featureA.ts</code></td>
+                        <td>State the narrow responsibility of the new file.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="subpanel">
+                <h3>Files Expected to Change</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">File</th>
+                        <th scope="col">Planned change</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>src/app/consumer.tsx</code></td>
+                        <td>State the migration or cleanup expected here.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Keep dependency flow and sequencing together. If you add a diagram, keep nearby text that preserves the meaning without relying on the graphic. -->
+          <section class="panel" id="execution-flow" aria-labelledby="execution-flow-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Execution Flow</div>
+                <h2 id="execution-flow-heading">Execution Flow</h2>
+              </div>
+              <p class="section-copy">Main point: show hard gates, parallel branches, and rollout order before the task cards begin.</p>
+            </div>
+            <div class="flow-layout">
+              <div class="flow-visual">
+                <div class="roadmap">
+                  <h3>Dependency Graph</h3>
+                  <p class="flow-note">Use a plain placeholder by default. Swap in Mermaid only when the dependency graph is dense enough that the static layout materially improves readability.</p>
+                  <div class="flow-shell">
+                    <div class="flow-diagram" aria-label="Execution flow placeholder">
+                      <div class="flow-node">Foundation</div>
+                      <div class="flow-node">Service Split</div>
+                      <div class="flow-node phase-2">Consumer Migration</div>
+                      <div class="flow-node gate">Regression Gate</div>
+                    </div>
+                    <p class="flow-hint">If a real diagram is added, keep a visible fallback note or sequencing list nearby.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="subpanel">
+                <h3>Parallelism and Sequencing</h3>
+                <ol class="list-tight">
+                  <li>Name the slices that can land in parallel once the first dependency clears.</li>
+                  <li>Name the gating task that must land before sensitive consumer migration.</li>
+                  <li>Name the cleanup or deletion step that should only happen after verification succeeds.</li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
+          <!-- Phase sections are where the document becomes executable. Keep one card per task and repeat the card anatomy without improvising. -->
+          <section class="panel" id="phase-1" aria-labelledby="phase-1-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Phase 1</div>
+                <h2 id="phase-1-heading">Establish the New Boundary</h2>
+              </div>
+              <p class="section-copy">Main point: group task cards by a real execution phase or workstream so review can follow the rollout order.</p>
+            </div>
+            <div class="task-group">
+              <article class="task-card" aria-labelledby="task-example-foundation">
+                <div class="task-top">
+                  <span class="task-id">example-foundation</span>
+                  <span class="task-phase">Phase 1</span>
+                  <span class="task-dep">Depends on: Nothing</span>
+                </div>
+                <h3 id="task-example-foundation" class="task-title"><strong>Title:</strong> Create the shared access layer.</h3>
+                <p class="task-description"><strong>Description:</strong> Explain the smallest reviewable slice that unlocks later tasks.</p>
+                <ul>
+                  <li>Use bullets for concrete implementation instructions, not vague summaries.</li>
+                  <li>Keep exact file paths, commands, and API names visible.</li>
+                  <li>Do not repeat dependency information inside the lower metadata grid.</li>
+                </ul>
+                <dl class="task-meta">
+                  <div>
+                    <dt>Produces</dt>
+                    <dd>
+                      <ul>
+                        <li><code>src/services/example/core.ts</code></li>
+                        <li><code>src/services/example/types.ts</code></li>
+                      </ul>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>Acceptance</dt>
+                    <dd>State the observable end condition that proves this task is complete.</dd>
+                  </div>
+                </dl>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel" id="phase-2" aria-labelledby="phase-2-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Phase 2</div>
+                <h2 id="phase-2-heading">Migrate Consumers and Remove Transitional Surfaces</h2>
+              </div>
+              <p class="section-copy">Main point: keep later consumer migration, regression, and cleanup work distinct from the initial extraction phase.</p>
+            </div>
+            <div class="task-group">
+              <article class="task-card" aria-labelledby="task-example-migration">
+                <div class="task-top">
+                  <span class="task-id">example-migration</span>
+                  <span class="task-phase">Phase 2</span>
+                  <span class="task-dep">Depends on: example-foundation</span>
+                </div>
+                <h3 id="task-example-migration" class="task-title"><strong>Title:</strong> Move the first real consumer to the new boundary.</h3>
+                <p class="task-description"><strong>Description:</strong> Use later phase cards for behavior-sensitive migrations, regression gates, and final cleanup.</p>
+                <ul>
+                  <li>Keep the instructions implementation-ready.</li>
+                  <li>Call out verification constraints when they materially affect execution.</li>
+                  <li>Split especially sensitive consumers into their own cards instead of hiding them in a batch step.</li>
+                </ul>
+                <dl class="task-meta">
+                  <div>
+                    <dt>Produces</dt>
+                    <dd>
+                      <ul>
+                        <li>Updated <code>src/app/consumer.tsx</code></li>
+                      </ul>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>Acceptance</dt>
+                    <dd>State the concrete import, behavior, or source-search outcome that marks this migration done.</dd>
+                  </div>
+                </dl>
+              </article>
+            </div>
+          </section>
+
+          <!-- Verification is the release gate. Keep it explicit and scanable rather than buried inside task prose. -->
+          <section class="panel" id="verification" aria-labelledby="verification-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Verification</div>
+                <h2 id="verification-heading">Verification Matrix</h2>
+              </div>
+              <p class="section-copy">Main point: list the real flows that must still work after the migration.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Flow</th>
+                    <th scope="col">What to verify</th>
+                    <th scope="col">Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Startup</td>
+                    <td>State the expected initialization order or baseline behavior.</td>
+                    <td>Name the file or surface that anchors the check.</td>
+                  </tr>
+                  <tr>
+                    <td>Behavior-sensitive flow</td>
+                    <td>State the user-visible path that must remain intact.</td>
+                    <td>Call out device, environment, or build constraints if they matter.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- End with the explicit boundaries of the workstream so the plan does not silently widen during execution. -->
+          <section class="panel" id="out-of-scope" aria-labelledby="out-of-scope-heading">
+            <div class="section-head">
+              <div>
+                <div class="kicker">Guardrails</div>
+                <h2 id="out-of-scope-heading">Out of Scope</h2>
+              </div>
+              <p class="section-copy">Main point: state the tempting adjacent work that this plan will not absorb.</p>
+            </div>
+            <ol class="list-tight">
+              <li>Name unrelated platform upgrades, tooling setup, or parallel refactors that stay outside this workstream.</li>
+              <li>Name broader architectural follow-ups that should be tracked separately.</li>
+              <li>Name any other workspace or product variants that are deliberately excluded.</li>
+            </ol>
+            <p class="footer-note" style="margin-top: 1rem;">
+              Keep a source reference back to the canonical Markdown plan. The HTML artifact is for review and handoff; the source Markdown remains the semantic reference unless the user explicitly changes that contract.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

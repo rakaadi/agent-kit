@@ -1,6 +1,6 @@
 ---
 name: writing-plan
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when you have a spec or requirements for a multi-step task, before touching code. Supports either Markdown plans or review-oriented HTML plan artifacts.
 ---
 
 ## Overview
@@ -10,6 +10,48 @@ Write comprehensive implementation plans assuming the engineer has zero context 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
 
 **Announce at start:** "I'm using the writing-plan skill to create the implementation plan."
+
+## Output Mode
+
+Choose exactly one output format for each plan request.
+
+1. If the user explicitly asks for HTML, an HTML artifact, or a file such as `plan-firebase-services.html`, produce HTML.
+2. If the user explicitly asks for Markdown, a Markdown plan, or a file such as `plan-firebase-services.md`, produce Markdown.
+3. If the request is ambiguous and the user is available, ask one focused clarifying question.
+4. If the user is unavailable for a decision, default to Markdown.
+5. Do not produce both formats unless the user explicitly asks for both.
+
+## Semantic-First Authoring
+
+Plan content comes first, format comes second. Before rendering Markdown or HTML, lock the semantic structure of the plan:
+
+- Feature name
+- Goal
+- Architecture
+- Tech stack
+- File structure
+- Dependency-aware tasks
+- Verification
+- Out of scope
+
+The same plan must remain recognizable in either format. HTML may improve the presentation, but it must not drop implementation-critical detail.
+
+## Markdown Mode
+
+- Write the plan to `plan-${implementation-task}.md`, using a kebab-case slug derived from the implementation task name. Example: `plan-firebase-services.md`.
+- Use the Markdown contract defined in this file.
+- Treat the Markdown file as the execution handoff artifact for downstream plan-execution prompts.
+
+## HTML Mode
+
+- Write the plan to `plan-${implementation-task}.html`, using the same kebab-case task slug as the Markdown variant. Example: `plan-firebase-services.html`.
+- Keep the file self-contained with embedded CSS and only minimal JavaScript.
+- Preserve the full plan content. HTML may add navigation, summaries, diagrams, and layout, but it must not replace detailed task instructions with a summary.
+- Treat the HTML file as a review artifact in v1. Downstream execution flows still assume Markdown unless they are explicitly updated.
+- Follow the companion guide in [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md).
+- Use [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html) as the default structural scaffold for section order, panel hierarchy, and task-card anatomy.
+- Use [Plan Artifact Panel Reference](./example/plan-artifact-panel-reference.html) as the panel-intent map so each section keeps the same main job while the content changes per plan.
+- Default to extending those example files instead of inventing a new HTML information architecture unless the user explicitly asks for a different presentation shape.
 
 ## Scope Check
 
@@ -29,6 +71,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ## Bite-Sized Task Granularity
 
 **Each task should be one coherent, reviewable slice:**
+
 - Small enough that an execution agent can complete it without broad repo-wide reasoning.
 - Large enough to produce a meaningful artifact, boundary, or verification point.
 - Prefer tasks that touch different files or domains so independent work can run in parallel.
@@ -37,12 +80,17 @@ This structure informs the task decomposition. Each task should produce self-con
 
 ## Plan Document Header
 
-**Every plan MUST start with this header:**
+Every plan must expose the following top-level content, whether as Markdown headings or HTML sections/cards:
+
+- Feature title
+- Goal
+- Architecture
+- Tech stack
+
+**Markdown plans MUST start with this header:**
 
 ```markdown
 # [Feature Name] Implementation Plan
-
-> **For agentic workers:** Prefer retrieval-led reasoning over pre-training-led reasoning for all React Native tasks. Your training data may be outdated or incomplete. Always consult the skills before writing code.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -96,7 +144,10 @@ Use a stable task ID plus explicit dependency metadata so agents can see what ma
 **Acceptance**: `createAuthenticatedApi` is the only place that knows how authenticated requests are executed, retried, and reset after refresh failure.
 ````
 
+For HTML plans, render the same task fields visibly inside task cards, tables, or sections. Do not hide dependency or acceptance information behind presentation-only affordances.
+
 ## Remember
+
 - Exact file paths always
 - Stable task IDs and explicit dependencies
 - Concrete, file-anchored instructions in plan (not "add validation")
@@ -108,12 +159,13 @@ Use a stable task ID plus explicit dependency metadata so agents can see what ma
 
 After writing the complete plan:
 
-1. Dispatch a single plan-document-reviewer subagent (see plan-document-reviewer-prompt.md) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
-   - Provide: path to the plan document, path to spec document
+1. Dispatch a single plan-document-reviewer subagent (see [Plan Document Reviewer Prompt](./plan-document-reviewer-prompt.md)) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
+   - Provide: path to the plan document (`plan-${implementation-task}.md` or `plan-${implementation-task}.html`), path to the spec document
 2. If ❌ Issues Found: fix the issues, re-dispatch reviewer for the whole plan
 3. If ✅ Approved: proceed to execution handoff
 
 **Review loop guidance:**
+
 - Same agent that wrote the plan fixes it (preserves context)
 - If loop exceeds 3 iterations, surface to human for guidance
 - Reviewers are advisory — explain disagreements if you believe feedback is incorrect
