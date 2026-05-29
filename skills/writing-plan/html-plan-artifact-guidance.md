@@ -49,7 +49,8 @@ Required visible content:
 5. File structure or file inventory
 6. Dependency-aware tasks
 7. Verification
-8. Out of scope
+8. Progress tracking
+9. Out of scope
 
 If the source plan includes them, also preserve:
 
@@ -64,6 +65,8 @@ When in doubt, keep the section arrangement aligned with `./example/plan-artifac
 ## Extension Rules
 
 - Keep the header summary, table of contents, execution flow, task sections, verification, and out-of-scope sections as first-class reading surfaces.
+- Render `Progress Tracking` as its own visible section between `Verification` and `Out of Scope`.
+- Use the same field labels as the Markdown contract: `Current status`, `Started on`, `Completed on`, `Last executed tasks`, `Current blocker or next focus`, and `Unplanned necessary work` when present.
 - Merge dependency flow and sequencing into one `Execution Flow` section when they describe the same rollout story.
 - A Mermaid diagram is a good fit when it materially improves readability over an improvised ASCII diagram, but keep nearby text so the sequencing meaning survives without the graphic.
 - Every task block should show Task ID, Title, Description, Produces, and Acceptance.

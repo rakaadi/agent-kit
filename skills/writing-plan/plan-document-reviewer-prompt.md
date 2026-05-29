@@ -41,6 +41,7 @@ Task tool (general-purpose):
     - File structure or file inventory
     - Dependency-aware tasks
     - Verification
+    - Progress tracking
     - Out of scope
 
     ## Calibration
