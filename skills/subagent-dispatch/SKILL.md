@@ -1,110 +1,85 @@
 ---
 name: subagent-dispatch
-description: >
-  Protocol for dispatching subagents effectively. Use this skill EVERY TIME you are
-  about to delegate work to a custom or built-in agent. Covers when to dispatch,
-  which agent to pick, how to write self-contained prompts, and parallel execution.
-  Trigger phrases: "delegate to agent", "dispatch subagent", "run agent", "use subagent",
-  "context isolation", "parallel agents".
+description: Dispatch subagents for bounded independent work. Use whenever Codex is about to delegate or spawn a subagent, or when the user asks for parallel agents, context isolation, specialist work, or an independent review. Decide whether delegation helps, select an available agent, write an outcome-first contract, schedule work safely, and integrate every result.
 ---
 
-# Subagent Dispatch Protocol
+# Subagent Dispatch
 
-This skill governs **when and how** to dispatch subagents in this project. Its purpose
-is to help the main agent make effective delegation decisions and write high-quality,
-self-contained prompts for each specialist.
+Treat each dispatch as a contract: give one agent one bounded outcome, enough context
+to act independently, explicit authority, and a checkable definition of done.
 
----
+## Decide
 
-## When to Dispatch (vs Do It Yourself)
+Delegate when the subtask is concrete and separable, and delegation provides at least
+one clear benefit:
 
-Dispatch a subagent when **any** of these apply:
+- Run independent work concurrently.
+- Isolate verbose exploration, logs, or research from the main context.
+- Apply specialist capability exposed by an available agent.
+- Obtain an independent review or validation pass.
 
-| Signal | Why dispatch? |
-|--------|---------------|
-| **Context isolation needed** | Command output, logs, or search results are verbose and would pollute the main conversation |
-| **Specialist expertise** | The task maps cleanly to an existing agent's domain (see registry below) |
-| **Parallelizable work** | Two or more independent tasks can run concurrently in separate agents |
-| **Review/validation gate** | A second opinion or compliance check is needed before accepting work |
+Keep the work in the main agent when it is small, already in context, coupled to a
+pending decision, dependent on frequent user interaction, or likely to overlap the
+same files or state. Delegation is complete only when its coordination cost is lower
+than doing the work directly.
 
-**Do it yourself** when the task is trivial, already in-context, or requires tight
-back-and-forth with the user that a stateless subagent cannot provide.
+## Select
 
----
+Select from the agents and tools actually available in the current session. Match the
+narrowest capable agent to the outcome by reading its current description and
+constraints. Use a general-purpose agent when no specialist materially improves the
+result.
 
-## Agent Registry
+Give each writing agent exclusive ownership of its files or artifacts. Multiple
+read-only agents may inspect the same material. Sequence any work that shares mutable
+state or requires another agent's output.
 
-Custom agents live at `agents/<agent-name>.agent.md`.
+## Write the Contract
 
-| Agent | Role | Key trait | Invocable |
-|-------|------|-----------|-----------|
-| **Bash Search Worker** | Shell-based repository search and filtering | Context isolation; read-only `execute` only | Subagent only |
-| **Code Simplifier** | Simplify and refine code for clarity | Preserves functionality; applies project standards | User + subagent |
-| **Compliance Reviewer** | Compare implementation against plan/spec | Deviation analysis; requirement verification | Subagent only |
-| **Codebase Analyzer** | Analyze implementation details of existing code | Precise file:line references; no speculation | User + subagent |
-| **Generalist** | General-purpose coding, research, debugging | Broad skill set; retrieval-led reasoning | Subagent only |
-| **Green** (TDD) | Write minimal code to pass a failing test | Never modifies tests; minimal production code | Subagent only |
-| **Orchestrator** | Delegate and coordinate multi-agent workflows | Never implements; dispatches and consolidates | User only |
-| **Quality Reviewer** | In-depth code review and analysis | Security, patterns, maintainability | Subagent only |
-| **Red** (TDD) | Write one failing test for one behaviour | Never touches production code | Subagent only |
-| **Reviewer Group** | Orchestrate multi-perspective code review | Spawns multiple Quality Reviewers | User only |
-| **UI Composer** | Build visually polished, performant UI components | Styling, animation, layout expertise | User + subagent |
+Use an outcome-first prompt. Include:
 
-> If an agent is not listed (newly added), read its `.agent.md` file and extract the
-> `description` and `model` fields from the YAML frontmatter.
+- **Objective**: one concrete result the agent owns.
+- **Scope**: relevant files, systems, and explicit boundaries.
+- **Context**: repository root, governing instructions, known facts, and where to
+  start. Include raw artifacts when exact evidence matters. Use verified task facts;
+  surface materially missing context instead of inferring it from unrelated paths.
+- **Authority**: allowed reads, edits, commands, side effects, and decisions that
+  require escalation.
+- **Success criteria**: observable conditions that prove the objective is complete,
+  including required verification.
+- **Return**: the concise findings, evidence, changed files, or blocker the main agent
+  needs to integrate the result.
 
----
+Describe the destination rather than prescribing every step. Specify a sequence only
+when correctness depends on it. Dispatch only when an agent unfamiliar with the main
+conversation can determine what to do, what it owns, and how to prove completion.
 
-## Model Fallback Reference
+Use this compact shape:
 
-**Always** use the model specified in the frontmatter. Use this table **only**
-when the agent's preferred model is temporarily unavailable:
+```text
+Objective: <one bounded outcome>
+Scope: <owned files or systems; boundaries>
+Context: <repo, instructions, facts, starting points>
+Authority: <allowed actions and escalation boundary>
+Done when: <checkable result and verification>
+Return: <evidence and output needed by the main agent>
+```
 
-| Preferred model | Fallback |
-|-----------------|----------|
-| Gemini 3.1 Pro (Preview) | Claude Opus 4.6 |
-| Gemini 3 Pro (Preview) | Claude Opus 4.6 |
-| Claude Opus 4.6 | GPT-5.4 |
-| Claude Sonnet 4.6 | GPT-5.4 |
-| GPT-5.4 mini | Claude Haiku 4.5 |
+## Schedule
 
-> For built-in agent types (`explore`, `code-review`, etc.) that have no `.agent.md`,
-> skip model resolution — use platform defaults.
+Run tasks concurrently only when each can finish without another's output and their
+writes cannot overlap. Otherwise, dispatch in dependency order and pass the verified
+result forward. Prefer the smallest useful set of agents; every additional branch
+adds coordination and review work.
 
----
+## Supervise and Integrate
 
-## Core Dispatch Principles
+Continue useful independent work while agents run. When an agent drifts, send a
+targeted correction that restates the unmet contract. When it reports a blocker,
+resolve safe in-scope dependencies or surface the exact missing input or authority.
 
-1. **One agent per problem domain.** Each dispatch targets exactly one specialist.
-2. **Subagents are stateless.** They have zero memory of the current conversation.
-   The prompt must be entirely self-contained.
-3. **Parallel when independent.** Dispatch agents concurrently when their tasks have
-   no data dependency (e.g., Quality Reviewer + Compliance Reviewer on the same diff).
-4. **Review before accepting.** Evaluate subagent output critically. Request revisions
-   or re-dispatch when quality or relevance falls short.
-
----
-
-## Parallel Dispatch
-
-When two or more tasks are independent, dispatch them in the same turn:
-
-- **Do**: Quality Reviewer + Compliance Reviewer on the same changeset.
-- **Do**: Bash Search Worker for file discovery *while* Generalist researches docs.
-- **Don't**: Green (TDD) before Red (TDD) — Green depends on Red's failing test.
-
-> Rule of thumb: if task B does not need task A's output, they can run in parallel.
-
----
-
-## Prompting Checklist
-
-Every subagent prompt must answer **all four** of these:
-
-- **Context**: What is the project? What stack, conventions, and files are relevant?
-- **Task**: What exactly needs to be done? What are the constraints?
-- **Direction**: Where should the agent look first? Which references or docs to consult?
-- **Success criteria**: What does "done" look like? What is the expected output format?
-
-Thin prompts produce thin results. If a subagent fails or produces something off-target,
-the root cause is almost always an underspecified prompt — not the agent's capability.
+Treat agent output as evidence, not as an accepted conclusion. Review it against the
+contract, inspect material diffs or cited artifacts, and run the narrowest meaningful
+verification before relying on it. Finish only after every dispatched agent is
+stopped and every result is integrated, rejected with a reason, or reported as an
+unresolved blocker.
