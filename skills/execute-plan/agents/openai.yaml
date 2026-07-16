@@ -2,3 +2,6 @@ interface:
   display_name: "Execute Plan"
   short_description: "Execute implementation plans with staged reviews"
   default_prompt: "Use $execute-plan to implement the attached plan and follow any additional execution instructions in my prompt."
+
+policy:
+  allow_implicit_invocation: false
