@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fix Repository Diagnostics"
+  short_description: "Verify and fix TypeScript, ESLint, and React Doctor issues"
+  default_prompt: "Use $fix-repository-diagnostics to verify, fix, and report repository diagnostics."
+
+policy:
+  allow_implicit_invocation: false
