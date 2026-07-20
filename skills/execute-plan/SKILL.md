@@ -7,63 +7,85 @@ description: Execute or resume an attached or referenced implementation plan thr
 
 Implement the plan against the current repository, using the user's prompt to define this run's scope.
 
-Announce at start: "I'm using the execute-plan skill to implement the plan."
-
 ## Execution Contract
 
-Read the full user prompt, repository instructions, and complete plan before editing. The prompt may freely override plan scope, sequencing, verification ownership, or stopping point; no fixed input format is required. Follow those overrides and report their effects.
+Use the entire user prompt as the runtime override layer. It may select the full plan, phases, or task IDs; skip or defer work; assign tasks to subagents; reserve checks for a human; change sequencing; add task-specific constraints; or set a stopping point. Apply these overrides before execution and report their effects.
 
-Treat the whole plan as semantic input, including preambles, locked decisions, non-goals, file inventories, source references, task metadata, commit or checkpoint guidance, verification, and progress state. For HTML plans, ignore presentation code except where needed to preserve the artifact when updating it.
-
-Before implementation:
-
-- determine the target repository when the plan lives elsewhere;
-- inspect relevant code and git state, recording a baseline for this run;
-- reconcile the plan with work already completed or changes already present;
-- identify in-scope tasks, dependencies, exclusions, acceptance criteria, required skills, task-specific delegation, and human-owned checks;
-- mark excluded tasks as skipped or deferred and infeasible tasks as blocked; never mark either completed.
+Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
 
 If the plan and repository differ, make the smallest evidence-based adaptation and record the affected task IDs. Ask only when a material choice cannot be inferred safely.
 
-## Implement and Verify
+## Run Manifest
 
-Build a concise dependency-aware checklist, then execute every feasible in-scope task. Preserve plan-defined task boundaries and intermediate working-state requirements. Honor explicit task isolation such as "another agent or session" by dispatching an independent subagent when available; follow the `subagent-dispatch` skill for every dispatch.
+Before implementation, build a run manifest containing:
 
-- Use minimal, repository-consistent changes and preserve out-of-scope behavior.
-- Do not allow concurrent edits to overlapping files.
-- Consult skills or references explicitly required by the plan before that work.
-- Treat commit boundaries as implementation checkpoints. Create commits only when the user or plan explicitly requires actual commits.
-- Run task-level checks at the boundary where the plan requires them; run the applicable final verification afterward.
-- Add focused checks only when needed to prove an in-scope acceptance criterion.
+- the target repository and run baseline;
+- every plan task's scope state, dependencies, acceptance criteria, and verification requirements;
+- existing or previously completed work;
+- task ownership by the main agent, a subagent, or a human.
 
-When a check is reserved for a human, prepare the test or verification artifact but do not run it. Report it as `Not run`, with the reason and exact command or manual steps. Never infer success from an unrun check. If environment limits block verification, try reasonable alternatives and retain the evidence.
+Use these task states:
+
+- `Selected`: included in this run.
+- `Completed`: acceptance criteria are satisfied with permitted verification evidence.
+- `Skipped`: the user explicitly excluded the task.
+- `Deferred`: the task remains planned but is outside this partial run or stopping point.
+- `Blocked`: a selected task cannot proceed because of an unmet dependency, missing input, unavailable required capability, or authority boundary.
+
+Preflight completes when every plan task is selected, skipped, deferred, already completed, or blocked.
+
+## Implement And Verify
+
+Execute selected tasks in dependency order while preserving plan boundaries and intermediate working-state requirements.
+
+- Assign disjoint file ownership to concurrent tasks.
+- Load skills and references required by a task before starting it.
+- Treat plan commit boundaries as checkpoints. Create commits only when the user or plan explicitly requires them.
+- Run task-level verification at its boundary and applicable final verification afterward.
+
+Apply task ownership from the user prompt before ownership stated in the plan. For delegated work, follow the `subagent-dispatch` skill, provide self-contained task context, and assign non-overlapping file ownership. The main agent integrates the result and verifies its acceptance criteria. If explicitly required delegation is unavailable, mark the task blocked or request direction instead of silently executing it in the main context.
+
+For a human-owned check, prepare the test or verification artifact and report `Not run`, the ownership reason, and the exact command or manual steps. Keep its result unverified until human evidence exists. When the environment blocks a check, run the next applicable non-destructive check and report the remaining validation gap.
 
 ## Sequential Review Gate
 
-Run both reviewers after implementation and permitted verification whenever code or tests changed, including partial-plan runs.
+Run this gate only after every task in the complete plan is `Completed`. Completing every task selected for a partial run does not satisfy this gate. For a partial run, update plan progress and report the review gate as `Not run` because the plan remains incomplete.
+
+At the final gate, dispatch a fresh subagent for each review and follow the `subagent-dispatch` skill. Give each reviewer only a self-contained packet describing the current implementation:
+
+- the complete plan path and final user overrides;
+- the full-plan baseline and current diff or commit range covering every task;
+- human-owned checks and their current evidence;
+- verification evidence and justified deviations.
+
+Exclude prior reviewer prompts, findings, dispositions, and summaries. Each reviewer must derive its findings independently from the current plan, repository, diff, and verification evidence.
 
 ### 1. Compliance Reviewer
 
-Provide a self-contained review prompt with:
-
-- plan path and in-scope task IDs or phases;
-- user overrides, exclusions, and human-owned checks;
-- run baseline and current diff or commit range;
-- verification evidence and justified deviations.
-
-Validate the findings against the repository. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks. Explicitly disposition findings that conflict with user overrides or are outside scope. Do not start quality review until compliance findings are resolved or dispositioned.
+Review the complete implementation against the complete plan contract. Validate findings against the repository, fix substantiated Critical and Important issues within scope, and rerun affected permitted checks. Disposition findings that conflict with user overrides or fall outside scope. Complete this gate when every finding is fixed or dispositioned.
 
 ### 2. Quality Reviewer
 
-Review the updated code after compliance fixes. Provide the same execution contract, current diff, latest verification evidence, and relevant compliance dispositions. Fix substantiated Critical and Important issues within scope, then rerun affected permitted checks. Apply Suggestions only when needed for acceptance, correctness, security, or established repository standards.
+After compliance fixes, start a fresh Quality Reviewer with an updated review packet. Exclude Compliance Reviewer findings and dispositions. Review for violations of established repository standards and substantiated code smells. Treat a code smell as a signal to investigate, not a defect by itself; report it only when the underlying design problem and concrete impact are evident. Fix substantiated Critical and Important issues within scope, then rerun affected permitted checks. Apply Suggestions only when required for acceptance, correctness, security, or established repository standards.
 
-If quality fixes materially affect compliance, repeat a focused compliance pass followed by a focused quality pass. Preserve this order on every cycle. Stop after three complete cycles and report any unresolved findings with evidence.
+When quality fixes affect compliance, start a fresh focused Compliance Reviewer followed by a fresh focused Quality Reviewer. Stop after three complete review cycles and report unresolved findings with evidence.
 
-Skip a reviewer only when a system, repository, or explicit user instruction prohibits it, or when the reviewer is unavailable; report the missing gate.
+At the final gate, run both reviewers unless a system, repository, or explicit user instruction prohibits one, or the reviewer is unavailable; report any missing gate.
 
-## Complete the Run
+## Complete The Run
 
-Recheck every in-scope acceptance criterion against code and fresh verification evidence. Update plan progress only when it is a maintained, writable execution artifact and accurately represent partial completion; do not rewrite archival source material or mark the overall plan complete when only a subset ran.
+Recheck every selected task's acceptance criteria against the implementation and fresh verification evidence.
+
+Update progress only when the plan is a maintained, writable execution artifact:
+
+- `Current status`: `Completed` only when every plan task is completed; `Blocked` when selected work cannot proceed; otherwise `In progress`.
+- `Started on`: set when the first task begins.
+- `Completed on`: set only with overall `Completed`.
+- `Last executed tasks`: record executed task IDs newest first.
+- `Current blocker or next focus`: record the blocker or next dependency-ready task.
+- `Unplanned necessary work`: record required work outside the original task list.
+
+Preserve archival plans unchanged and represent partial completion without marking the overall plan completed.
 
 Report concisely:
 
