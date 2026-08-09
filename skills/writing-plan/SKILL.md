@@ -81,7 +81,7 @@ For HTML plans, render the same task fields visibly inside task cards, tables, o
 
 ## Progress Tracking
 
-Place `Progress Tracking` between `Verification` and `Out of Scope`. Initialize a fresh plan with:
+Place `Progress Tracking` between `Verification` and `Out of Scope`, in the plan file:
 
 ```markdown
 ## Progress Tracking
