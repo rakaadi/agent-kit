@@ -1,0 +1,7 @@
+interface:
+  display_name: "Art of Comment"
+  short_description: "Write useful inline comments and JSDoc"
+  default_prompt: "Use $art-of-comment to review and improve comments and JSDoc in this code."
+
+policy:
+  allow_implicit_invocation: true

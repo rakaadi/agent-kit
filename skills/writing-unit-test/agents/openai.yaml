@@ -1,0 +1,7 @@
+interface:
+  display_name: "Writing Unit Test"
+  short_description: "Write behavior-focused unit tests"
+  default_prompt: "Use $writing-unit-test to design and write a behavior-focused unit test for this code."
+
+policy:
+  allow_implicit_invocation: true
