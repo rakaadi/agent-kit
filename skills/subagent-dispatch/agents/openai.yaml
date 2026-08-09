@@ -1,0 +1,7 @@
+interface:
+  display_name: "Subagent Dispatch"
+  short_description: "Delegate bounded work to subagents safely"
+  default_prompt: "Use $subagent-dispatch to decide, contract, and coordinate the subagent work for this task."
+
+policy:
+  allow_implicit_invocation: true
