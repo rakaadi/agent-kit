@@ -34,6 +34,12 @@ Use these task states:
 
 Preflight completes when every plan task is selected, skipped, deferred, already completed, or blocked.
 
+## Program Design Gate
+
+Before implementing a selected task that introduces or substantially reshapes modules, interfaces, types, file layout, dependencies, or control flow, use the `program-design` skill and obtain explicit approval of the proposed code shape. Group tasks behind one proposal when they share the same design. Small fixes, local implementation changes, and mechanical edits do not require this gate.
+
+Approval of the implementation plan does not satisfy this gate unless the plan already contains an explicitly approved program design that still matches the current repository. If implementation evidence later forces a material deviation, return to `program-design` with the affected delta before continuing.
+
 ## Implement And Verify
 
 Execute selected tasks in dependency order while preserving plan boundaries and intermediate working-state requirements.
