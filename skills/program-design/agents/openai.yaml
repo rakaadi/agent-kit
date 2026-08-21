@@ -1,0 +1,7 @@
+interface:
+  display_name: "Program Design"
+  short_description: "Align code shape before implementation"
+  default_prompt: "Use $program-design to propose the code shape for this change before writing implementation code."
+
+policy:
+  allow_implicit_invocation: true

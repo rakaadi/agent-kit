@@ -54,6 +54,8 @@ Before defining tasks, list every file to create or modify and its responsibilit
 
 Each task must produce one reviewable outcome with exact files, dependencies, verification, and acceptance criteria. Let independently deliverable outcomes form parallel tasks; keep work sharing the same boundary in one coherent slice.
 
+Require `@program-design` for a task that introduces or substantially reshapes modules, interfaces, types, file layout, dependencies, or control flow. Omit it for small fixes, local implementation changes, and mechanical edits.
+
 Use this Markdown task contract:
 
 ````markdown
