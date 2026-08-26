@@ -12,7 +12,7 @@ This skill is a focused companion to the globally installed `tdd` skill from [`m
 Before using this skill:
 
 1. Install the global `tdd` skill if it is not already available.
-2. Read the `tdd` skill's reference docs: `tests.md`, `mocking.md`, `interface-design.md`, and `deep-modules.md`.
+2. Read the `tdd` skill's reference docs: `tests.md` and `mocking.md`.
 3. Use this skill as the narrower layer for writing or refining the test itself rather than running a full red-green-refactor workflow.
 
 See [README.md](README.md) for install instructions and the rationale for keeping this skill separate.
@@ -37,10 +37,7 @@ Use the global `tdd` skill's examples and reference docs as the canonical source
 
 ### Before writing any code
 
-- [ ] Confirm with user what interface changes are needed
 - [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for deep modules (small interface, deep implementation)
-- [ ] Design interfaces for testability using the global `tdd` skill references
 - [ ] List the behaviors to test (not implementation steps)
 - [ ] Get user approval on the plan
 
