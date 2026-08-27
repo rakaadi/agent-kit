@@ -1,0 +1,7 @@
+interface:
+  display_name: "Meaning"
+  short_description: "Restate jargon in plain human language"
+  default_prompt: "Use $meaning to restate my last message plainly and concisely."
+
+policy:
+  allow_implicit_invocation: false
