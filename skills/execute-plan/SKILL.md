@@ -1,6 +1,6 @@
 ---
 name: execute-plan
-description: Execute or resume an attached or referenced implementation plan through repository inspection, implementation, verification, and sequential compliance then quality review. Use for full or partial plan execution, including free-form instructions to select phases or task IDs, skip work, delegate a task independently, reserve checks for a human, or impose task-specific constraints.
+description: Execute or resume an attached or referenced implementation plan through repository inspection, implementation, verification, sequential spec-compliance and code-quality review, and human-authorized architectural review when warranted. Use for full or partial plan execution, including free-form instructions to select phases or task IDs, skip work, delegate a task independently, reserve checks for a human, or impose task-specific constraints.
 ---
 
 # Execute Plan
@@ -63,20 +63,31 @@ At the final gate, dispatch a fresh subagent for each review and follow the `sub
 - the full-plan baseline and current diff or commit range covering every task;
 - human-owned checks and their current evidence;
 - verification evidence and justified deviations.
+- explicit task-scoped authorization for Architectural Review, when granted.
 
 Exclude prior reviewer prompts, findings, dispositions, and summaries. Each reviewer must derive its findings independently from the current plan, repository, diff, and verification evidence.
 
-### 1. Compliance Reviewer
+### 1. Spec Compliance Reviewer
 
-Review the complete implementation against the complete plan contract. Validate findings against the repository, fix substantiated Critical and Important issues within scope, and rerun affected permitted checks. Disposition findings that conflict with user overrides or fall outside scope. Complete this gate when every finding is fixed or dispositioned.
+Review the complete implementation against the complete plan contract. Validate findings against the repository and disposition findings that conflict with user overrides or fall outside scope. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle. Advance to Code Quality Review only after a fresh Spec Compliance Review has no unresolved blocking findings.
 
-### 2. Quality Reviewer
+Missing evidence required by the plan, repository instructions, or claimed completion criteria blocks this gate. Report optional, unavailable, or inapplicable evidence as a verification gap without inventing a finding.
 
-After compliance fixes, start a fresh Quality Reviewer with an updated review packet. Exclude Compliance Reviewer findings and dispositions. Review for violations of established repository standards and substantiated code smells. Treat a code smell as a signal to investigate, not a defect by itself; report it only when the underlying design problem and concrete impact are evident. Fix substantiated Critical and Important issues within scope, then rerun affected permitted checks. Apply Suggestions only when required for acceptance, correctness, security, or established repository standards.
+### 2. Code Quality Reviewer
 
-When quality fixes affect compliance, start a fresh focused Compliance Reviewer followed by a fresh focused Quality Reviewer. Stop after three complete review cycles and report unresolved findings with evidence.
+After Spec Compliance Review clears, start a fresh Code Quality Reviewer with an updated packet. Exclude Spec Compliance Reviewer findings and dispositions. Review for concrete implementation defects and violations of established repository standards. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle at Spec Compliance Review. Apply a Suggestion only when the user or coordinating agent explicitly selects it.
 
-At the final gate, run both reviewers unless a system, repository, or explicit user instruction prohibits one, or the reviewer is unavailable; report any missing gate.
+### 3. Architectural Reviewer
+
+Architectural Review is optional and always human-authorized. A recommendation may come from either reviewer or the coordinating agent when evidence indicates risk in system boundaries, dependency direction, state or lifecycle ownership, cross-feature coupling, migrations, authentication or session behavior, trust boundaries, native integration, substantial refactoring, security-sensitive flows, or unusually high blast radius.
+
+A recommendation never grants authority to dispatch the reviewer. When the user already authorized Architectural Review if warranted, run it after Code Quality Review. Otherwise notify the user with the affected boundary, evidence, plausible risk, and reason for escalation, then wait for their decision. If the user declines, record that Architectural Review was not run. If the gate promises a complete implementation review, report it as `Awaiting architectural-review decision` until the user authorizes or declines; a standalone Code Quality Review may complete with the recommendation as an advisory.
+
+Give the Architectural Reviewer a fresh packet that records the authorization. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks. Architectural fixes restart the sequence at Spec Compliance Review; the task-scoped authorization remains valid for its remediation cycles.
+
+Run Spec Compliance and Code Quality Review at every complete-plan gate unless a system, repository, or explicit user instruction prohibits one, or the reviewer is unavailable. Run Architectural Review only when explicitly requested or both warranted and authorized. Report every missing gate.
+
+The initial Spec Compliance Review begins cycle 1. Any implementation change consumes the current cycle and restarts at Spec Compliance Review in the next cycle. Do not begin cycle 4; after cycle 3, report `Blocked` with the unresolved findings and evidence.
 
 ## Complete The Run
 
@@ -99,5 +110,5 @@ Report concisely:
 - changed files and behavior;
 - verification with `Passed`, `Failed`, or `Not run` status;
 - plan deviations;
-- compliance and quality findings addressed;
+- spec-compliance, code-quality, and authorized architectural findings addressed;
 - remaining human checks, blockers, or follow-up work.
