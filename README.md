@@ -10,7 +10,7 @@ Agent Kit packages reusable skills for coding agents. Its root manifest and port
 ├── skills/        # Portable Agent Skills
 ├── agents/        # Client-specific custom agents
 ├── instructions/  # Reusable repository-instruction templates
-└── deprecated/    # Retired skills kept for reference
+└── deprecated/    # Retired skills and custom agents kept for reference
 ```
 
 Agent Plugins clients discover each immediate `skills/` child that contains a `SKILL.md`. The `agents/` and `instructions/` directories are authoring resources rather than portable Agent Plugins components.

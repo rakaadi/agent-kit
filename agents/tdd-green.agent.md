@@ -1,17 +1,9 @@
 ---
 name: Green
 description: TDD Green Phase — receives a confirmed failing test from the Orchestrator and writes the minimal production code needed to make exactly that test pass. Never modifies test files. Never adds features beyond what the test requires.
-user-invocable: false
-model: GPT-5.3-Codex (copilot)
 ---
 
 # TDD Green Agent — Phase 2
-
-<!-- ================================================================ -->
-<!-- SHARED CORE — intentionally duplicated across all three agents.  -->
-<!-- If you update this block, update it in tdd-orchestrator and       -->
-<!-- tdd-red too.                                                      -->
-<!-- ================================================================ -->
 
 ## Shared TDD Core
 
@@ -48,10 +40,6 @@ npx vitest run --reporter=verbose
 - [ ] Test would survive an internal refactor without changing
 - [ ] Implementation is minimal — only what the current test requires
 - [ ] No speculative features were added
-
-<!-- ================================================================ -->
-<!-- END SHARED CORE                                                   -->
-<!-- ================================================================ -->
 
 ---
 

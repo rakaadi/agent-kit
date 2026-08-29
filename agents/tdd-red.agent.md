@@ -1,17 +1,9 @@
 ---
 name: Red
 description: TDD Red Phase — writes exactly one failing test targeting one observable behaviour through the public interface. Runs the test and confirms it fails for the right reason. Never touches production code.
-user-invocable: false
-model: GPT-5.3-Codex (copilot)
 ---
 
 # TDD Red Agent — Phase 1
-
-<!-- ================================================================ -->
-<!-- SHARED CORE — intentionally duplicated across all three agents.  -->
-<!-- If you update this block, update it in tdd-orchestrator and       -->
-<!-- tdd-green too.                                                    -->
-<!-- ================================================================ -->
 
 ## Shared TDD Core
 
@@ -48,10 +40,6 @@ npx vitest run --reporter=verbose
 - [ ] Test would survive an internal refactor without changing
 - [ ] Implementation is minimal — only what the current test requires
 - [ ] No speculative features were added
-
-<!-- ================================================================ -->
-<!-- END SHARED CORE                                                   -->
-<!-- ================================================================ -->
 
 ---
 
