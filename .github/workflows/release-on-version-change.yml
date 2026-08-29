@@ -5,17 +5,11 @@ name: Release on Version Change
     branches:
       - main
     paths:
-      - .claude-plugin/plugin.json
-      - .claude-plugin/marketplace.json
-      - .github/plugin/marketplace.json
       - plugin.json
   push:
     branches:
       - main
     paths:
-      - .claude-plugin/plugin.json
-      - .claude-plugin/marketplace.json
-      - .github/plugin/marketplace.json
       - plugin.json
 
 concurrency:
@@ -30,55 +24,43 @@ jobs:
       contents: read
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Validate version bump for main
+      - name: Validate proposed version
         shell: bash
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
 
-          if ! cmp -s plugin.json .claude-plugin/plugin.json; then
-            echo "::error title=Manifest mismatch::plugin.json and .claude-plugin/plugin.json must stay identical."
+          current_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
+          base_version="$(git show "${BASE_SHA}:plugin.json" | node -e 'let data = ""; process.stdin.on("data", chunk => data += chunk); process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
+          semver_pattern='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(\.(0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*))?(\+([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?$'
+          tag="v${current_version}"
+
+          if [[ ! "${current_version}" =~ ${semver_pattern} ]]; then
+            echo "::error title=Invalid version::plugin.json version ${current_version} is not valid Semantic Versioning."
             exit 1
           fi
 
-          if ! cmp -s .github/plugin/marketplace.json .claude-plugin/marketplace.json; then
-            echo "::error title=Marketplace mismatch::.github/plugin/marketplace.json and .claude-plugin/marketplace.json must stay identical."
-            exit 1
-          fi
-
-          head_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
-          marketplace_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).plugins[0].version")"
-          marketplace_metadata_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).metadata.version")"
-
-          if [ "${head_version}" != "${marketplace_plugin_version}" ] || [ "${head_version}" != "${marketplace_metadata_version}" ]; then
-            echo "::error title=Version mismatch::plugin.json version (${head_version}), .github/plugin/marketplace.json plugins[0].version (${marketplace_plugin_version}), and .github/plugin/marketplace.json metadata.version (${marketplace_metadata_version}) must match."
-            exit 1
-          fi
-
-          base_version="$(git show "${BASE_SHA}:plugin.json" | node -e 'let data="";process.stdin.on("data", chunk => data += chunk);process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
-          tag="v${head_version}"
-
-          if [ "${head_version}" = "${base_version}" ]; then
-            echo "::error title=Version unchanged::plugin.json changed, but version is still ${head_version}. Update the version before merging into main."
+          if [ "${current_version}" = "${base_version}" ]; then
+            echo "::error title=Version unchanged::plugin.json changed, but its version remains ${current_version}."
             exit 1
           fi
 
           if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
-            echo "::error title=Tag already exists::${tag} already exists on origin. Choose a new plugin version before merging."
+            echo "::error title=Tag already exists::${tag} already exists on origin."
             exit 1
           fi
 
           {
             echo "### Release validation passed"
             echo
-            echo "- Base version: \`${base_version}\`"
-            echo "- Proposed version: \`${head_version}\`"
-            echo "- Pending tag: \`${tag}\`"
+            echo "- Previous version: ${base_version}"
+            echo "- Proposed version: ${current_version}"
+            echo "- Pending tag: ${tag}"
           } >> "${GITHUB_STEP_SUMMARY}"
 
   create-release:
@@ -88,74 +70,55 @@ jobs:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Create tag and GitHub release
+      - name: Create GitHub release
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
-          if ! cmp -s plugin.json .claude-plugin/plugin.json; then
-            echo "plugin.json and .claude-plugin/plugin.json differ. Skipping release creation."
-            exit 1
-          fi
-
-          if ! cmp -s .github/plugin/marketplace.json .claude-plugin/marketplace.json; then
-            echo ".github/plugin/marketplace.json and .claude-plugin/marketplace.json differ. Skipping release creation."
-            exit 1
-          fi
-
-          plugin_name="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).name")"
           current_version="$(node -p "JSON.parse(require('fs').readFileSync('plugin.json', 'utf8')).version")"
-          marketplace_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('.github/plugin/marketplace.json', 'utf8')).plugins[0].version")"
+          semver_pattern='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(\.(0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*))?(\+([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?$'
           tag="v${current_version}"
 
-          if [ "${current_version}" != "${marketplace_plugin_version}" ]; then
-            echo "plugin.json version and marketplace.json plugins[0].version differ. Skipping release creation."
+          if [[ ! "${current_version}" =~ ${semver_pattern} ]]; then
+            echo "::error title=Invalid version::plugin.json version ${current_version} is not valid Semantic Versioning."
             exit 1
           fi
 
-          previous_version=""
-          if [ "${BEFORE_SHA}" != "0000000000000000000000000000000000000000" ]; then
-            previous_version="$(git show "${BEFORE_SHA}:plugin.json" | node -e 'let data="";process.stdin.on("data", chunk => data += chunk);process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
+          if [ "${BEFORE_SHA}" = "0000000000000000000000000000000000000000" ]; then
+            echo "::error title=Missing previous revision::Cannot determine whether plugin.json version changed."
+            exit 1
           fi
 
-          if [ -n "${previous_version}" ] && [ "${current_version}" = "${previous_version}" ]; then
-            echo "plugin.json changed without a version bump. Skipping release creation."
+          previous_version="$(git show "${BEFORE_SHA}:plugin.json" | node -e 'let data = ""; process.stdin.on("data", chunk => data += chunk); process.stdin.on("end", () => process.stdout.write(JSON.parse(data).version));')"
+
+          if [ "${current_version}" = "${previous_version}" ]; then
+            echo "plugin.json version remains ${current_version}; no release is needed."
             exit 0
           fi
 
           if gh release view "${tag}" >/dev/null 2>&1; then
-            echo "Release ${tag} already exists. Skipping release creation."
+            echo "Release ${tag} already exists; no release is needed."
             exit 0
           fi
 
-          notes=$(cat <<EOF
-          Automated release for ${plugin_name} ${current_version}.
-
-          - Version: ${current_version}
-          - Commit: ${CURRENT_SHA}
-          EOF
-          )
-
           if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
-            gh release create "${tag}" --verify-tag --title "${tag}" --notes "${notes}"
-            echo "Created release ${tag} from existing tag."
+            gh release create "${tag}" --verify-tag --title "${tag}" --generate-notes
           else
-            gh release create "${tag}" --target "${CURRENT_SHA}" --title "${tag}" --notes "${notes}"
-            echo "Created tag and release ${tag}."
+            gh release create "${tag}" --target "${CURRENT_SHA}" --title "${tag}" --generate-notes
           fi
 
           {
             echo "### Release created"
             echo
-            echo "- Plugin: \`${plugin_name}\`"
-            echo "- Version: \`${current_version}\`"
-            echo "- Tag: \`${tag}\`"
+            echo "- Previous version: ${previous_version}"
+            echo "- Released version: ${current_version}"
+            echo "- Tag: ${tag}"
           } >> "${GITHUB_STEP_SUMMARY}"
