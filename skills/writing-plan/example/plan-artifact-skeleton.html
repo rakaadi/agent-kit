@@ -120,6 +120,13 @@
           display: grid;
           gap: 18px;
         }
+        .summary-stack,
+        .content,
+        .task-group,
+        .flow-layout,
+        .flow-visual {
+          grid-template-columns: minmax(0, 1fr);
+        }
         .summary-card,
         .meta-card,
         .subpanel,
@@ -161,6 +168,9 @@
           gap: 20px;
           margin-top: 20px;
           align-items: start;
+        }
+        .workspace > * {
+          min-width: 0;
         }
         .toc {
           @apply sticky top-[18px];
@@ -241,7 +251,8 @@
         }
         .task-id,
         .task-phase,
-        .task-dep {
+        .task-dep,
+        .task-review {
           @apply inline-flex items-center;
           min-height: 2rem;
           padding: 0.2rem 0.7rem;
@@ -259,8 +270,14 @@
         .task-dep {
           @apply text-[#6b4a14] bg-[#fff3df] border border-[#efd7aa];
         }
+        .task-review {
+          @apply text-[#633c8f] bg-[#f3ebff] border border-[#d9c3f1];
+        }
         .task-title {
           margin-bottom: 0.8rem;
+        }
+        .task-meta.has-review-focus {
+          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1.2fr);
         }
         .task-meta .wide {
           @apply col-span-full;
@@ -308,6 +325,7 @@
           .hero-grid,
           .two-up,
           .meta-grid,
+          .task-meta.has-review-focus,
           .flow-diagram {
             grid-template-columns: 1fr;
           }
@@ -614,6 +632,7 @@ featureService.subscribe(listener)</pre>
                   <span class="task-id">example-foundation</span>
                   <span class="task-phase">Phase 1</span>
                   <span class="task-dep">Depends on: Nothing</span>
+                  <span class="task-review">Human Review Focus</span>
                 </div>
                 <h3 id="task-example-foundation" class="task-title"><strong>Title:</strong> Create the shared access layer.</h3>
                 <p class="task-description"><strong>Description:</strong> Explain the smallest reviewable slice that unlocks later tasks.</p>
@@ -622,7 +641,7 @@ featureService.subscribe(listener)</pre>
                   <li>Keep exact file paths, commands, and API names visible.</li>
                   <li>Do not repeat dependency information inside the lower metadata grid.</li>
                 </ul>
-                <dl class="task-meta">
+                <dl class="task-meta has-review-focus">
                   <div>
                     <dt>Produces</dt>
                     <dd>
@@ -632,9 +651,13 @@ featureService.subscribe(listener)</pre>
                       </ul>
                     </dd>
                   </div>
-                  <div class="wide">
+                  <div>
                     <dt>Acceptance</dt>
                     <dd>State the observable end condition that proves this task is complete.</dd>
+                  </div>
+                  <div>
+                    <dt>Human Review Focus</dt>
+                    <dd>Review the public access boundary in <code>src/services/example/core.ts</code>; confirm that it exposes the intended product capabilities without leaking infrastructure concerns that tests cannot judge.</dd>
                   </div>
                 </dl>
               </article>

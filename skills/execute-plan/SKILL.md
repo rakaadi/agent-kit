@@ -11,7 +11,7 @@ Implement the plan against the current repository, using the user's prompt to de
 
 Use the entire user prompt as the runtime override layer. It may select the full plan, phases, or task IDs; skip or defer work; assign tasks to subagents; reserve checks for a human; change sequencing; add task-specific constraints; or set a stopping point. Apply these overrides before execution and report their effects.
 
-Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
+Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, Human Review Focuses, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
 
 If the plan and repository differ, make the smallest evidence-based adaptation and record the affected task IDs. Ask only when a material choice cannot be inferred safely.
 
@@ -21,6 +21,7 @@ Before implementation, build a run manifest containing:
 
 - the target repository and run baseline;
 - every plan task's scope state, dependencies, acceptance criteria, and verification requirements;
+- every planned Human Review Focus;
 - existing or previously completed work;
 - task ownership by the main agent, a subagent, or a human.
 
@@ -52,6 +53,10 @@ Execute selected tasks in dependency order while preserving plan boundaries and 
 Apply task ownership from the user prompt before ownership stated in the plan. For delegated work, follow the `subagent-dispatch` skill, provide self-contained task context, and assign non-overlapping file ownership. The main agent integrates the result and verifies its acceptance criteria. If explicitly required delegation is unavailable, mark the task blocked or request direction instead of silently executing it in the main context.
 
 For a human-owned check, prepare the test or verification artifact and report `Not run`, the ownership reason, and the exact command or manual steps. Keep its result unverified until human evidence exists. When the environment blocks a check, run the next applicable non-destructive check and report the remaining validation gap.
+
+After implementing each selected task, reassess its Human Review Focus against the actual implementation. Keep at most three items and name the narrowest stable file, symbol, screen, workflow, policy, or boundary; the judgment the human should apply; and why agent or automated validation is insufficient. Narrow or add a focus when implementation evidence warrants it. Remove one only when the implementation eliminates the need for that judgment, and record the reason. Update the task in a maintained, writable plan so it shows only the current focus.
+
+A Human Review Focus is an advisory review map. It never becomes a dependency, acceptance criterion, verification result, human-owned check, task state, review gate, or completion gate. Agent reviews do not substitute for the named human judgment, and a human review does not clear or complete the focus. Report findings from any performed human review through the ordinary implementation workflow.
 
 ## Sequential Review Gate
 
@@ -111,4 +116,6 @@ Report concisely:
 - verification with `Passed`, `Failed`, or `Not run` status;
 - plan deviations;
 - spec-compliance, code-quality, and authorized architectural findings addressed;
+- Human Review Focuses grouped by task, including focuses a human already reviewed;
+- Human Review Focus Changes with the task ID and reason, only when planned focuses changed;
 - remaining human checks, blockers, or follow-up work.
