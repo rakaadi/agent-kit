@@ -1,0 +1,7 @@
+interface:
+  display_name: "Review Code Complexity"
+  short_description: "Assess complexity and propose architectural improvements"
+  default_prompt: "Use $review-code-complexity to assess the next file with complexity findings and recommend changes for approval."
+
+policy:
+  allow_implicit_invocation: false
