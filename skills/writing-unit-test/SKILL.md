@@ -5,18 +5,6 @@ description: "Guide for writing a unit test. Use when writing a unit test for fu
 
 # Writing Unit Tests
 
-## Required foundation
-
-This skill is a focused companion to the globally installed `tdd` skill from [`mattpocock/skills`](https://github.com/mattpocock/skills/tree/main/skills/engineering/tdd).
-
-Before using this skill:
-
-1. Install the global `tdd` skill if it is not already available.
-2. Read the `tdd` skill's reference docs: `tests.md` and `mocking.md`.
-3. Use this skill as the narrower layer for writing or refining the test itself rather than running a full red-green-refactor workflow.
-
-See [README.md](README.md) for install instructions and the rationale for keeping this skill separate.
-
 ## Philosophy
 
 **Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
@@ -25,15 +13,14 @@ See [README.md](README.md) for install instructions and the rationale for keepin
 
 **Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
 
-Use the global `tdd` skill's examples and reference docs as the canonical source for interface design, mocking, and broader TDD guidance.
-
 ## Rules
 
 - One test at a time
 - Don't anticipate future tests
 - Keep tests focused on observable behavior
 - When fixing a bug, write a test for the expected behavior before any code changes
-- Follow the global `tdd` skill's guidance for mocking and interface design
+
+> **Important**: For test-driven development, follow the `tdd` skill's guidance instead.
 
 ### Before writing any code
 
