@@ -82,6 +82,10 @@ Missing evidence required by the plan, repository instructions, or claimed compl
 
 After Spec Compliance Review clears, start a fresh Code Quality Reviewer with an updated packet. Exclude Spec Compliance Reviewer findings and dispositions. Review for concrete implementation defects and violations of established repository standards. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle at Spec Compliance Review. Apply a Suggestion only when the user or coordinating agent explicitly selects it.
 
+Keep metric-only complexity signals outside severity findings and remediation obligations. Validate any complexity-related finding against a concrete consequence independent of the score; reclassify unsupported severity findings as signals. A recommendation for `review-code-complexity` is advisory and does not block this gate, start a new cycle, or authorize skill invocation or Architectural Review. Report it for the user's consideration when further assessment is warranted.
+
+Keep verification results separate from complexity assessments. Record the actual diagnostic command result and apply explicit repository or plan requirements. Justified retention does not satisfy a required passing check; resolving that failure may require an approved suppression or policy decision. A failed command alone does not establish a need to refactor.
+
 ### 3. Architectural Reviewer
 
 Architectural Review is optional and always human-authorized. A recommendation may come from either reviewer or the coordinating agent when evidence indicates risk in system boundaries, dependency direction, state or lifecycle ownership, cross-feature coupling, migrations, authentication or session behavior, trust boundaries, native integration, substantial refactoring, security-sensitive flows, or unusually high blast radius.
