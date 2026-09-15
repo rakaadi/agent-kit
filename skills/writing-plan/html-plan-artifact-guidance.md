@@ -71,6 +71,8 @@ When in doubt, keep the section arrangement aligned with `./example/plan-artifac
 - A Mermaid diagram is a good fit when it materially improves readability over an improvised ASCII diagram, but keep nearby text so the sequencing meaning survives without the graphic.
 - Every task block should show Task ID, Title, Description, Produces, and Acceptance.
 - Dependency information should appear exactly once. Prefer a top-of-card dependency chip or label instead of repeating the same `Depends on` value again inside the lower metadata grid.
+- When a task has a Human Review Focus, place a `Human Review Focus` pill after the dependency pill and show its full focus in a content box beside `Produces` and `Acceptance`. Use a responsive three-column row, give the focus slightly more room, and stack the boxes on narrow screens. Omit the pill and box when no focus applies.
+- Keep each Human Review Focus advisory and precise: name the narrowest stable implementation surface, the judgment the human should apply, and why agent or automated validation is insufficient. Show at most three focus items.
 - Optional affordances such as collapsible sections, phase filters, or diagram pan and zoom are acceptable only when they improve readability without hiding required content.
 
 ## Content Preservation Rules

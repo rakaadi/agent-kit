@@ -56,6 +56,10 @@ Each task must produce one reviewable outcome with exact files, dependencies, ve
 
 Require `@program-design` for a task that introduces or substantially reshapes modules, interfaces, types, file layout, dependencies, or control flow. Omit it for small fixes, local implementation changes, and mechanical edits.
 
+Assess every task for a Human Review Focus. Add one only when correctness depends materially on product, domain, architectural, security, privacy, or UX judgment that automated checks and agent reviews cannot establish. The category alone is insufficient: routine UI styling and other mechanical changes do not qualify by default.
+
+A Human Review Focus is advisory. It never becomes a dependency, acceptance criterion, verification result, task state, review gate, or completion gate. Name the narrowest stable file, symbol, screen, workflow, policy, or boundary; state the judgment the human should apply; and explain why agent or automated validation is insufficient. Reject broad directions such as "review the business logic" or "review the UI." Use at most three focus items in one task; split an overloaded task or prioritize its highest-risk areas instead of adding more.
+
 Use this Markdown task contract:
 
 ````markdown
@@ -74,12 +78,18 @@ Use this Markdown task contract:
 
 **Depends on**: `upstream-task-id` or Nothing.
 
+> **Human Review Focus**
+>
+> - Review [narrow implementation surface]; confirm [judgment that requires a human] because [limit of agent or automated validation].
+
 **Produces**: `exact/path/to/file.ts`; updated `exact/path/to/other-file.ts`.
 
 **Acceptance**: [Observable outcome that proves the task is done.]
 ````
 
-For HTML plans, render the same task fields visibly inside task cards, tables, or sections.
+Omit the Human Review Focus blockquote when no focus applies.
+
+For HTML plans, render the same task fields visibly inside task cards, tables, or sections. When a task has a Human Review Focus, add a `Human Review Focus` pill after its dependency pill and a matching content box beside `Produces` and `Acceptance`. Omit both when no focus applies.
 
 ## Progress Tracking
 

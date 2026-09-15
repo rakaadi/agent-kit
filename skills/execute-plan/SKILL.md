@@ -11,7 +11,7 @@ Implement the plan against the current repository, using the user's prompt to de
 
 Use the entire user prompt as the runtime override layer. It may select the full plan, phases, or task IDs; skip or defer work; assign tasks to subagents; reserve checks for a human; change sequencing; add task-specific constraints; or set a stopping point. Apply these overrides before execution and report their effects.
 
-Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
+Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, Human Review Focuses, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
 
 If the plan and repository differ, make the smallest evidence-based adaptation and record the affected task IDs. Ask only when a material choice cannot be inferred safely.
 
@@ -21,6 +21,7 @@ Before implementation, build a run manifest containing:
 
 - the target repository and run baseline;
 - every plan task's scope state, dependencies, acceptance criteria, and verification requirements;
+- every planned Human Review Focus;
 - existing or previously completed work;
 - task ownership by the main agent, a subagent, or a human.
 
@@ -53,6 +54,10 @@ Apply task ownership from the user prompt before ownership stated in the plan. F
 
 For a human-owned check, prepare the test or verification artifact and report `Not run`, the ownership reason, and the exact command or manual steps. Keep its result unverified until human evidence exists. When the environment blocks a check, run the next applicable non-destructive check and report the remaining validation gap.
 
+After implementing each selected task, reassess its Human Review Focus against the actual implementation. Keep at most three items and name the narrowest stable file, symbol, screen, workflow, policy, or boundary; the judgment the human should apply; and why agent or automated validation is insufficient. Narrow or add a focus when implementation evidence warrants it. Remove one only when the implementation eliminates the need for that judgment, and record the reason. Update the task in a maintained, writable plan so it shows only the current focus.
+
+A Human Review Focus is an advisory review map. It never becomes a dependency, acceptance criterion, verification result, human-owned check, task state, review gate, or completion gate. Agent reviews do not substitute for the named human judgment, and a human review does not clear or complete the focus. Report findings from any performed human review through the ordinary implementation workflow.
+
 ## Sequential Review Gate
 
 Run this gate only after every task in the complete plan is `Completed`. Completing every task selected for a partial run does not satisfy this gate. For a partial run, update plan progress and report the review gate as `Not run` because the plan remains incomplete.
@@ -76,6 +81,10 @@ Missing evidence required by the plan, repository instructions, or claimed compl
 ### 2. Code Quality Reviewer
 
 After Spec Compliance Review clears, start a fresh Code Quality Reviewer with an updated packet. Exclude Spec Compliance Reviewer findings and dispositions. Review for concrete implementation defects and violations of established repository standards. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle at Spec Compliance Review. Apply a Suggestion only when the user or coordinating agent explicitly selects it.
+
+Keep metric-only complexity signals outside severity findings and remediation obligations. Validate any complexity-related finding against a concrete consequence independent of the score; reclassify unsupported severity findings as signals. A recommendation for `review-code-complexity` is advisory and does not block this gate, start a new cycle, or authorize skill invocation or Architectural Review. Report it for the user's consideration when further assessment is warranted.
+
+Keep verification results separate from complexity assessments. Record the actual diagnostic command result and apply explicit repository or plan requirements. Justified retention does not satisfy a required passing check; resolving that failure may require an approved suppression or policy decision. A failed command alone does not establish a need to refactor.
 
 ### 3. Architectural Reviewer
 
@@ -111,4 +120,6 @@ Report concisely:
 - verification with `Passed`, `Failed`, or `Not run` status;
 - plan deviations;
 - spec-compliance, code-quality, and authorized architectural findings addressed;
+- Human Review Focuses grouped by task, including focuses a human already reviewed;
+- Human Review Focus Changes with the task ID and reason, only when planned focuses changed;
 - remaining human checks, blockers, or follow-up work.

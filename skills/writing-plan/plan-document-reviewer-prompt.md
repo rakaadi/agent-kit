@@ -28,6 +28,7 @@ Task tool (general-purpose):
     | Spec Alignment | Plan covers spec requirements, no major scope creep |
     | Task Decomposition | Tasks have clear boundaries, steps are actionable |
     | Buildability | Could an engineer follow this plan without getting stuck? |
+    | Human Review Focus | Judgment-sensitive work has precise advisory focus items; each names the target surface, judgment to apply, and limit of agent or automated validation |
     | Format Fidelity | If HTML, all implementation-critical sections remain visible and no key detail is hidden behind presentation or omitted during summarization |
 
     ## Required Plan Contract
@@ -53,6 +54,15 @@ Task tool (general-purpose):
     If the file is HTML, do not block approval over visual taste, color choices,
     or layout preferences unless the presentation obscures or removes required
     implementation detail.
+
+    A Human Review Focus is optional and non-blocking for implementation completion,
+    but its plan content must be useful when present. Flag a focus that is broad,
+    lacks a concrete judgment, contains more than three items, or acts like a
+    dependency, verification requirement, acceptance criterion, or completion gate.
+    Also flag an omitted focus when the plan clearly leaves material product,
+    domain, architectural, security, privacy, or UX judgment to the implementation.
+    Do not demand one for routine mechanical work merely because it falls within
+    one of those categories.
 
     Approve unless there are serious gaps — missing requirements from the spec,
     contradictory steps, placeholder content, tasks so vague they can't be acted on,

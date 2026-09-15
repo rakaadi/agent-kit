@@ -22,6 +22,14 @@ Review the implementation for actionable code-quality defects supported by repos
 
 Keep remediation local to the demonstrated problem. When a requirement is needed to establish impact, cite it without judging overall compliance.
 
+## Complexity Signals
+
+Treat cyclomatic and cognitive complexity diagnostics as signals for assessment. A threshold exceedance alone does not establish an actionable defect or justify a Critical, Important, or Suggestion finding. Assign severity only when repository evidence demonstrates a concrete consequence independent of the score.
+
+Report metric-only signals separately from findings, identifying the symbol, location, and diagnostic. When further assessment is warranted, recommend `review-code-complexity`. This recommendation is advisory: it neither blocks review completion nor authorizes skill invocation or Architectural Review.
+
+Report a diagnostic command's actual result separately from the code-quality judgment. Justified complexity does not turn a failed check into a pass. Apply explicit repository verification requirements; resolving a required failure may need an approved suppression or policy decision rather than refactoring.
+
 ## Architectural Escalation
 
 Recommend Architectural Review when evidence indicates risk in system boundaries, dependency direction, state or lifecycle ownership, cross-feature coupling, migrations, authentication or session behavior, trust boundaries, native integration, substantial refactoring, or unusually high blast radius.
@@ -43,4 +51,4 @@ Order verified findings by severity:
 
 For each finding include the exact location or repository pattern, the problem, its concrete consequence, and the smallest appropriate remediation. Include code only when it materially clarifies the fix.
 
-Finish with verification gaps and any architectural-review recommendation. State `No actionable code-quality issues found` when there are no findings.
+Finish with complexity signals, verification gaps, and any architectural-review recommendation, when present. State `No actionable code-quality issues found` when there are no findings, even if metric-only signals remain.
