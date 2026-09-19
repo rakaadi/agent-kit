@@ -1,0 +1,7 @@
+interface:
+  display_name: "Delegation Assessment"
+  short_description: "Assess remaining work for safe delegation"
+  default_prompt: "Use $delegation-assessment to assess the remaining tasks in the provided implementation plan."
+
+policy:
+  allow_implicit_invocation: false
