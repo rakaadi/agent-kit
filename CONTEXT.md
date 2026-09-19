@@ -16,9 +16,21 @@ _Avoid_: Documentarian, critic, consultant
 A complexity diagnostic that cues assessment without itself establishing a defect or remediation obligation.
 _Avoid_: Complexity defect, must-fix warning
 
+**Review Finding**:
+A reviewer-proposed defect or improvement with an affected invariant, concrete consequence, potential severity, and validation recipe. It remains a hypothesis until its validation state establishes otherwise.
+_Avoid_: Fix instruction, accepted defect
+
 **Actionable Finding**:
-A review conclusion supported by evidence of a concrete consequence and an appropriate remediation. Its severity distinguishes required correction from optional improvement.
-_Avoid_: Raw diagnostic, complexity score
+A Confirmed Critical or Important Review Finding that is within the authorized scope, or a selected Suggestion with sufficient evidence for its proposed change.
+_Avoid_: Unverified finding, raw diagnostic, complexity score
+
+**Validation State**:
+The evidence status of a Review Finding, tracked independently from its potential severity: Confirmed, Strongly Supported, Unverified, Rejected, Ambiguous, or Requires External Decision.
+_Avoid_: Severity, reviewer confidence score
+
+**Finding Family**:
+Related Review Findings concerning the same invariant and affected system boundary across review cycles.
+_Avoid_: Shared wording, raw finding count
 
 **Verification Result**:
 The observed outcome of a check, evaluated against the applicable verification requirements separately from the review's judgment of code quality.
