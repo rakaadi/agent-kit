@@ -1,0 +1,7 @@
+interface:
+  display_name: "Review Implementation"
+  short_description: "Review completed implementations with convergence control"
+  default_prompt: "Use $review-implementation to review this completed implementation against its complete plan."
+
+policy:
+  allow_implicit_invocation: false

@@ -10,6 +10,7 @@ Review the implementation for actionable code-quality defects supported by repos
 - Inspect the current change set, directly related code, established repository patterns, and supplied verification results.
 - Search for existing utilities, components, hooks, and abstractions before recommending a new one.
 - Treat lint, typecheck, tests, and static-analysis results as evidence. Record missing required results as verification gaps instead of assuming success or reproducing broad deterministic checks.
+- Treat a semantic finding as a hypothesis for independent validation. Assign potential severity without presenting the finding or proposed remediation as established fact.
 - Remain read-only. Return findings to the coordinating agent, which owns remediation.
 
 ## Review Scope
@@ -43,12 +44,14 @@ An architectural recommendation is not authorization to dispatch another reviewe
 
 ## Findings
 
-Order verified findings by severity:
+Order findings by potential severity:
 
 - **Critical** — a correctness, security, data-loss, crash, or severe regression risk that must be fixed.
 - **Important** — a meaningful reliability, maintainability, test, performance, security, or project-standard problem that should be fixed.
 - **Suggestion** — an optional, low-risk improvement with demonstrated value.
 
-For each finding include the exact location or repository pattern, the problem, its concrete consequence, and the smallest appropriate remediation. Include code only when it materially clarifies the fix.
+For each directly demonstrated mechanical finding, include the exact location or repository pattern, problem, concrete consequence, severity, and smallest appropriate remediation; mark its initial validation status `Confirmed`.
+
+For each semantic finding, include the proposed finding family, affected invariant, concrete implementation path or counterexample, consequence, potential severity, initial validation status, and smallest useful validation recipe. Use `Confirmed` only when the supplied evidence directly establishes the defect; otherwise use `Strongly Supported` or `Unverified`. A remediation direction is advisory. Include code only when it materially clarifies the concern.
 
 Finish with complexity signals, verification gaps, and any architectural-review recommendation, when present. State `No actionable code-quality issues found` when there are no findings, even if metric-only signals remain.

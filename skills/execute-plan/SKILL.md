@@ -1,6 +1,6 @@
 ---
 name: execute-plan
-description: Execute or resume an attached or referenced implementation plan through repository inspection, implementation, verification, sequential spec-compliance and code-quality review, and human-authorized architectural review when warranted. Use for full or partial plan execution, including free-form instructions to select phases or task IDs, skip work, delegate a task independently, reserve checks for a human, or impose task-specific constraints.
+description: Execute or resume an attached or referenced implementation plan through repository inspection, implementation, verification, and complete-plan review. Use for full or partial plan execution, including free-form instructions to select phases or task IDs, skip work, delegate a task independently, reserve checks for a human, or impose task-specific constraints.
 ---
 
 # Execute Plan
@@ -58,11 +58,11 @@ After implementing each selected task, reassess its Human Review Focus against t
 
 A Human Review Focus is an advisory review map. It never becomes a dependency, acceptance criterion, verification result, human-owned check, task state, review gate, or completion gate. Agent reviews do not substitute for the named human judgment, and a human review does not clear or complete the focus. Report findings from any performed human review through the ordinary implementation workflow.
 
-## Sequential Review Gate
+## Complete-Plan Review Gate
 
 Run this gate only after every task in the complete plan is `Completed`. Completing every task selected for a partial run does not satisfy this gate. For a partial run, update plan progress and report the review gate as `Not run` because the plan remains incomplete.
 
-At the final gate, dispatch a fresh subagent for each review and follow the `subagent-dispatch` skill. Give each reviewer only a self-contained packet describing the current implementation:
+At the final gate, use the `review-implementation` skill with a self-contained implementation packet:
 
 - the complete plan path and final user overrides;
 - the full-plan baseline and current diff or commit range covering every task;
@@ -70,33 +70,7 @@ At the final gate, dispatch a fresh subagent for each review and follow the `sub
 - verification evidence and justified deviations.
 - explicit task-scoped authorization for Architectural Review, when granted.
 
-Exclude prior reviewer prompts, findings, dispositions, and summaries. Each reviewer must derive its findings independently from the current plan, repository, diff, and verification evidence.
-
-### 1. Spec Compliance Reviewer
-
-Review the complete implementation against the complete plan contract. Validate findings against the repository and disposition findings that conflict with user overrides or fall outside scope. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle. Advance to Code Quality Review only after a fresh Spec Compliance Review has no unresolved blocking findings.
-
-Missing evidence required by the plan, repository instructions, or claimed completion criteria blocks this gate. Report optional, unavailable, or inapplicable evidence as a verification gap without inventing a finding.
-
-### 2. Code Quality Reviewer
-
-After Spec Compliance Review clears, start a fresh Code Quality Reviewer with an updated packet. Exclude Spec Compliance Reviewer findings and dispositions. Review for concrete implementation defects and violations of established repository standards. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks; the implementation change starts a new review cycle at Spec Compliance Review. Apply a Suggestion only when the user or coordinating agent explicitly selects it.
-
-Keep metric-only complexity signals outside severity findings and remediation obligations. Validate any complexity-related finding against a concrete consequence independent of the score; reclassify unsupported severity findings as signals. A recommendation for `review-code-complexity` is advisory and does not block this gate, start a new cycle, or authorize skill invocation or Architectural Review. Report it for the user's consideration when further assessment is warranted.
-
-Keep verification results separate from complexity assessments. Record the actual diagnostic command result and apply explicit repository or plan requirements. Justified retention does not satisfy a required passing check; resolving that failure may require an approved suppression or policy decision. A failed command alone does not establish a need to refactor.
-
-### 3. Architectural Reviewer
-
-Architectural Review is optional and always human-authorized. A recommendation may come from either reviewer or the coordinating agent when evidence indicates risk in system boundaries, dependency direction, state or lifecycle ownership, cross-feature coupling, migrations, authentication or session behavior, trust boundaries, native integration, substantial refactoring, security-sensitive flows, or unusually high blast radius.
-
-A recommendation never grants authority to dispatch the reviewer. When the user already authorized Architectural Review if warranted, run it after Code Quality Review. Otherwise notify the user with the affected boundary, evidence, plausible risk, and reason for escalation, then wait for their decision. If the user declines, record that Architectural Review was not run. If the gate promises a complete implementation review, report it as `Awaiting architectural-review decision` until the user authorizes or declines; a standalone Code Quality Review may complete with the recommendation as an advisory.
-
-Give the Architectural Reviewer a fresh packet that records the authorization. Fix substantiated Critical and Important issues within scope and rerun affected permitted checks. Architectural fixes restart the sequence at Spec Compliance Review; the task-scoped authorization remains valid for its remediation cycles.
-
-Run Spec Compliance and Code Quality Review at every complete-plan gate unless a system, repository, or explicit user instruction prohibits one, or the reviewer is unavailable. Run Architectural Review only when explicitly requested or both warranted and authorized. Report every missing gate.
-
-The initial Spec Compliance Review begins cycle 1. Any implementation change consumes the current cycle and restarts at Spec Compliance Review in the next cycle. Do not begin cycle 4; after cycle 3, report `Blocked` with the unresolved findings and evidence.
+The review skill owns reviewer isolation, finding validation, remediation, targeted revalidation, blind rereview, cycle accounting, and escalation. Consume its terminal result as `Passed`, `Blocked`, or `Awaiting architectural-review decision`. A missing required reviewer or review gate cannot produce `Passed`.
 
 ## Complete The Run
 
