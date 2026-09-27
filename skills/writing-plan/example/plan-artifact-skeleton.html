@@ -392,7 +392,7 @@
               </div>
               <div class="meta-item">
                 <span class="meta-label">Source</span>
-                <p>Point back to the canonical Markdown plan or upstream report.</p>
+                <p>Reference the requirements, approved decisions, or existing source plan. This HTML file may be the sole plan artifact.</p>
               </div>
               <div class="meta-item">
                 <span class="meta-label">Execution Notes</span>
@@ -432,7 +432,7 @@
                 <div class="kicker">Plan Contract</div>
                 <h2 id="decisions-heading">Locked Decisions</h2>
               </div>
-              <p class="section-copy">Main point: capture the choices that shape implementation and should stay stable unless a follow-up plan explicitly reopens them.</p>
+              <p class="section-copy">Main point: record constraints supported by explicit requirements, repository evidence, or approved decisions, and identify their source.</p>
             </div>
             <div class="table-wrap">
               <table>
@@ -501,7 +501,7 @@
                 <div class="kicker">Target Design</div>
                 <h2 id="module-shape-heading">Target Module Shape</h2>
               </div>
-              <p class="section-copy">Main point: define the future structure, the important boundaries, and the public surface the migration is moving toward.</p>
+              <p class="section-copy">Main point: describe the target structure and distinguish approved boundaries from proposed choices or pending design. The service architecture shown here is illustrative; derive the actual shape from the request and repository evidence.</p>
             </div>
             <div class="two-up">
               <div class="subpanel">
@@ -537,7 +537,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">File Structure</div>
                 <h2 id="inventory-heading">File Inventory</h2>
               </div>
-              <p class="section-copy">Main point: lock the file-level slice boundaries so later tasks stay reviewable.</p>
+              <p class="section-copy">Main point: identify known files and responsibilities, label proposed files, and name design prerequisites for boundaries that remain unresolved.</p>
             </div>
             <div class="two-up">
               <div class="subpanel">
@@ -588,7 +588,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Execution Flow</div>
                 <h2 id="execution-flow-heading">Execution Flow</h2>
               </div>
-              <p class="section-copy">Main point: show hard gates, parallel branches, and rollout order before the task cards begin.</p>
+              <p class="section-copy">Main point: show actual prerequisites, compatible parallel work, and execution order. Replace the illustrative migration phases with those justified by this plan.</p>
             </div>
             <div class="flow-layout">
               <div class="flow-visual">
@@ -711,7 +711,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Verification</div>
                 <h2 id="verification-heading">Verification Matrix</h2>
               </div>
-              <p class="section-copy">Main point: list the real flows that must still work after the migration.</p>
+              <p class="section-copy">Main point: identify the smallest meaningful checks for acceptance, distinguish task and final integration checks, and retain mandatory repository and explicitly required human checks.</p>
             </div>
             <div class="table-wrap">
               <table>
@@ -794,7 +794,7 @@ featureService.subscribe(listener)</pre>
               <li>Name any other workspace or product variants that are deliberately excluded.</li>
             </ol>
             <p class="footer-note" style="margin-top: 1rem;">
-              Keep a source reference back to the canonical Markdown plan. The HTML artifact is for review and handoff; the source Markdown remains the semantic reference unless the user explicitly changes that contract.
+              Reference an existing source plan when converting one. For an HTML-only plan, this artifact carries the execution contract; a separate Markdown plan is not required.
             </p>
           </section>
         </main>

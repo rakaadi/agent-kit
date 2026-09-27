@@ -22,9 +22,11 @@ Use these files as the structural contract before inventing a new HTML layout:
 
 Default to extending the skeleton instead of redesigning the artifact from scratch. The examples are intentionally closer to the current Firebase artifact shape so agents can keep output consistent across plans.
 
+Example architectures, APIs, phases, and migration sequences are illustrative. Derive the technical approach from the request and repository evidence. Apply the decision, readiness, and verification rules in `SKILL.md`: distinguish confirmed constraints from proposals and pending design, and record a decision as locked only with an explicit requirement, established constraint, or approval.
+
 ## Output Rules
 
-- Write a single self-contained `plan-${implementation-task}.html` file, using the same kebab-case task slug as the source Markdown plan. Example: `plan-firebase-services.html`.
+- Write a single self-contained `plan-${implementation-task}.html` file using a kebab-case task slug. Example: `plan-firebase-services.html`. HTML may be the sole plan artifact. When converting an existing plan, retain its slug and reference that source; create both formats only when explicitly requested.
 - Load Tailwind from the CDN (`<script src="https://cdn.tailwindcss.com"></script>`) for styling. Use `<style type="text/tailwindcss">` with `@apply` to define reusable component patterns. Keep any remaining custom CSS minimal and embedded.
 - Use JavaScript only for lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
 - Tailwind CDN is the only permitted remote asset by default. Avoid all other remote scripts, remote stylesheets, or build steps.
@@ -73,6 +75,7 @@ When in doubt, keep the section arrangement aligned with `./example/plan-artifac
 - Dependency information should appear exactly once. Prefer a top-of-card dependency chip or label instead of repeating the same `Depends on` value again inside the lower metadata grid.
 - When a task has a Human Review Focus, place a `Human Review Focus` pill after the dependency pill and show its full focus in a content box beside `Produces` and `Acceptance`. Use a responsive three-column row, give the focus slightly more room, and stack the boxes on narrow screens. Omit the pill and box when no focus applies.
 - Keep each Human Review Focus advisory and precise: name the narrowest stable implementation surface, the judgment the human should apply, and why agent or automated validation is insufficient. Show at most three focus items.
+- Keep unresolved material decisions in prerequisites and explicitly required human checks in verification, separate from advisory focus content.
 - Optional affordances such as collapsible sections, phase filters, or diagram pan and zoom are acceptable only when they improve readability without hiding required content.
 
 ## Content Preservation Rules
