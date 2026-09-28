@@ -7,6 +7,8 @@ description: Close repository diagnostic findings from TypeScript, ESLint, and R
 
 Run a closed diagnostic loop: establish the baseline, verify each finding, fix its root cause, rerun the finding's source, and report the remaining state.
 
+Follow explicit user instructions when they override this skill's defaults. For fix requests, carry the selected batch through verification and reporting without pausing for routine allocation or implementation choices. Continue independent authorized work when a finding is blocked or requires approval.
+
 ## 1. Establish Scope
 
 1. Work from the repository root and read the applicable repository instructions.
@@ -29,10 +31,7 @@ Complete this phase only when every requested diagnostic has either produced a b
 Treat one distinct diagnostic record as one issue. Exact duplicate records from the same tool count once.
 
 1. Use 15 issues as the base selection cap. File closure may extend the final batch beyond 15.
-2. Start with five slots for each type:
-   - TypeScript: 5
-   - ESLint: 5
-   - React Doctor: 5
+2. Aim for an even distribution across the requested diagnostic types, starting with five issues per type when all three are in scope. Redistribute unused capacity as evenly as practical among types with more verified findings. Choose the allocation using judgment; file closure and root-cause grouping take precedence over balance.
 3. Within each type, consider findings in their original output order unless the request explicitly prioritizes particular findings.
 4. For each candidate considered:
    - Open the referenced code and confirm the finding still applies to the current worktree.
@@ -40,23 +39,16 @@ Treat one distinct diagnostic record as one issue. Exact duplicate records from 
    - Treat React Doctor findings as hypotheses until the referenced implementation and installed package versions confirm them.
    - Treat dependency findings as report-only unless the user explicitly authorizes the specific manifest or dependency change. Classify unapproved findings as approval-required, and check package-manager and peer-dependency relationships; absence from application imports is not evidence that a dependency is unused.
    - Classify the finding as reproducible, stale, duplicate, false positive, approval-required, already owned by another change, or blocked, and keep the supporting evidence.
-5. Fill a slot only with a reproducible finding. Every other classification leaves the slot unused.
+5. Count only reproducible findings toward the batch. Continue selecting until the batch reaches 15 issues or no eligible findings remain.
 6. Make each selected file a closure group across the requested diagnostics:
    - When any finding selects a file, verify every TypeScript, ESLint, and React Doctor finding for that file that is in the run's scope.
    - Include every reproducible finding for that file in the same batch, even when the findings have different types or root causes.
-   - File completeness takes precedence over the per-type slot targets. Update the recorded allocation after adding the file's cross-type findings.
    - Count closure findings toward the base cap until it is reached. Include every remaining finding in an already-selected file as an additional issue beyond the cap; never defer part of a selected file.
    - Stop selecting new files after the batch reaches or exceeds 15 issues.
 7. Keep findings that one root-cause change is expected to resolve in the same batch. Count every affected diagnostic record, and defer an oversized group only before any of its files is selected; file closure takes precedence after selection.
-8. Redistribute unused slots as evenly as possible among types that have additional verified findings:
-   - Give each eligible type the same number of extra slots when possible.
-   - Keep the extra-slot counts among eligible types within one issue of each other when equal division leaves a remainder.
-   - Assign remainder slots in this fixed order, skipping ineligible types: TypeScript, ESLint, React Doctor.
-   - Repeat until 15 issues are selected or no eligible verified findings remain.
-   - Examples when findings fit independently: `5/5/5`, `0/8/7` when TypeScript has none, `2/7/6` when TypeScript has only two, and `0/15/0` when only ESLint has findings.
-9. Freeze the selected batch before editing. Defer all unselected findings to a later run.
+8. Freeze the selected batch before editing. Record the per-type counts, additional issues beyond 15, and the reason for any batch below 15. Defer all unselected findings to a later run.
 
-Complete this phase only when no more than 15 issues were selected before file closure, every selected file is complete across the requested diagnostic types, every issue beyond 15 is identified as an additional issue, every approval-required dependency finding is recorded outside the batch, the per-type allocation is recorded, and every unused base slot is explained.
+Complete this phase when the batch includes every reproducible, authorized in-scope finding in each selected file, only file closure extends it beyond 15, and excluded findings have recorded classifications and evidence. Keep approval-required dependency findings outside the batch.
 
 ## 3. Fix the Root Cause
 
@@ -67,22 +59,22 @@ Complete this phase only when no more than 15 issues were selected before file c
 5. Avoid unrelated refactors, formatting churn, and opportunistic cleanup.
 6. After each coherent fix, inspect the diff and check that every changed line serves an accounted-for finding.
 
-Complete this phase only when every selected issue is fixed or has an exact unresolved blocker, no selected file is left with another reproducible in-scope diagnostic, and all edits stay within the selected root-cause groups.
+Complete this phase when every selected issue is fixed or has an exact unresolved blocker and all edits stay within the selected root-cause groups. A selected file with unresolved findings remains incomplete; report that state explicitly.
 
 ## 4. Close the Loop
 
-1. Rerun the exact project-wide command that produced each fixed finding.
-2. For modified JavaScript or TypeScript files, run the repository's changed-file ESLint command with auto-fix, inspect any resulting edits, then rerun the original diagnostic:
+1. For modified JavaScript or TypeScript files, run the repository's changed-file ESLint command with auto-fix and inspect any resulting edits:
 
    ```bash
    bunx eslint <changed files> --fix
    ```
 
-3. Run the narrowest relevant tests when a fix changes runtime behavior.
+2. After the final edits, rerun the exact project-wide commands for the requested diagnostics to verify the selected findings and file closure.
+3. Run the narrowest relevant tests when a fix changes runtime behavior. Repeat or broaden checks only when subsequent edits, failures, or unresolved concerns justify them.
 4. Inspect the final diff for scope, correctness, accidental edits, and conflicts with pre-existing work.
 5. Compare the final diagnostics with the baseline. A nonzero project-wide command may remain when deferred or out-of-scope debt exists; prove that the selected findings disappeared and that modified files gained no new findings.
 
-Complete this phase only when fresh output accounts for every selected issue and every modified file has no remaining finding from any requested diagnostic type.
+Complete this phase when fresh output accounts for every selected issue and confirms file closure, or exact blockers explain what remains unresolved or unverified. Claim a modified file is complete only when it has no remaining in-scope finding from any requested diagnostic type.
 
 ## 5. Report
 
