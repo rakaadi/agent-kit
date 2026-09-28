@@ -13,21 +13,30 @@ Task tool (general-purpose):
     You are a plan document reviewer. Verify this plan artifact is complete and ready for implementation.
 
     **Plan to review:** [PLAN_FILE_PATH]
-    **Spec for reference:** [SPEC_FILE_PATH]
+    **Repository:** [REPOSITORY_PATH]
+    **Requirements:** [SPEC_PATHS or requirements supplied directly]
+    **User overrides and approved decisions:** [Relevant context, including conversation decisions, or None]
 
     The plan may be written as Markdown or as a self-contained HTML artifact.
     Review the semantic plan content first. If the file is HTML, treat layout,
     cards, tables, and sections as alternate presentation of the same plan
     contract rather than as a separate deliverable.
 
+    Review against the supplied requirements, user overrides, approved decisions,
+    and applicable repository instructions. Inspect the repository evidence needed
+    to assess material claims about files, interfaces, dependencies, and verification
+    commands. Report unavailable evidence and its effect on readiness; do not
+    invent requirements to fill the gap.
+
     ## What to Check
 
     | Category | What to Look For |
     |----------|------------------|
-    | Completeness | TODOs, placeholders, incomplete tasks, missing steps |
-    | Spec Alignment | Plan covers spec requirements, no major scope creep |
-    | Task Decomposition | Tasks have clear boundaries, steps are actionable |
-    | Buildability | Could an engineer follow this plan without getting stuck? |
+    | Completeness | Required outcomes and prerequisites are covered; unresolved decisions are explicit |
+    | Spec Alignment | Plan covers the supplied requirements and overrides without unsupported scope expansion |
+    | Task Decomposition | Boundaries reflect deliverables and integration needs; parallel tasks have compatible dependencies and file ownership |
+    | Buildability | Existing paths and commands are grounded; proposed files are labeled; material decisions are settled or assigned actionable prerequisites |
+    | Verification | Checks establish acceptance with proportional evidence; task checks, final integration checks, and required human checks are distinguished |
     | Human Review Focus | Judgment-sensitive work has precise advisory focus items; each names the target surface, judgment to apply, and limit of agent or automated validation |
     | Format Fidelity | If HTML, all implementation-critical sections remain visible and no key detail is hidden behind presentation or omitted during summarization |
 
@@ -51,6 +60,19 @@ Task tool (general-purpose):
     An implementer building the wrong thing or getting stuck is an issue.
     Minor wording, stylistic preferences, and "nice to have" suggestions are not.
 
+    Readiness means a skilled implementer can proceed without inventing material
+    requirements or making unapproved architectural decisions. Ordinary coding
+    choices are not missing steps. An investigation or design step is actionable
+    when its question, expected evidence or approved output, and dependent work
+    are clear. Downstream work remains conditional until its prerequisites are met.
+    Do not demand final file boundaries before the design that establishes them.
+
+    For each blocking issue, cite the conflicting requirement or repository evidence
+    and explain the concrete implementation consequence. For a material evidence
+    gap, identify what is missing and which readiness claim cannot be established.
+    Treat example architectures and migration phases as illustrations; locked
+    decisions need an explicit requirement, established constraint, or approval.
+
     If the file is HTML, do not block approval over visual taste, color choices,
     or layout preferences unless the presentation obscures or removes required
     implementation detail.
@@ -64,9 +86,16 @@ Task tool (general-purpose):
     Do not demand one for routine mechanical work merely because it falls within
     one of those categories.
 
-    Approve unless there are serious gaps — missing requirements from the spec,
-    contradictory steps, placeholder content, tasks so vague they can't be acted on,
-    or an HTML presentation that summarizes away required task metadata.
+    An advisory focus cannot substitute for an unresolved material decision or an
+    explicitly required human check. Verify that those appear as prerequisites or
+    verification requirements in their own right.
+
+    Approve unless there are serious gaps — missing requirements, contradictory
+    steps, unresolved placeholders without actionable prerequisites, tasks too vague
+    to act on, material unsupported readiness claims, or an HTML presentation that
+    summarizes away required task metadata. Approval does not grant design approval
+    or clear pending implementation prerequisites. A review with no issues or
+    recommendations is a valid result.
 
     ## Output Format
 
@@ -75,10 +104,10 @@ Task tool (general-purpose):
     **Status:** Approved | Issues Found
 
     **Issues (if any):**
-    - [Task X, Step Y]: [specific issue] - [why it matters for implementation]
+    - [Task or section]: [specific issue] - [requirement/evidence or material evidence gap] - [implementation consequence]
 
-    **Recommendations (advisory, do not block approval):**
-    - [suggestions for improvement]
+    **Recommendations (optional, advisory, do not block approval):**
+    - [Include only when materially useful; omit this section otherwise]
 ```
 
 **Reviewer returns:** Status, Issues (if any), Recommendations

@@ -138,7 +138,7 @@
         <div class="eyebrow">Panel Purpose Map</div>
         <h1>Plan Artifact Panel Reference</h1>
         <p class="hero-copy">
-          This page extracts the main job of each panel from the working Firebase artifact so agents can keep the structure firm while still extending the content for a new plan.
+          This page explains each panel's purpose. The Firebase-derived architecture and migration examples are illustrative; derive each plan's technical approach from its requirements and repository evidence.
         </p>
         <div class="link-row">
           <a class="link-chip" href="./plan-artifact-skeleton.html">Open the full skeleton</a>
@@ -175,10 +175,10 @@
 
           <article class="card">
             <span class="label">Locked Decisions</span>
-            <h3>Freeze the implementation constraints.</h3>
-            <p class="card-copy">This panel records the decisions that later tasks are not allowed to drift away from.</p>
+            <h3>Record confirmed implementation constraints.</h3>
+            <p class="card-copy">Record a decision as locked only when supported by an explicit requirement, established constraint, or approval. Keep proposals and pending decisions distinct.</p>
             <ul>
-              <li>Must stay visible: decision name and chosen constraint.</li>
+              <li>Must stay visible: decision name, chosen constraint, and its source.</li>
               <li>Good shapes: two-column comparison table.</li>
             </ul>
           </article>
@@ -196,7 +196,7 @@
           <article class="card">
             <span class="label">Target Module Shape</span>
             <h3>Show the destination structure.</h3>
-            <p class="card-copy">Use this panel to make the future file layout, key boundaries, and public surface concrete before task detail begins.</p>
+            <p class="card-copy">Make the proposed file layout, key boundaries, and public surface concrete where established. Identify pending design and its dependent work where the shape remains unresolved.</p>
             <ul>
               <li>Must stay visible: folder shape, boundary notes, planned public surface when applicable.</li>
               <li>Good shapes: two-up panels plus a monospace API block.</li>
@@ -205,10 +205,10 @@
 
           <article class="card">
             <span class="label">File Inventory</span>
-            <h3>Lock the file-level work slices.</h3>
-            <p class="card-copy">A reviewer should leave this panel knowing what gets created, what changes, and what will be deleted later.</p>
+            <h3>Identify affected files and responsibilities.</h3>
+            <p class="card-copy">Distinguish inspected existing files, proposed new files, and boundaries awaiting design. Show known changes and their purpose without presenting speculative paths as final.</p>
             <ul>
-              <li>Must stay visible: exact file paths and the purpose of each change.</li>
+              <li>Must stay visible: established paths, proposed files, responsibilities, and prerequisites for unresolved boundaries.</li>
               <li>Good shapes: create and modify tables in a two-up layout.</li>
             </ul>
           </article>
@@ -247,7 +247,7 @@
           <article class="card">
             <span class="label">Human Review Focus</span>
             <h3>Point human judgment at the narrowest valuable surface.</h3>
-            <p class="card-copy">The focus is an advisory review map, never an acceptance condition, verification result, task state, or completion gate.</p>
+            <p class="card-copy">The focus is an advisory review map, never an acceptance condition, verification result, task state, or completion gate. Record unresolved material decisions as prerequisites and explicitly required human checks in verification.</p>
             <ul>
               <li>Must stay visible when present: the target surface, the judgment to apply, and why agent or automated validation is insufficient.</li>
               <li>Good shapes: a pill after the dependency marker and a slightly wider third metadata box beside Produces and Acceptance.</li>
@@ -257,8 +257,8 @@
 
           <article class="card">
             <span class="label">Verification</span>
-            <h3>State the release gate explicitly.</h3>
-            <p class="card-copy">Keep the verification checklist or matrix visible so the plan does not treat correctness as implied.</p>
+            <h3>State the evidence needed for acceptance.</h3>
+            <p class="card-copy">Use the smallest meaningful checks while preserving mandatory repository checks. Distinguish task checks, final integration checks, and explicitly required human checks.</p>
             <ul>
               <li>Must stay visible: flow, expected behavior, special environment notes.</li>
               <li>Good shapes: verification table or concise checklist.</li>
@@ -280,7 +280,7 @@
             <h3>Protect the plan boundary.</h3>
             <p class="card-copy">Name the tempting adjacent work that this plan will not absorb, so execution does not widen silently.</p>
             <ul>
-              <li>Must stay visible: explicit exclusions and the source-plan reminder.</li>
+              <li>Must stay visible: explicit exclusions and a source-plan reference when converting an existing plan.</li>
               <li>Good shapes: numbered list plus a short source reference note.</li>
             </ul>
           </article>
