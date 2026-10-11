@@ -293,22 +293,20 @@
           padding: 16px;
           @apply rounded-lg border border-[#d5e0ee] bg-gradient-to-b from-[#f8fbff] to-[#eff5fd];
         }
-        .flow-diagram {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 10px;
-          margin-top: 0.85rem;
+        .mermaid {
+          background: #ffffff;
+          color: #122033;
+          border-color: #cddbf0;
+          text-align: center;
         }
-        .flow-node {
-          padding: 0.9rem;
-          border-radius: 12px;
-          @apply border border-[#cddbf0] bg-white text-center font-bold;
+        .task-diff {
+          margin: 1rem 0;
         }
-        .flow-node.phase-2 {
-          @apply bg-[#fff6e8] border-[#ead0a0];
+        .diff-add {
+          color: #b3f0ce;
         }
-        .flow-node.gate {
-          @apply bg-[#edf8ef] border-[#c6ddcc];
+        .diff-remove {
+          color: #ffd1ce;
         }
         .footer-note {
           font-size: 0.95rem;
@@ -325,8 +323,7 @@
           .hero-grid,
           .two-up,
           .meta-grid,
-          .task-meta.has-review-focus,
-          .flow-diagram {
+          .task-meta.has-review-focus {
             grid-template-columns: 1fr;
           }
         }
@@ -357,10 +354,10 @@
         <div class="overline">Plan Artifact Skeleton</div>
         <h1>Feature Implementation Plan</h1>
         <p class="hero-copy">
-          Start from this scaffold when generating <code>plan-${implementation-task}.html</code>. Extend the content, but keep the panel order and the card anatomy stable unless the user explicitly asks for a different layout.
+          Start from this scaffold when generating <code>plan-${implementation-task}.html</code> in the OS temporary directory unless the human requests another directory. Keep the panel order and card anatomy stable unless the user requests a different layout.
         </p>
         <p class="callout">
-          Main job of the header: give a reviewer the title, the goal, the target architecture shape, the relevant stack, and the execution metadata before they scroll into task detail.
+          Main job of the header: give a reviewer the title, the goal, the target architecture shape and the execution metadata before they scroll into task detail.
         </p>
 
         <div class="hero-grid">
@@ -371,11 +368,7 @@
             </section>
             <section class="summary-card" aria-labelledby="architecture-heading">
               <h2 id="architecture-heading">Architecture</h2>
-              <p>Describe the target boundary, the migration strategy, and the end-state shape in one compact paragraph.</p>
-            </section>
-            <section class="summary-card" aria-labelledby="stack-heading">
-              <h2 id="stack-heading">Tech Stack</h2>
-              <p>List the frameworks, runtime versions, and core libraries that materially affect implementation or verification.</p>
+              <p>Describe the target boundary, migration strategy, and end-state shape. Include new dependencies, version constraints, or technology choices only when they materially affect the work.</p>
             </section>
           </div>
 
@@ -415,7 +408,7 @@
             <li><a href="#execution-flow">Execution Flow</a></li>
             <li><a href="#phase-1">Phase 1</a></li>
             <li><a href="#phase-2">Phase 2</a></li>
-            <li><a href="#verification">Verification</a></li>
+            <li><a href="#verification">Verification Matrix</a></li>
             <li><a href="#progress-tracking">Progress Tracking</a></li>
             <li><a href="#out-of-scope">Out of Scope</a></li>
           </ol>
@@ -594,24 +587,20 @@ featureService.subscribe(listener)</pre>
               <div class="flow-visual">
                 <div class="roadmap">
                   <h3>Dependency Graph</h3>
-                  <p class="flow-note">Use a plain placeholder by default. Swap in Mermaid only when the dependency graph is dense enough that the static layout materially improves readability.</p>
+                  <p class="flow-note">Use task IDs for dependencies; keep runtime behavior diagrams in the design context. Replace these illustrative tasks with the plan's actual tasks.</p>
                   <div class="flow-shell">
-                    <div class="flow-diagram" aria-label="Execution flow placeholder">
-                      <div class="flow-node">Foundation</div>
-                      <div class="flow-node">Service Split</div>
-                      <div class="flow-node phase-2">Consumer Migration</div>
-                      <div class="flow-node gate">Regression Gate</div>
-                    </div>
-                    <p class="flow-hint">If a real diagram is added, keep a visible fallback note or sequencing list nearby.</p>
+                    <pre class="mermaid" aria-label="Task dependency graph">flowchart LR
+  foundation["example-foundation"] --> migration["example-migration"]</pre>
+                    <p class="flow-hint">The sequencing notes below preserve dependencies if the CDN is unavailable or JavaScript is disabled.</p>
                   </div>
                 </div>
               </div>
               <div class="subpanel">
                 <h3>Parallelism and Sequencing</h3>
                 <ol class="list-tight">
-                  <li>Name the slices that can land in parallel once the first dependency clears.</li>
-                  <li>Name the gating task that must land before sensitive consumer migration.</li>
-                  <li>Name the cleanup or deletion step that should only happen after verification succeeds.</li>
+                  <li><code>example-foundation</code> has no prerequisites.</li>
+                  <li><code>example-migration</code> depends on <code>example-foundation</code>; these tasks are serial.</li>
+                  <li>When adapting this scaffold, add parallel work only where dependencies and file ownership permit it.</li>
                 </ol>
               </div>
             </div>
@@ -635,11 +624,16 @@ featureService.subscribe(listener)</pre>
                   <span class="task-review">Human Review Focus</span>
                 </div>
                 <h3 id="task-example-foundation" class="task-title"><strong>Title:</strong> Create the shared access layer.</h3>
-                <p class="task-description"><strong>Description:</strong> Explain the smallest reviewable slice that unlocks later tasks.</p>
+                <p class="task-description"><strong>Description:</strong> Introduce one access boundary for the first consumer. Keep infrastructure ownership inside that boundary so the migration can preserve caller behavior.</p>
+                <p class="flow-note">Illustrative file shape, not an executable patch. Use one to three sentences for descriptions; keep actionable constraints explicit below.</p>
+                <pre class="task-diff" aria-label="Illustrative file additions"><span class="diff-add">+ src/services/example/core.ts
++ // Own infrastructure access behind the approved interface.
++ src/services/example/types.ts
++ // Expose the caller-facing contract.</span></pre>
                 <ul>
-                  <li>Use bullets for concrete implementation instructions, not vague summaries.</li>
-                  <li>Keep exact file paths, commands, and API names visible.</li>
-                  <li>Do not repeat dependency information inside the lower metadata grid.</li>
+                  <li>Replace this example with repository-grounded files and responsibilities; identify prerequisites for unresolved interfaces.</li>
+                  <li>Keep reuse instructions, failure behavior, and invariants alongside the diff.</li>
+                  <li>Use bullets or checklists instead when clearer, especially for investigation or design work.</li>
                 </ul>
                 <dl class="task-meta has-review-focus">
                   <div>
@@ -680,11 +674,16 @@ featureService.subscribe(listener)</pre>
                   <span class="task-dep">Depends on: example-foundation</span>
                 </div>
                 <h3 id="task-example-migration" class="task-title"><strong>Title:</strong> Move the first real consumer to the new boundary.</h3>
-                <p class="task-description"><strong>Description:</strong> Use later phase cards for behavior-sensitive migrations, regression gates, and final cleanup.</p>
+                <p class="task-description"><strong>Description:</strong> Move the first consumer onto the shared access boundary. Preserve its observable behavior while removing direct infrastructure ownership.</p>
+                <p class="flow-note">Illustrative behavior diff, not an executable patch.</p>
+                <pre class="task-diff" aria-label="Illustrative consumer change">src/app/consumer.tsx
+<span class="diff-remove">- Direct infrastructure access in the consumer.</span>
+<span class="diff-add">+ Use the approved shared access interface.
++ // Keep caller-owned orchestration in the consumer.</span></pre>
                 <ul>
-                  <li>Keep the instructions implementation-ready.</li>
-                  <li>Call out verification constraints when they materially affect execution.</li>
-                  <li>Split especially sensitive consumers into their own cards instead of hiding them in a batch step.</li>
+                  <li>Name the exact reuse surface and behavior constraints established by the source plan.</li>
+                  <li>Identify test files and coverage to change here; put run commands and expected results in the Verification Matrix.</li>
+                  <li>Keep material design decisions explicit rather than implying approval through a sketch.</li>
                 </ul>
                 <dl class="task-meta">
                   <div>
@@ -704,7 +703,7 @@ featureService.subscribe(listener)</pre>
             </div>
           </section>
 
-          <!-- Verification is the release gate. Keep it explicit and scanable rather than buried inside task prose. -->
+          <!-- Keep all verification commands and expected results in this matrix, keyed by task or integration scope. -->
           <section class="panel" id="verification" aria-labelledby="verification-heading">
             <div class="section-head">
               <div>
@@ -717,21 +716,26 @@ featureService.subscribe(listener)</pre>
               <table>
                 <thead>
                   <tr>
-                    <th scope="col">Flow</th>
+                    <th scope="col">Task or integration scope</th>
                     <th scope="col">What to verify</th>
-                    <th scope="col">Notes</th>
+                    <th scope="col">Command or manual steps and expected result</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Startup</td>
-                    <td>State the expected initialization order or baseline behavior.</td>
-                    <td>Name the file or surface that anchors the check.</td>
+                    <td><code>example-foundation</code></td>
+                    <td>State the observable contract and failure behavior of the new boundary.</td>
+                    <td>Insert the repository-grounded command or manual steps and expected result for this task.</td>
                   </tr>
                   <tr>
-                    <td>Behavior-sensitive flow</td>
-                    <td>State the user-visible path that must remain intact.</td>
-                    <td>Call out device, environment, or build constraints if they matter.</td>
+                    <td><code>example-migration</code></td>
+                    <td>State the consumer behavior that must remain intact after migration.</td>
+                    <td>Insert the focused command and expected result; include relevant environment constraints.</td>
+                  </tr>
+                  <tr>
+                    <td>Final integration</td>
+                    <td>State checks spanning the tasks, including mandatory repository checks.</td>
+                    <td>Insert integration commands and required manual checks with expected results; keep advisory Human Review Focus separate.</td>
                   </tr>
                 </tbody>
               </table>
@@ -800,5 +804,14 @@ featureService.subscribe(listener)</pre>
         </main>
       </div>
     </div>
+    <script type="module">
+      try {
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'strict' })
+        await mermaid.run({ querySelector: '.mermaid' })
+      } catch {
+        // Sequencing notes remain readable when diagram rendering is unavailable.
+      }
+    </script>
   </body>
 </html>

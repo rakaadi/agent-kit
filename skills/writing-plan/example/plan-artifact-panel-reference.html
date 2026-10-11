@@ -156,9 +156,9 @@
           <article class="card">
             <span class="label">Header Summary</span>
             <h3>Orient the reviewer before the scroll starts.</h3>
-            <p class="card-copy">Carry the title, goal, architecture, tech stack, and execution metadata in a compact first screen.</p>
+            <p class="card-copy">Carry the title, goal, architecture, and execution metadata in a compact first screen. Record material technology choices in Architecture or the relevant task.</p>
             <ul>
-              <li>Must stay visible: title, goal, architecture, tech stack, status or scope metadata.</li>
+              <li>Must stay visible: title, goal, architecture, status or scope metadata.</li>
               <li>Good shapes: summary cards plus a metadata card.</li>
             </ul>
           </article>
@@ -216,10 +216,10 @@
           <article class="card">
             <span class="label">Execution Flow</span>
             <h3>Show order, gates, and parallelism together.</h3>
-            <p class="card-copy">Combine dependency flow and sequencing guidance into one readable section before task cards.</p>
+            <p class="card-copy">Show task dependencies with Mermaid and task IDs, alongside readable sequencing notes. Keep runtime behavior diagrams in the relevant design context.</p>
             <ul>
               <li>Must stay visible: dependency order plus nearby text that preserves the same meaning.</li>
-              <li>Good shapes: Mermaid or static graph with sequencing notes beside it.</li>
+              <li>Good shapes: Mermaid task graph with sequencing notes that remain readable without JavaScript or network access.</li>
             </ul>
           </article>
 
@@ -239,7 +239,9 @@
             <p class="card-copy">This is the smallest execution unit. Keep the metadata obvious so reviewers can reason about scope without opening another section.</p>
             <ul>
               <li>Must stay visible: task ID, title, description, produces, acceptance, and exactly one dependency marker.</li>
-              <li>Good shapes: chips at the top, instructions in bullets, metadata grid at the bottom.</li>
+              <li>Good shapes: chips at the top, one-to-three-sentence description, selective annotated diff with explicit constraints or a checklist, metadata grid at the bottom.</li>
+              <li>Label diff sketches as illustrative; preserve failure behavior and prerequisites without implying approval of pending design.</li>
+              <li>Keep verification commands and expected results in the plan-level Verification Matrix.</li>
               <li>When human judgment is especially valuable, add a Human Review Focus pill and matching content box. Omit both when no focus applies.</li>
             </ul>
           </article>
@@ -256,12 +258,12 @@
           </article>
 
           <article class="card">
-            <span class="label">Verification</span>
+            <span class="label">Verification Matrix</span>
             <h3>State the evidence needed for acceptance.</h3>
             <p class="card-copy">Use the smallest meaningful checks while preserving mandatory repository checks. Distinguish task checks, final integration checks, and explicitly required human checks.</p>
             <ul>
-              <li>Must stay visible: flow, expected behavior, special environment notes.</li>
-              <li>Good shapes: verification table or concise checklist.</li>
+              <li>Must stay visible: task ID or integration scope, checks, commands or manual steps, expected results, and relevant environment notes.</li>
+              <li>Good shape: one plan-level verification table; keep task cards free of Verification fields and run-command bullets.</li>
             </ul>
           </article>
 
