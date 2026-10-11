@@ -11,6 +11,8 @@ Write an execution-ready handoff for a skilled engineer unfamiliar with the repo
 
 Honor an explicitly requested format or filename. Otherwise, default to Markdown. Produce both formats only when explicitly requested.
 
+Write the plan artifact to the OS temporary directory by default, resolving that directory through the host environment (for example, `tempfile.gettempdir()` or `os.tmpdir()`). Use a directory requested by the human instead, including a directory supplied as part of the output path. A filename alone changes the name, not the default directory. Report the resolved artifact path in the handoff.
+
 - For Markdown, write `plan-${implementation-task}.md` using a kebab-case task slug.
 - For HTML, write `plan-${implementation-task}.html` using the same slug. Before writing, read [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md), [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html), and [Plan Artifact Panel Reference](./example/plan-artifact-panel-reference.html), then use their contract and scaffold.
 
@@ -21,14 +23,16 @@ Expose these sections in order:
 1. Feature name
 2. Goal
 3. Architecture
-4. Tech stack
-5. File structure
+4. File structure
+5. Execution flow
 6. Dependency-aware tasks
-7. Verification
+7. Verification Matrix
 8. Progress tracking
 9. Out of scope
 
 Preserve the same implementation detail in Markdown and HTML.
+
+Record new dependencies, version constraints, and consequential technology choices in Architecture or the relevant task; omit a standalone Tech Stack section.
 
 Markdown plans must start with:
 
@@ -38,8 +42,6 @@ Markdown plans must start with:
 **Goal:** [One sentence describing what this builds]
 
 **Architecture:** [Two or three sentences describing the approach]
-
-**Tech Stack:** [Key technologies and libraries]
 
 ---
 ```
@@ -56,6 +58,10 @@ Distinguish confirmed constraints, proposed choices, and unresolved decisions. R
 
 Each task must produce one reviewable outcome with affected files or boundaries, dependencies, verification, and acceptance criteria. Use exact paths where established. Identify parallel tasks only when their dependencies and file ownership permit concurrent work; keep work sharing the same boundary in one coherent slice.
 
+Use one to three concise sentences for the description: state the outcome and purpose, adding context or prerequisites only when they help interpret the task. Keep actionable constraints, verification, and acceptance explicit in their respective fields or sections; extra description is not a substitute for omitted instructions.
+
+Use annotated diffs selectively to make structural changes easier to scan: affected files, interface-level shapes, or before/after behavior with concise comments. Label sketches as illustrative rather than executable patches. Keep constraints, failure behavior, reuse instructions, and unresolved decisions explicit alongside them. Preserve agent execution completeness over brevity; do not invent interfaces or settle decisions assigned to later design work. Use ordinary bullets or checklists when clearer, especially for investigation and design tasks.
+
 Require `@program-design` for a task that introduces or substantially reshapes modules, interfaces, types, file layout, dependencies, or control flow. Omit it for small fixes, local implementation changes, and mechanical edits.
 
 A plan is ready when a skilled implementer can proceed without inventing material requirements or making unapproved architectural decisions. An investigation or design step is actionable when its question, expected evidence or approved output, and dependent work are clear. Resolve choices that determine scope, dependencies, or acceptance before declaring the affected implementation ready; assigning an unresolved choice to implementation does not settle it.
@@ -66,8 +72,6 @@ A Human Review Focus is advisory. It never becomes a dependency, acceptance crit
 
 A focus identifies where human inspection is valuable. Record unresolved material decisions as prerequisites and explicitly required human checks in verification; neither can be replaced by an advisory focus.
 
-Plan the smallest meaningful verification for each outcome, preserving mandatory repository checks. Ground commands in repository tooling and specify expected results or manual steps where appropriate. Distinguish task checks from final integration checks. Require new tests or repeated broad checks only when the change, failures, or unresolved concerns justify them.
-
 Use this Markdown task contract:
 
 ````markdown
@@ -75,12 +79,17 @@ Use this Markdown task contract:
 
 **Title**: [Action-oriented task title].
 
-**Description**: [One short sentence explaining what this task accomplishes and why it exists.]
+**Description**: [One to three concise sentences explaining the outcome, purpose, and essential context.]
 
-- Create or modify `exact/path/to/file.ts` for [specific responsibility].
+**Changes** (illustrative shape, not an executable patch; use bullets instead when clearer):
+
+```diff
++ exact/path/to/file.ts
++ // [Responsibility of the proposed new file.]
+```
+
 - Reuse `exact/path/to/reference.ts` for [existing pattern, type, or behavior].
 - Preserve [named constraint, public API, or runtime behavior].
-- Run `exact verification command`; expect [observable result].
 
 **Required skills**: `@skill-name` when the task depends on one; otherwise omit this field.
 
@@ -99,9 +108,23 @@ Adapt the instruction bullets and `Produces` to the task: investigation or desig
 
 For HTML plans, render the same task fields visibly inside task cards, tables, or sections. When a task has a Human Review Focus, add a `Human Review Focus` pill after its dependency pill and a matching content box beside `Produces` and `Acceptance`. Omit both when no focus applies.
 
+## Execution Flow
+
+Use a Mermaid task-dependency diagram with the task IDs as labels. Keep runtime behavior diagrams in Architecture or the relevant design context. Preserve dependency meaning in nearby text and task dependency fields so the plan remains usable without diagram rendering. In Markdown, use a fenced `mermaid` block; for HTML, follow the renderer and fallback guidance.
+
+## Verification Matrix
+
+Collect verification commands, expected results, and required manual checks in one plan-level `Verification Matrix`, keyed by task ID or integration scope. Do not add per-task Verification fields or run-command bullets. Tasks may still identify test files and behavior coverage as implementation work.
+
+Plan the smallest meaningful verification for each outcome, preserving mandatory repository checks. Ground commands in repository tooling and specify expected results or manual steps where appropriate. Distinguish task checks from final integration checks. Require new tests or repeated broad checks only when the change, failures, or unresolved concerns justify them.
+
+| Task or integration scope | What to verify | Command or manual steps and expected result |
+| --- | --- | --- |
+| `task-id` | [Observable behavior or constraint] | `[exact command]`; expect [result]. |
+
 ## Progress Tracking
 
-Place `Progress Tracking` between `Verification` and `Out of Scope`, in the plan file:
+Place `Progress Tracking` between `Verification Matrix` and `Out of Scope`, in the plan file:
 
 ```markdown
 ## Progress Tracking

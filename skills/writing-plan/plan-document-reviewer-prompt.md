@@ -36,7 +36,7 @@ Task tool (general-purpose):
     | Spec Alignment | Plan covers the supplied requirements and overrides without unsupported scope expansion |
     | Task Decomposition | Boundaries reflect deliverables and integration needs; parallel tasks have compatible dependencies and file ownership |
     | Buildability | Existing paths and commands are grounded; proposed files are labeled; material decisions are settled or assigned actionable prerequisites |
-    | Verification | Checks establish acceptance with proportional evidence; task checks, final integration checks, and required human checks are distinguished |
+    | Verification | Plan-level Verification Matrix maps task IDs or integration scope to proportionate checks and expected results, retaining mandatory repository and required human checks; task cards do not duplicate verification fields or run commands |
     | Human Review Focus | Judgment-sensitive work has precise advisory focus items; each names the target surface, judgment to apply, and limit of agent or automated validation |
     | Format Fidelity | If HTML, all implementation-critical sections remain visible and no key detail is hidden behind presentation or omitted during summarization |
 
@@ -47,10 +47,10 @@ Task tool (general-purpose):
     - Feature title
     - Goal
     - Architecture
-    - Tech stack
     - File structure or file inventory
+    - Execution flow
     - Dependency-aware tasks
-    - Verification
+    - Verification Matrix
     - Progress tracking
     - Out of scope
 
@@ -66,6 +66,14 @@ Task tool (general-purpose):
     when its question, expected evidence or approved output, and dependent work
     are clear. Downstream work remains conditional until its prerequisites are met.
     Do not demand final file boundaries before the design that establishes them.
+
+    Descriptions may use one to three concise sentences. Annotated diffs are
+    optional presentation, not executable patches or approval of pending design.
+    Check that compression preserves constraints, failure behavior, prerequisites,
+    and acceptance. Investigation and design tasks may use checklists instead.
+    Technology decisions belong in Architecture or relevant tasks; a standalone
+    Tech Stack section is not required. Execution Flow uses Mermaid task IDs
+    with readable dependency information available without rendering.
 
     For each blocking issue, cite the conflicting requirement or repository evidence
     and explain the concrete implementation consequence. For a material evidence

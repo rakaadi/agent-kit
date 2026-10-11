@@ -26,11 +26,11 @@ Example architectures, APIs, phases, and migration sequences are illustrative. D
 
 ## Output Rules
 
-- Write a single self-contained `plan-${implementation-task}.html` file using a kebab-case task slug. Example: `plan-firebase-services.html`. HTML may be the sole plan artifact. When converting an existing plan, retain its slug and reference that source; create both formats only when explicitly requested.
+- Write a single `plan-${implementation-task}.html` file using a kebab-case task slug and the output-directory rules in `SKILL.md` (OS temporary directory unless the human requests another directory). Example: `plan-firebase-services.html`. HTML may be the sole plan artifact. When converting an existing plan, retain its slug and reference that source; create both formats only when explicitly requested. Resolve source links from the output location, using absolute paths when needed.
 - Load Tailwind from the CDN (`<script src="https://cdn.tailwindcss.com"></script>`) for styling. Use `<style type="text/tailwindcss">` with `@apply` to define reusable component patterns. Keep any remaining custom CSS minimal and embedded.
-- Use JavaScript only for lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
-- Tailwind CDN is the only permitted remote asset by default. Avoid all other remote scripts, remote stylesheets, or build steps.
-- If the user explicitly asks for a higher-fidelity diagram renderer, a CDN-hosted Mermaid runtime is acceptable for the execution-flow section as long as nearby text notes or a fallback still preserve the sequencing meaning.
+- Use JavaScript for Mermaid rendering and lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
+- Tailwind and Mermaid CDN runtimes are the default remote assets; keep other assets embedded and avoid build steps. A single HTML file still depends on network access or cache for these runtimes.
+- Render Execution Flow with Mermaid task dependencies. Keep the graph source in the HTML and visible sequencing notes nearby so failed CDN loading or disabled JavaScript does not remove dependency meaning.
 - If the diagram becomes dense enough that static rendering hurts readability, a CDN-hosted Panzoom runtime is acceptable for drag, wheel-zoom, pinch-zoom, and reset interactions on Mermaid-rendered SVGs.
 - Keep the document readable with JavaScript disabled.
 - Make the layout responsive enough for desktop and mobile review.
@@ -47,10 +47,10 @@ Required visible content:
 1. Feature title
 2. Goal
 3. Architecture
-4. Tech stack
-5. File structure or file inventory
+4. File structure or file inventory
+5. Execution flow
 6. Dependency-aware tasks
-7. Verification
+7. Verification Matrix
 8. Progress tracking
 9. Out of scope
 
@@ -67,11 +67,13 @@ When in doubt, keep the section arrangement aligned with `./example/plan-artifac
 ## Extension Rules
 
 - Keep the header summary, table of contents, execution flow, task sections, verification, and out-of-scope sections as first-class reading surfaces.
-- Render `Progress Tracking` as its own visible section between `Verification` and `Out of Scope`.
+- Render `Progress Tracking` as its own visible section between `Verification Matrix` and `Out of Scope`.
 - Use the same field labels as the Markdown contract: `Current status`, `Started on`, `Completed on`, `Last executed tasks`, `Current blocker or next focus`, and `Unplanned necessary work` when present.
 - Merge dependency flow and sequencing into one `Execution Flow` section when they describe the same rollout story.
-- A Mermaid diagram is a good fit when it materially improves readability over an improvised ASCII diagram, but keep nearby text so the sequencing meaning survives without the graphic.
+- Label Mermaid nodes with task IDs and keep runtime behavior diagrams in Architecture or the relevant design context.
 - Every task block should show Task ID, Title, Description, Produces, and Acceptance.
+- Follow `SKILL.md` for one-to-three-sentence descriptions and selective annotated diffs. Render illustrative diffs in readable `<pre>` blocks, with constraints and other actionable instructions alongside them. Keep ordinary bullets or checklists when clearer.
+- Keep verification commands, expected results, and required manual checks exclusively in the plan-level `Verification Matrix`, keyed by task ID or integration scope; omit per-task Verification fields and run-command bullets.
 - Dependency information should appear exactly once. Prefer a top-of-card dependency chip or label instead of repeating the same `Depends on` value again inside the lower metadata grid.
 - When a task has a Human Review Focus, place a `Human Review Focus` pill after the dependency pill and show its full focus in a content box beside `Produces` and `Acceptance`. Use a responsive three-column row, give the focus slightly more room, and stack the boxes on narrow screens. Omit the pill and box when no focus applies.
 - Keep each Human Review Focus advisory and precise: name the narrowest stable implementation surface, the judgment the human should apply, and why agent or automated validation is insufficient. Show at most three focus items.
