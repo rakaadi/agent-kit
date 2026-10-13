@@ -1,6 +1,7 @@
 ---
 name: review-implementation
 description: Review a completed implementation against its complete plan through independent spec-compliance and code-quality review, confirmed-finding remediation, blind rereview, convergence control, and optional human-authorized architectural review. Use when execute-plan reaches its complete-plan gate or a user explicitly requests this review with a complete implementation packet.
+disable-model-invocation: true
 ---
 
 # Review Implementation

@@ -1,6 +1,7 @@
 ---
 name: execute-plan
 description: Execute or resume an attached or referenced implementation plan through repository inspection, implementation, verification, and complete-plan review. Use for full or partial plan execution, including free-form instructions to select phases or task IDs, skip work, delegate a task independently, reserve checks for a human, or impose task-specific constraints.
+disable-model-invocation: true
 ---
 
 # Execute Plan

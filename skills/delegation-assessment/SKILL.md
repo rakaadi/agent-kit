@@ -1,6 +1,7 @@
 ---
 name: delegation-assessment
 description: Assess whether recorded implementation work is bounded and verifiable enough to delegate.
+disable-model-invocation: true
 ---
 
 # Delegation Assessment
