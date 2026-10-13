@@ -1,6 +1,7 @@
 ---
 name: fix-repository-diagnostics
 description: Verify or fix diagnostic findings in JavaScript/TypeScript repositories using project tooling. Use for project-wide checks or a scoped repair batch.
+disable-model-invocation: true
 ---
 
 # Fix Repository Diagnostics

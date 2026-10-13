@@ -1,6 +1,7 @@
 ---
 name: writing-plan
 description: Use when you have a spec or requirements for a multi-step task, before touching code. Supports either Markdown plans or review-oriented HTML plan artifacts.
+disable-model-invocation: true
 ---
 
 ## Overview
