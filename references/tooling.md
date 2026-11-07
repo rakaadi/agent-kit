@@ -16,7 +16,7 @@ Use `fff` tools (`find_files`, `grep`, `multi_grep`) instead of `grep`/`rg` for:
 
 ### Serena — Semantic Understanding
 
-Activate the current project before using Serena in a new repository session.
+First Serena use for this cwd in this transcript: run initial_instructions then activate_project, reuse that session id thereafter.
 
 Use Serena for:
 
