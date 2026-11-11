@@ -22,11 +22,11 @@
       @layer base {
         body {
           margin: 0;
-          color: #122033;
+          color: #141413;
           font: 16px/1.6 theme('fontFamily.sans');
           background:
-            radial-gradient(circle at top left, rgba(64, 112, 219, 0.22), transparent 28%),
-            linear-gradient(180deg, #1a2440 0, #0d1421 240px, #08101a 100%);
+            radial-gradient(circle at top left, rgba(232, 230, 220, 0.06), transparent 28%),
+            linear-gradient(180deg, #30302e 0, #1f1f1d 240px, #141413 100%);
         }
         code {
           @apply font-mono;
@@ -35,8 +35,8 @@
           font-size: 0.86em;
           line-height: 1.25;
           border-radius: 7px;
-          background: #edf2fa;
-          border: 1px solid #d5dfec;
+          background: #f0eee6;
+          border: 1px solid #e5e3d8;
         }
         h1,
         h2,
@@ -57,8 +57,8 @@
           padding: 28px 20px 64px;
         }
         .panel {
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.98));
-          @apply border border-[#cad4e0] rounded-[18px] shadow-[0_20px_48px_rgba(18,32,51,0.08)];
+          background: linear-gradient(180deg, #faf9f5, #f5f4ed);
+          @apply border border-[#d8d5c8] rounded-[18px] shadow-[0_20px_48px_rgba(20,20,19,0.08)];
         }
         .hero,
         section.panel {
@@ -66,13 +66,13 @@
         }
         .eyebrow {
           margin-bottom: 0.75rem;
-          @apply text-[#0f3b80] text-[0.8rem] font-bold tracking-[0.14em] uppercase;
+          @apply text-[#1b365d] text-[0.8rem] font-bold tracking-[0.14em] uppercase;
         }
         .hero-copy,
         .section-copy,
         .card-copy,
         li {
-          @apply text-[#556476];
+          @apply text-[#504e49];
         }
         .hero-copy {
           max-width: 68ch;
@@ -83,7 +83,7 @@
           margin-top: 1.1rem;
         }
         .link-chip {
-          @apply inline-flex items-center border border-[#cfe0f7] bg-[#eef4ff] text-[#0f3b80] font-bold no-underline;
+          @apply inline-flex items-center border border-[#d8d5c8] bg-[#e4ecf5] text-[#1b365d] font-bold no-underline;
           padding: 0.45rem 0.8rem;
           border-radius: 999px;
         }
@@ -95,7 +95,7 @@
         }
         .card {
           padding: 18px;
-          @apply border border-[#cad4e0] rounded-lg bg-[#fffdf9];
+          @apply border border-[#d8d5c8] rounded-lg bg-[#faf9f5];
         }
         .card h3 {
           margin-bottom: 0.5rem;
@@ -103,7 +103,7 @@
         .label {
           display: inline-block;
           margin-bottom: 0.55rem;
-          @apply text-[#0f3b80] text-[0.76rem] font-bold tracking-[0.1em] uppercase;
+          @apply text-[#1b365d] text-[0.76rem] font-bold tracking-[0.1em] uppercase;
         }
         ul {
           margin: 0.8rem 0 0;
@@ -138,7 +138,7 @@
         <div class="eyebrow">Panel Purpose Map</div>
         <h1>Plan Artifact Panel Reference</h1>
         <p class="hero-copy">
-          This page explains each panel's purpose. The Firebase-derived architecture and migration examples are illustrative; derive each plan's technical approach from its requirements and repository evidence.
+          Use this map to choose each panel's content. Derive the technical approach from requirements and repository evidence; the architecture and migration examples are illustrative.
         </p>
         <div class="link-row">
           <a class="link-chip" href="./plan-artifact-skeleton.html">Open the full skeleton</a>
@@ -149,17 +149,17 @@
         <div class="eyebrow">How To Use</div>
         <h2>Stable panel intent</h2>
         <p class="section-copy">
-          Do not invent new top-level sections just to rephrase the same content. If the source plan contains one of these concepts, extend the matching panel from the skeleton instead of moving it somewhere else.
+          Place each concept in its matching skeleton panel. Add a top-level section only for distinct content.
         </p>
 
         <div class="grid">
           <article class="card">
             <span class="label">Header Summary</span>
-            <h3>Orient the reviewer before the scroll starts.</h3>
+            <h3>Orient the reviewer at a glance.</h3>
             <p class="card-copy">Carry the title, goal, architecture, and execution metadata in a compact first screen. Record material technology choices in Architecture or the relevant task.</p>
             <ul>
-              <li>Must stay visible: title, goal, architecture, status or scope metadata.</li>
-              <li>Good shapes: summary cards plus a metadata card.</li>
+              <li>Keep visible: title, goal, architecture, status or scope metadata.</li>
+              <li>Suggested layout: summary cards plus a metadata card.</li>
             </ul>
           </article>
 
@@ -168,8 +168,8 @@
             <h3>Keep long plans skimmable.</h3>
             <p class="card-copy">Mirror the real sections with anchor links so reviewers can jump without losing context.</p>
             <ul>
-              <li>Must stay visible: the real section list, not a decorative outline.</li>
-              <li>Good shapes: sticky sidebar or compact top nav.</li>
+              <li>Keep visible: anchor links matching the actual sections.</li>
+              <li>Suggested layout: sticky sidebar or compact top nav.</li>
             </ul>
           </article>
 
@@ -178,8 +178,8 @@
             <h3>Record confirmed implementation constraints.</h3>
             <p class="card-copy">Record a decision as locked only when supported by an explicit requirement, established constraint, or approval. Keep proposals and pending decisions distinct.</p>
             <ul>
-              <li>Must stay visible: decision name, chosen constraint, and its source.</li>
-              <li>Good shapes: two-column comparison table.</li>
+              <li>Keep visible: decision name, chosen constraint, and its source.</li>
+              <li>Suggested layout: two-column comparison table.</li>
             </ul>
           </article>
 
@@ -188,8 +188,8 @@
             <h3>Explain why the refactor exists.</h3>
             <p class="card-copy">Point to the current files, flows, or ownership tangles that create the migration pressure.</p>
             <ul>
-              <li>Must stay visible: file or flow, current responsibility, reason it matters.</li>
-              <li>Good shapes: table or tightly structured cards.</li>
+              <li>Keep visible: file or flow, current responsibility, reason it matters.</li>
+              <li>Suggested layout: table or tightly structured cards.</li>
             </ul>
           </article>
 
@@ -198,8 +198,8 @@
             <h3>Show the destination structure.</h3>
             <p class="card-copy">Make the proposed file layout, key boundaries, and public surface concrete where established. Identify pending design and its dependent work where the shape remains unresolved.</p>
             <ul>
-              <li>Must stay visible: folder shape, boundary notes, planned public surface when applicable.</li>
-              <li>Good shapes: two-up panels plus a monospace API block.</li>
+              <li>Keep visible: folder shape, boundary notes, planned public surface when applicable.</li>
+              <li>Suggested layout: two-up panels plus a monospace API block.</li>
             </ul>
           </article>
 
@@ -208,8 +208,8 @@
             <h3>Identify affected files and responsibilities.</h3>
             <p class="card-copy">Distinguish inspected existing files, proposed new files, and boundaries awaiting design. Show known changes and their purpose without presenting speculative paths as final.</p>
             <ul>
-              <li>Must stay visible: established paths, proposed files, responsibilities, and prerequisites for unresolved boundaries.</li>
-              <li>Good shapes: create and modify tables in a two-up layout.</li>
+              <li>Keep visible: established paths, proposed files, responsibilities, and prerequisites for unresolved boundaries.</li>
+              <li>Suggested layout: create and modify tables in a two-up layout.</li>
             </ul>
           </article>
 
@@ -218,8 +218,8 @@
             <h3>Show order, gates, and parallelism together.</h3>
             <p class="card-copy">Show task dependencies with Mermaid and task IDs, alongside readable sequencing notes. Keep runtime behavior diagrams in the relevant design context.</p>
             <ul>
-              <li>Must stay visible: dependency order plus nearby text that preserves the same meaning.</li>
-              <li>Good shapes: Mermaid task graph with sequencing notes that remain readable without JavaScript or network access.</li>
+              <li>Keep visible: dependency order plus nearby text that preserves the same meaning.</li>
+              <li>Suggested layout: Mermaid task graph with sequencing notes that remain readable without JavaScript or network access.</li>
             </ul>
           </article>
 
@@ -228,18 +228,18 @@
             <h3>Turn the plan into executable work.</h3>
             <p class="card-copy">Group tasks by a real rollout phase or workstream so review tracks how the work lands.</p>
             <ul>
-              <li>Must stay visible: phase purpose and a repeatable task-card structure.</li>
-              <li>Good shapes: one panel per phase with a vertical stack of cards.</li>
+              <li>Keep visible: phase purpose and a repeatable task-card structure.</li>
+              <li>Suggested layout: one panel per phase with a vertical stack of cards.</li>
             </ul>
           </article>
 
           <article class="card">
             <span class="label">Task Card</span>
             <h3>Make each task independently reviewable.</h3>
-            <p class="card-copy">This is the smallest execution unit. Keep the metadata obvious so reviewers can reason about scope without opening another section.</p>
+            <p class="card-copy">Show the execution unit and its metadata together so reviewers can assess its scope.</p>
             <ul>
-              <li>Must stay visible: task ID, title, description, produces, acceptance, and exactly one dependency marker.</li>
-              <li>Good shapes: chips at the top, one-to-three-sentence description, selective annotated diff with explicit constraints or a checklist, metadata grid at the bottom.</li>
+              <li>Keep visible: task ID, title, description, produces, acceptance, and exactly one dependency marker.</li>
+              <li>Suggested layout: chips at the top, one-to-three-sentence description, selective annotated diff with explicit constraints or a checklist, metadata grid at the bottom.</li>
               <li>Label diff sketches as illustrative; preserve failure behavior and prerequisites without implying approval of pending design.</li>
               <li>Keep verification commands and expected results in the plan-level Verification Matrix.</li>
               <li>When human judgment is especially valuable, add a Human Review Focus pill and matching content box. Omit both when no focus applies.</li>
@@ -249,10 +249,10 @@
           <article class="card">
             <span class="label">Human Review Focus</span>
             <h3>Point human judgment at the narrowest valuable surface.</h3>
-            <p class="card-copy">The focus is an advisory review map, never an acceptance condition, verification result, task state, or completion gate. Record unresolved material decisions as prerequisites and explicitly required human checks in verification.</p>
+            <p class="card-copy">Use the advisory focus rules in SKILL.md: name the surface, judgment, and validation limit. Record unresolved material decisions as prerequisites and explicitly required human checks in verification.</p>
             <ul>
-              <li>Must stay visible when present: the target surface, the judgment to apply, and why agent or automated validation is insufficient.</li>
-              <li>Good shapes: a pill after the dependency marker and a slightly wider third metadata box beside Produces and Acceptance.</li>
+              <li>Keep visible when present: the target surface, the judgment to apply, and why agent or automated validation is insufficient.</li>
+              <li>Suggested layout: a pill after the dependency marker and a slightly wider third metadata box beside Produces and Acceptance.</li>
               <li>Use at most three concise focus items; split or prioritize instead of recreating line-by-line review.</li>
             </ul>
           </article>
@@ -262,39 +262,39 @@
             <h3>State the evidence needed for acceptance.</h3>
             <p class="card-copy">Use the smallest meaningful checks while preserving mandatory repository checks. Distinguish task checks, final integration checks, and explicitly required human checks.</p>
             <ul>
-              <li>Must stay visible: task ID or integration scope, checks, commands or manual steps, expected results, and relevant environment notes.</li>
-              <li>Good shape: one plan-level verification table; keep task cards free of Verification fields and run-command bullets.</li>
+              <li>Keep visible: task ID or integration scope, checks, commands or manual steps, expected results, and relevant environment notes.</li>
+              <li>Suggested layout: one plan-level verification table; keep task cards free of Verification fields and run-command bullets.</li>
             </ul>
           </article>
 
           <article class="card">
             <span class="label">Progress Tracking</span>
             <h3>Keep execution state visible without reading every task card.</h3>
-            <p class="card-copy">This panel is the handoff surface for a fresh or in-flight plan. It should show the current state, the latest task movement, and any blocker or necessary out-of-band work.</p>
+            <p class="card-copy">Show execution state, recent tasks, and blockers for a fresh or in-flight handoff. Record necessary work outside the task list when it occurs.</p>
             <ul>
-              <li>Must stay visible: current status, started on, completed on, last executed tasks, current blocker or next focus, and unplanned necessary work when it exists.</li>
-              <li>Good shapes: compact metadata grid plus a short execution-notes list.</li>
+              <li>Keep visible: current status, started on, completed on, last executed tasks, current blocker or next focus, and unplanned necessary work when it exists.</li>
+              <li>Suggested layout: compact metadata grid plus a short execution-notes list.</li>
             </ul>
           </article>
 
           <article class="card">
             <span class="label">Out of Scope</span>
             <h3>Protect the plan boundary.</h3>
-            <p class="card-copy">Name the tempting adjacent work that this plan will not absorb, so execution does not widen silently.</p>
+            <p class="card-copy">Name adjacent work excluded from the plan to keep execution within scope.</p>
             <ul>
-              <li>Must stay visible: explicit exclusions and a source-plan reference when converting an existing plan.</li>
-              <li>Good shapes: numbered list plus a short source reference note.</li>
+              <li>Keep visible: explicit exclusions and a source-plan reference when converting an existing plan.</li>
+              <li>Suggested layout: numbered list plus a short source reference note.</li>
             </ul>
           </article>
 
           <article class="card full">
             <span class="label">Optional Panels</span>
             <h3>Add only when the source plan actually contains new information.</h3>
-            <p class="card-copy">Risks, open questions, rollout notes, or ADR links can be added, but only when they carry new semantics that do not already belong in one of the stable panels above.</p>
+            <p class="card-copy">Add risks, open questions, rollout notes, or ADR links when they carry distinct content beyond the existing panels.</p>
             <ul>
-              <li>Do not create new panels just to restate goal, architecture, or task information in a second format.</li>
-              <li>If the source plan has no locked decisions or hotspots, the related sections may be omitted, but the task, verification, and out-of-scope sections remain required.</li>
-              <li>When in doubt, extend the existing skeleton rather than designing a new information architecture.</li>
+              <li>Keep goal, architecture, and task content in their existing panels.</li>
+              <li>Omit optional panels such as locked decisions or hotspots when empty. Preserve all required sections from SKILL.md.</li>
+              <li>Extend the existing skeleton by default.</li>
             </ul>
           </article>
         </div>

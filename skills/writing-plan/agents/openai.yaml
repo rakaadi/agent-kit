@@ -1,6 +1,6 @@
 interface:
   display_name: "Writing Plan"
-  short_description: "Create implementation plans with explicit tasks and review gates"
+  short_description: "Create implementation plans with explicit tasks and verification"
   default_prompt: "Use $writing-plan to create the implementation plan from my requirements and follow any format constraints in my prompt."
 
 policy:
