@@ -22,15 +22,15 @@
       @layer base {
         body {
           margin: 0;
-          color: #122033;
+          color: #141413;
           font: 16px/1.6 theme('fontFamily.sans');
           background:
-            radial-gradient(circle at top left, rgba(64, 112, 219, 0.22), transparent 28%),
-            radial-gradient(circle at top right, rgba(168, 112, 28, 0.12), transparent 22%),
-            linear-gradient(180deg, #1a2440 0, #0d1421 240px, #08101a 100%);
+            radial-gradient(circle at top left, rgba(232, 230, 220, 0.06), transparent 28%),
+            radial-gradient(circle at top right, rgba(245, 244, 237, 0.03), transparent 22%),
+            linear-gradient(180deg, #30302e 0, #1f1f1d 240px, #141413 100%);
         }
         a {
-          color: #0f3b80;
+          color: #1b365d;
         }
         code,
         pre,
@@ -43,8 +43,8 @@
           font-size: 0.86em;
           line-height: 1.25;
           border-radius: 7px;
-          background: #edf2fa;
-          border: 1px solid #d5dfec;
+          background: #f0eee6;
+          border: 1px solid #e5e3d8;
           overflow-wrap: anywhere;
         }
         pre {
@@ -52,10 +52,10 @@
           padding: 1rem 1.1rem;
           overflow-x: auto;
           white-space: pre-wrap;
-          background: #111a2a;
-          color: #eef4ff;
+          background: #30302e;
+          color: #f5f4ed;
           border-radius: 8px;
-          border: 1px solid #26344d;
+          border: 1px solid #504e49;
           line-height: 1.55;
         }
         h1,
@@ -86,25 +86,25 @@
           padding: 28px 20px 72px;
         }
         .panel {
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.98));
-          @apply border border-[#cad4e0] rounded-[18px] shadow-[0_20px_48px_rgba(18,32,51,0.08)];
+          background: linear-gradient(180deg, #faf9f5, #f5f4ed);
+          @apply border border-[#d8d5c8] rounded-[18px] shadow-[0_20px_48px_rgba(20,20,19,0.08)];
         }
         .hero {
           padding: 28px;
         }
         .overline {
           margin-bottom: 0.65rem;
-          @apply text-[#0f3b80] text-[0.8rem] font-bold tracking-[0.16em] uppercase;
+          @apply text-[#1b365d] text-[0.8rem] font-bold tracking-[0.16em] uppercase;
         }
         .hero-copy {
           max-width: 72ch;
           margin-top: 0.9rem;
-          @apply text-[#556476];
+          @apply text-[#504e49];
         }
         .callout {
           margin-top: 1.25rem;
           padding: 0.95rem 1rem;
-          @apply rounded-lg border-l-4 border-[#8a5a12] bg-[#fff6e8] text-[#5b431a];
+          @apply rounded-lg border-l-4 border-[#d8d5c8] bg-[#f0eee6] text-[#3d3d3a];
         }
         .hero-grid {
           display: grid;
@@ -133,7 +133,7 @@
         .task-card,
         .roadmap {
           padding: 18px;
-          @apply border border-[#cad4e0] rounded-lg bg-[#fffdf9];
+          @apply border border-[#d8d5c8] rounded-lg bg-[#faf9f5];
         }
         .meta-card h2,
         .summary-card h2,
@@ -153,14 +153,14 @@
         .meta-item,
         .task-meta > div {
           padding: 14px;
-          @apply rounded-lg bg-gradient-to-b from-[#fbfdff] to-[#f4f8ff] border border-[#d6e2f1];
+          @apply rounded-lg bg-gradient-to-b from-[#faf9f5] to-[#f5f4ed] border border-[#e5e3d8];
         }
         .meta-label,
         .kicker,
         .task-meta dt {
           display: block;
           margin-bottom: 0.45rem;
-          @apply text-[#0f3b80] text-[0.77rem] font-bold tracking-[0.12em] uppercase;
+          @apply text-[#1b365d] text-[0.77rem] font-bold tracking-[0.12em] uppercase;
         }
         .workspace {
           display: grid;
@@ -200,20 +200,20 @@
         .task-meta dd,
         .subpanel p,
         .subpanel li {
-          @apply text-[#556476];
+          @apply text-[#504e49];
         }
         .toc a {
           text-decoration: none;
-          @apply text-[#556476];
+          @apply text-[#504e49];
         }
         .toc a:hover,
         .toc a:focus-visible {
-          @apply text-[#0f3b80] underline;
+          @apply text-[#1b365d] underline;
         }
         .toc-note {
           margin-top: 1rem;
           padding-top: 1rem;
-          @apply border-t border-[#cad4e0];
+          @apply border-t border-[#d8d5c8];
           font-size: 0.92rem;
         }
         section.panel {
@@ -241,10 +241,10 @@
         th,
         td {
           padding: 0.85rem 0.9rem;
-          @apply border-b border-[#cad4e0] text-left align-top;
+          @apply border-b border-[#d8d5c8] text-left align-top;
         }
         th {
-          @apply text-[#0f3b80] text-[0.82rem] font-bold tracking-[0.1em] uppercase bg-[#f3f7fe];
+          @apply text-[#1b365d] text-[0.82rem] font-bold tracking-[0.1em] uppercase bg-[#f0eee6];
         }
         tr:last-child td {
           border-bottom: 0;
@@ -261,17 +261,17 @@
           font-weight: 700;
         }
         .task-id {
-          color: #ffffff;
-          @apply bg-[#0f3b80];
+          color: #faf9f5;
+          @apply bg-[#1b365d];
         }
         .task-phase {
-          @apply text-[#285e45] bg-[#e8f5ee] border border-[#cfe5d9];
+          @apply text-[#3d3d3a] bg-[#e8e6dc] border border-[#d8d5c8];
         }
         .task-dep {
-          @apply text-[#6b4a14] bg-[#fff3df] border border-[#efd7aa];
+          @apply text-[#504e49] bg-[#f0eee6] border border-[#d8d5c8];
         }
         .task-review {
-          @apply text-[#633c8f] bg-[#f3ebff] border border-[#d9c3f1];
+          @apply text-[#1b365d] bg-[#e4ecf5] border border-[#d8d5c8];
         }
         .task-title {
           margin-bottom: 0.8rem;
@@ -291,22 +291,22 @@
         }
         .flow-shell {
           padding: 16px;
-          @apply rounded-lg border border-[#d5e0ee] bg-gradient-to-b from-[#f8fbff] to-[#eff5fd];
+          @apply rounded-lg border border-[#e5e3d8] bg-gradient-to-b from-[#faf9f5] to-[#f5f4ed];
         }
         .mermaid {
-          background: #ffffff;
-          color: #122033;
-          border-color: #cddbf0;
+          background: #faf9f5;
+          color: #141413;
+          border-color: #d8d5c8;
           text-align: center;
         }
         .task-diff {
           margin: 1rem 0;
         }
         .diff-add {
-          color: #b3f0ce;
+          color: #faf9f5;
         }
         .diff-remove {
-          color: #ffd1ce;
+          color: #e8e6dc;
         }
         .footer-note {
           font-size: 0.95rem;
@@ -354,17 +354,17 @@
         <div class="overline">Plan Artifact Skeleton</div>
         <h1>Feature Implementation Plan</h1>
         <p class="hero-copy">
-          Start from this scaffold when generating <code>plan-${implementation-task}.html</code> in the OS temporary directory unless the human requests another directory. Keep the panel order and card anatomy stable unless the user requests a different layout.
+          Use this scaffold for <code>plan-${implementation-task}.html</code>, following the output rules in SKILL.md. Preserve panel order and card anatomy unless the user requests another layout.
         </p>
         <p class="callout">
-          Main job of the header: give a reviewer the title, the goal, the target architecture shape and the execution metadata before they scroll into task detail.
+          Show the title, goal, target architecture, and execution metadata before task details.
         </p>
 
         <div class="hero-grid">
           <div class="summary-stack">
             <section class="summary-card" aria-labelledby="goal-heading">
               <h2 id="goal-heading">Goal</h2>
-              <p>State the concrete change and the runtime behavior that must not regress.</p>
+              <p>State the concrete change and runtime behavior to preserve.</p>
             </section>
             <section class="summary-card" aria-labelledby="architecture-heading">
               <h2 id="architecture-heading">Architecture</h2>
@@ -413,7 +413,7 @@
             <li><a href="#out-of-scope">Out of Scope</a></li>
           </ol>
           <p class="toc-note">
-            The contents list is not decorative. It is the stable navigation contract for long plans.
+            Link to the actual sections so reviewers can navigate long plans.
           </p>
         </aside>
 
@@ -425,7 +425,7 @@
                 <div class="kicker">Plan Contract</div>
                 <h2 id="decisions-heading">Locked Decisions</h2>
               </div>
-              <p class="section-copy">Main point: record constraints supported by explicit requirements, repository evidence, or approved decisions, and identify their source.</p>
+              <p class="section-copy">Record confirmed constraints and their sources: explicit requirements, established repository constraints, or approvals.</p>
             </div>
             <div class="table-wrap">
               <table>
@@ -460,7 +460,7 @@
                 <div class="kicker">Context</div>
                 <h2 id="hotspots-heading">Current-State Hotspots</h2>
               </div>
-              <p class="section-copy">Main point: show which current files or flows make this plan necessary and what behavior they currently own.</p>
+              <p class="section-copy">Identify the files or flows that motivate the change and their current responsibilities.</p>
             </div>
             <div class="table-wrap">
               <table>
@@ -494,7 +494,7 @@
                 <div class="kicker">Target Design</div>
                 <h2 id="module-shape-heading">Target Module Shape</h2>
               </div>
-              <p class="section-copy">Main point: describe the target structure and distinguish approved boundaries from proposed choices or pending design. The service architecture shown here is illustrative; derive the actual shape from the request and repository evidence.</p>
+              <p class="section-copy">Describe the target structure, distinguishing approved boundaries, proposals, and pending design. Derive the actual shape from requirements and repository evidence; this service architecture is illustrative.</p>
             </div>
             <div class="two-up">
               <div class="subpanel">
@@ -530,7 +530,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">File Structure</div>
                 <h2 id="inventory-heading">File Inventory</h2>
               </div>
-              <p class="section-copy">Main point: identify known files and responsibilities, label proposed files, and name design prerequisites for boundaries that remain unresolved.</p>
+              <p class="section-copy">List known files and responsibilities, label proposed files, and name design prerequisites for unresolved boundaries.</p>
             </div>
             <div class="two-up">
               <div class="subpanel">
@@ -581,7 +581,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Execution Flow</div>
                 <h2 id="execution-flow-heading">Execution Flow</h2>
               </div>
-              <p class="section-copy">Main point: show actual prerequisites, compatible parallel work, and execution order. Replace the illustrative migration phases with those justified by this plan.</p>
+              <p class="section-copy">Show prerequisites, compatible parallel work, and execution order. Replace example phases with those justified by the plan.</p>
             </div>
             <div class="flow-layout">
               <div class="flow-visual">
@@ -613,7 +613,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Phase 1</div>
                 <h2 id="phase-1-heading">Establish the New Boundary</h2>
               </div>
-              <p class="section-copy">Main point: group task cards by a real execution phase or workstream so review can follow the rollout order.</p>
+              <p class="section-copy">Group tasks by execution phase or workstream to make rollout order clear.</p>
             </div>
             <div class="task-group">
               <article class="task-card" aria-labelledby="task-example-foundation">
@@ -664,7 +664,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Phase 2</div>
                 <h2 id="phase-2-heading">Migrate Consumers and Remove Transitional Surfaces</h2>
               </div>
-              <p class="section-copy">Main point: keep later consumer migration, regression, and cleanup work distinct from the initial extraction phase.</p>
+              <p class="section-copy">Group later consumer migration, regression, and cleanup separately from the initial extraction.</p>
             </div>
             <div class="task-group">
               <article class="task-card" aria-labelledby="task-example-migration">
@@ -749,7 +749,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Execution State</div>
                 <h2 id="progress-tracking-heading">Progress Tracking</h2>
               </div>
-              <p class="section-copy">Main point: show the current execution state, the most recent task movement, and any blocker or necessary out-of-band work without forcing the reviewer to infer it from task cards.</p>
+              <p class="section-copy">Show execution state, recent tasks, blockers, and necessary work outside the task list.</p>
             </div>
             <div class="two-up">
               <div class="subpanel">
@@ -790,7 +790,7 @@ featureService.subscribe(listener)</pre>
                 <div class="kicker">Guardrails</div>
                 <h2 id="out-of-scope-heading">Out of Scope</h2>
               </div>
-              <p class="section-copy">Main point: state the tempting adjacent work that this plan will not absorb.</p>
+              <p class="section-copy">Name adjacent work excluded from this plan.</p>
             </div>
             <ol class="list-tight">
               <li>Name unrelated platform upgrades, tooling setup, or parallel refactors that stay outside this workstream.</li>
@@ -807,7 +807,22 @@ featureService.subscribe(listener)</pre>
     <script type="module">
       try {
         const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
-        mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'strict' })
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'base',
+          securityLevel: 'strict',
+          themeVariables: {
+            background: '#faf9f5',
+            primaryColor: '#f0eee6',
+            primaryTextColor: '#141413',
+            primaryBorderColor: '#d8d5c8',
+            secondaryColor: '#f5f4ed',
+            tertiaryColor: '#e8e6dc',
+            lineColor: '#504e49',
+            textColor: '#141413',
+            edgeLabelBackground: '#faf9f5',
+          },
+        })
         await mermaid.run({ querySelector: '.mermaid' })
       } catch {
         // Sequencing notes remain readable when diagram rendering is unavailable.

@@ -1,18 +1,18 @@
 ---
 name: writing-plan
-description: Use when you have a spec or requirements for a multi-step task, before touching code. Supports either Markdown plans or review-oriented HTML plan artifacts.
+description: Write an execution-ready implementation plan from a spec or requirements, in Markdown or review-oriented HTML.
 disable-model-invocation: true
 ---
 
-## Overview
+Write an execution-ready handoff before implementation begins. Ground tasks in repository evidence, dependencies, verification, and observable acceptance criteria. Preserve user requirements, overrides, and approved decisions; leave routine coding choices to the implementer.
 
-Write an execution-ready handoff for a skilled engineer unfamiliar with the repository. Ground tasks in repository evidence, dependencies, verification, and observable acceptance criteria. Preserve user requirements, overrides, and approved decisions; leave routine implementation choices to the implementer.
+> **Writing guidance:** Follow the `writing-for-agents` skill when available to structure and phrase the plan.
 
 ## Output Mode
 
 Honor an explicitly requested format or filename. Otherwise, default to Markdown. Produce both formats only when explicitly requested.
 
-Write the plan artifact to the OS temporary directory by default, resolving that directory through the host environment (for example, `tempfile.gettempdir()` or `os.tmpdir()`). Use a directory requested by the human instead, including a directory supplied as part of the output path. A filename alone changes the name, not the default directory. Report the resolved artifact path in the handoff.
+Default to the OS temporary directory, resolved through the host environment (for example, `tempfile.gettempdir()` or `os.tmpdir()`). Use a human-requested directory when supplied, including one in an output path. A filename alone retains the default directory. Report the resolved artifact path in the handoff.
 
 - For Markdown, write `plan-${implementation-task}.md` using a kebab-case task slug.
 - For HTML, write `plan-${implementation-task}.html` using the same slug. Before writing, read [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md), [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html), and [Plan Artifact Panel Reference](./example/plan-artifact-panel-reference.html), then use their contract and scaffold.
@@ -31,7 +31,7 @@ Expose these sections in order:
 8. Progress tracking
 9. Out of scope
 
-Preserve the same implementation detail in Markdown and HTML.
+Preserve the same implementation detail in either format.
 
 Record new dependencies, version constraints, and consequential technology choices in Architecture or the relevant task; omit a standalone Tech Stack section.
 
@@ -49,29 +49,35 @@ Markdown plans must start with:
 
 ## Scope And File Structure
 
-Choose plan boundaries based on the requested handoff scope, shared acceptance criteria, and integration dependencies. Independently deliverable and testable subsystems may warrant separate plans; otherwise, keep them in one dependency-aware plan.
+Choose plan boundaries from the requested handoff scope, shared acceptance criteria, and integration dependencies. Split independently deliverable and testable subsystems when useful; otherwise, keep one dependency-aware plan.
 
-List known affected files and their responsibilities, verifying existing paths against the repository and labeling proposed new files. Follow the repository's existing organization, introducing a split only when the planned change requires a distinct boundary. Use this inventory to define task ownership and dependencies.
+Inventory known affected files and their responsibilities. Verify existing paths, label proposed files, and follow repository organization; introduce a split only for a distinct required boundary. Use the inventory to define task ownership and dependencies.
 
-Distinguish confirmed constraints, proposed choices, and unresolved decisions. Record a decision as locked only when supported by an explicit requirement, established constraint, or approved decision. When file boundaries depend on pending design work, identify the affected boundary and prerequisite instead of presenting speculative paths as final.
+Distinguish confirmed constraints, proposals, and unresolved decisions. Lock a decision only with an explicit requirement, established constraint, or approval. For boundaries awaiting design, name the boundary and its prerequisite; reserve final paths for established choices.
 
 ## Task Structure
 
-Each task must produce one reviewable outcome with affected files or boundaries, dependencies, verification, and acceptance criteria. Use exact paths where established. Identify parallel tasks only when their dependencies and file ownership permit concurrent work; keep work sharing the same boundary in one coherent slice.
+Give each task one reviewable outcome, affected files or boundaries, dependencies, acceptance criteria, and verification coverage in the plan-level matrix. Use established exact paths. Mark tasks parallel only when dependencies and file ownership permit it; keep work on a shared boundary in one coherent slice.
 
-Use one to three concise sentences for the description: state the outcome and purpose, adding context or prerequisites only when they help interpret the task. Keep actionable constraints, verification, and acceptance explicit in their respective fields or sections; extra description is not a substitute for omitted instructions.
+Describe the outcome, purpose, and essential context in one to three concise sentences. Put actionable constraints and acceptance in their fields or instruction bullets, and verification in the matrix.
 
-Use annotated diffs selectively to make structural changes easier to scan: affected files, interface-level shapes, or before/after behavior with concise comments. Label sketches as illustrative rather than executable patches. Keep constraints, failure behavior, reuse instructions, and unresolved decisions explicit alongside them. Preserve agent execution completeness over brevity; do not invent interfaces or settle decisions assigned to later design work. Use ordinary bullets or checklists when clearer, especially for investigation and design tasks.
+Use annotated diffs when they clarify affected files, interface shapes, or before/after behavior. Label them illustrative and keep comments concise. State constraints, failure behavior, reuse instructions, and unresolved decisions alongside them. Use bullets or checklists when clearer, especially for investigation or design. Preserve execution detail. Leave interfaces and decisions assigned to later design work open; identify their prerequisites and dependent work.
 
-Require `@program-design` for a task that introduces or substantially reshapes modules, interfaces, types, file layout, dependencies, or control flow. Omit it for small fixes, local implementation changes, and mechanical edits.
+Require `@program-design` for tasks that introduce or substantially reshape modules, interfaces, types, file layout, dependencies, or control flow. Omit it for small fixes, local implementation changes, and mechanical edits.
 
-A plan is ready when a skilled implementer can proceed without inventing material requirements or making unapproved architectural decisions. An investigation or design step is actionable when its question, expected evidence or approved output, and dependent work are clear. Resolve choices that determine scope, dependencies, or acceptance before declaring the affected implementation ready; assigning an unresolved choice to implementation does not settle it.
+### Readiness
 
-Assess every task for a Human Review Focus. Add one only when correctness depends materially on product, domain, architectural, security, privacy, or UX judgment that automated checks and agent reviews cannot establish. The category alone is insufficient: routine UI styling and other mechanical changes do not qualify by default.
+A plan is ready when an implementer can proceed without inventing material requirements or making unapproved architectural decisions. An investigation or design task is actionable when its question, expected evidence or approved output, and dependent work are clear. Settle choices affecting scope, dependencies, or acceptance before declaring dependent implementation ready; until then, record them as prerequisites.
 
-A Human Review Focus is advisory. It never becomes a dependency, acceptance criterion, verification result, task state, review gate, or completion gate. Name the narrowest stable file, symbol, screen, workflow, policy, or boundary; state the judgment the human should apply; and explain why agent or automated validation is insufficient. Reject broad directions such as "review the business logic" or "review the UI." Use at most three focus items in one task; split an overloaded task or prioritize its highest-risk areas instead of adding more.
+### Human Review Focus
 
-A focus identifies where human inspection is valuable. Record unresolved material decisions as prerequisites and explicitly required human checks in verification; neither can be replaced by an advisory focus.
+Assess every task for judgment that automated checks and agent reviews cannot establish. Add an advisory Human Review Focus only when correctness materially depends on product, domain, architectural, security, privacy, or UX judgment. Category membership alone, including routine styling, does not qualify.
+
+For each focus, name the narrowest stable file, symbol, screen, workflow, policy, or boundary; state the judgment to apply and why agent or automated validation is insufficient. Limit each task to three items; split an overloaded task or prioritize its highest-risk areas.
+
+Keep the focus advisory: it creates no dependency, acceptance criterion, verification result, task state, review gate, or completion gate. Record unresolved material decisions as prerequisites and explicitly required human checks in verification.
+
+### Task Template
 
 Use this Markdown task contract:
 
@@ -107,17 +113,17 @@ Use this Markdown task contract:
 
 Adapt the instruction bullets and `Produces` to the task: investigation or design work should name its evidence or design artifact and affected boundary rather than invent final implementation paths. Omit the Human Review Focus blockquote when no focus applies.
 
-For HTML plans, render the same task fields visibly inside task cards, tables, or sections. When a task has a Human Review Focus, add a `Human Review Focus` pill after its dependency pill and a matching content box beside `Produces` and `Acceptance`. Omit both when no focus applies.
+For HTML, render these fields visibly using the task-card presentation in [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md#task-cards).
 
 ## Execution Flow
 
-Use a Mermaid task-dependency diagram with the task IDs as labels. Keep runtime behavior diagrams in Architecture or the relevant design context. Preserve dependency meaning in nearby text and task dependency fields so the plan remains usable without diagram rendering. In Markdown, use a fenced `mermaid` block; for HTML, follow the renderer and fallback guidance.
+Show task dependencies in Mermaid with task IDs as labels, backed by nearby sequencing text and task dependency fields. Put runtime behavior diagrams in Architecture or the relevant design context. Use a fenced `mermaid` block in Markdown and the renderer and fallback guidance for HTML.
 
 ## Verification Matrix
 
-Collect verification commands, expected results, and required manual checks in one plan-level `Verification Matrix`, keyed by task ID or integration scope. Do not add per-task Verification fields or run-command bullets. Tasks may still identify test files and behavior coverage as implementation work.
+Keep verification commands, expected results, and required manual checks exclusively in one plan-level `Verification Matrix`, keyed by task ID or integration scope. Task cards may name test files and behavior coverage as implementation work; reserve Verification fields and run commands for the matrix.
 
-Plan the smallest meaningful verification for each outcome, preserving mandatory repository checks. Ground commands in repository tooling and specify expected results or manual steps where appropriate. Distinguish task checks from final integration checks. Require new tests or repeated broad checks only when the change, failures, or unresolved concerns justify them.
+Use the smallest meaningful checks for each outcome while preserving mandatory repository checks. Ground commands in repository tooling, specify expected results and any manual steps, and distinguish task checks from final integration checks. Add tests or repeat broad checks only when changes, failures, or unresolved concerns justify them.
 
 | Task or integration scope | What to verify | Command or manual steps and expected result |
 | --- | --- | --- |
@@ -138,9 +144,3 @@ Place `Progress Tracking` between `Verification Matrix` and `Out of Scope`, in t
 ```
 
 Use `Not started`, `In progress`, `Blocked`, or `Completed` for `Current status`. Record executed task IDs newest first. Add `Unplanned necessary work` only when execution requires work outside the original task list.
-
-## Plan Review Loop
-
-After writing the plan, dispatch one reviewer using [Plan Document Reviewer Prompt](./plan-document-reviewer-prompt.md). Supply the plan path, repository location, requirements or spec paths, user overrides, and approved decisions, including relevant context established in conversation. A separate spec file is not required when the requirements are supplied directly. Resolve substantiated issues, then review the complete plan again. Reviewer approval completes the plan handoff; required design approvals and unresolved prerequisites still govern when affected implementation may begin.
-
-After three unsuccessful review cycles, present each unresolved objection with its disposition or rebuttal and ask the user to decide.

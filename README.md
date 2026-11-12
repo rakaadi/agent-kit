@@ -2,18 +2,28 @@
 
 Agent Kit packages reusable skills for coding agents. Its root manifest and portable components follow the [Agent Plugins standard](https://github.com/agentplugins/agent-plugins-spec).
 
+## Install
+
+Install skills with the [`skills` CLI](https://github.com/vercel-labs/skills):
+
+```bash
+npx skills add rakaadi/agent-kit
+```
+
 ## Repository Layout
 
 ```text
 .
 ├── plugin.json    # Agent Plugins manifest
+├── GLOSSARY.md    # Shared project terminology
 ├── skills/        # Portable Agent Skills
 ├── agents/        # Client-specific custom agents
-├── instructions/  # Reusable repository-instruction templates
+├── references/    # Instruction templates, testing guidance, and coding policies
+├── docs/          # Supporting documentation
 └── deprecated/    # Retired skills and custom agents kept for reference
 ```
 
-Agent Plugins clients discover each immediate `skills/` child that contains a `SKILL.md`. The `agents/` and `instructions/` directories are authoring resources rather than portable Agent Plugins components.
+Agent Plugins clients discover each immediate `skills/` child that contains a `SKILL.md`. The `agents/` and `references/` directories are authoring resources rather than portable Agent Plugins components.
 
 ## Why This Plugin Exists
 

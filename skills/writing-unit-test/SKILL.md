@@ -1,33 +1,40 @@
 ---
 name: writing-unit-test
-description: "Guide for writing a unit test. Use when writing a unit test for functions or components, and when fixing a bug in existing code."
+description: "Write behavior-focused unit tests. Use when writing or refining tests for functions or components, or adding regression coverage for a bug fix."
 ---
 
 # Writing Unit Tests
 
-## Philosophy
+Protect the intended contract through observable behavior. A test should detect a meaningful regression and survive internal refactors that preserve the contract.
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+For a full test-driven development workflow, use the complementary `tdd` skill. This skill focuses on writing tests; `tdd` supplies the red-green-refactor workflow.
 
-**Good tests** are integration-style: they exercise real code paths through public APIs. They describe _what_ the system does, not _how_ it does it. A good test reads like a specification - "user can checkout with valid cart" tells you exactly what capability exists. These tests survive refactors because they don't care about internal structure.
+## Establish the contract
 
-**Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
+Use behavior already agreed in the conversation, issue, or specification as the test scope. Resolve routine test-design choices independently; ask only when material ambiguity or conflicting requirements prevent a justified expectation or would change the agreed scope.
 
-## Rules
+Before writing a test, identify:
 
-- One test at a time
-- Don't anticipate future tests
-- Keep tests focused on observable behavior
-- When fixing a bug, write a test for the expected behavior before any code changes
+- The behavior or risk it protects, prioritizing critical rules, regressions, and consequential failure or boundary cases.
+- The source of the expected result: a requirement, domain rule, established contract, or known-correct example justified independently of the implementation.
+- The smallest meaningful boundary that can verify the behavior.
 
-> **Important**: For test-driven development, follow the `tdd` skill's guidance instead.
+Proceed when those are clear. Add tests where they provide meaningful confidence beyond existing tests or static checks.
 
-### Before writing any code
+## Write the test
 
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] Get user approval on the plan
+- Name the test for the behavior it protects. Assert returned results, state transitions, or observable effects through a meaningful interface.
+- Exercise real code where practical. Use test doubles to control external dependencies, time, nondeterminism, or costly or destructive operations.
+- Assert internal details or collaborator calls when they are explicit technical or interaction requirements.
+- Derive expectations from the identified source; copying the implementation's algorithm into a test can repeat the same mistake.
+- When adding regression coverage for a bug fix, establish that the test detects the original defect before changing the implementation, where reproducible.
 
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
+Use integration coverage when correctness depends on real dependency relationships. For UI components, behavioral assertions and structural snapshots leave visual correctness unverified; use visual inspection or visual regression testing where needed.
 
-**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
+## Verify and finish
+
+Run affected tests and required project checks. Check whether assertions would detect a meaningful deviation from the contract. Investigate failures; correct expected results only when independent evidence justifies the change.
+
+Once relevant checks pass, broaden or repeat verification only for new changes, failures, unresolved risks, or project requirements. Consequential behavior may need integration, end-to-end, or independent verification beyond unit tests.
+
+Report the behavior verified, checks executed and outcomes, and material gaps. Match reporting detail to the change's risk.
