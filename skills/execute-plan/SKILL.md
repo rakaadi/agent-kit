@@ -12,9 +12,11 @@ Implement the plan against the current repository, using the user's prompt to de
 
 Use the entire user prompt as the runtime override layer. It may select the full plan, phases, or task IDs; skip or defer work; assign tasks to subagents; reserve checks for a human; change sequencing; add task-specific constraints; or set a stopping point. Apply these overrides before execution and report their effects.
 
-Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, Human Review Focuses, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. For HTML plans, read the visible semantic content and preserve presentation code when updating the artifact.
+Read the complete prompt, repository instructions, and plan before editing. Treat every plan section as input, including file structure, dependencies, required skills, acceptance criteria, Human Review Focuses, verification, progress state, out-of-scope boundaries, global decisions, and checkpoints. Preserve the presentation when updating an HTML plan.
 
-If the plan and repository differ, make the smallest evidence-based adaptation and record the affected task IDs. Ask only when a material choice cannot be inferred safely.
+For an HTML Task Ledger, read each task row by its ID, including the full `Instructions` disclosure. Use its direct dependencies for sequencing and follow its Verification Matrix links, including applicable shared and integration checks. Read `Advisory Review` as the task’s Human Review Focus throughout execution. On resume, use the opening Progress Tracking handoff for current state and the dated execution records for evidence of prior work.
+
+If the plan and repository differ, make the smallest evidence-based adaptation and record the affected task IDs. Ask only when a material choice cannot be inferred safely. If the plan’s dependencies change in a maintained, writable HTML ledger, update the affected row links, sequencing text, Mermaid source, and embedded diagram together.
 
 ## Run Manifest
 
@@ -57,6 +59,8 @@ For a human-owned check, prepare the test or verification artifact and report `N
 
 After implementing each selected task, reassess its Human Review Focus against the actual implementation. Keep at most three items and name the narrowest stable file, symbol, screen, workflow, policy, or boundary; the judgment the human should apply; and why agent or automated validation is insufficient. Narrow or add a focus when implementation evidence warrants it. Remove one only when the implementation eliminates the need for that judgment, and record the reason. Update the task in a maintained, writable plan so it shows only the current focus.
 
+In an HTML ledger, edit the `Advisory Review` paragraph in the task’s acceptance and review cell. Preserve the acceptance criteria, verification links, and task ID.
+
 A Human Review Focus is an advisory review map. It never becomes a dependency, acceptance criterion, verification result, human-owned check, task state, review gate, or completion gate. Agent reviews do not substitute for the named human judgment, and a human review does not clear or complete the focus. Report findings from any performed human review through the ordinary implementation workflow.
 
 ## Complete-Plan Review Gate
@@ -85,6 +89,8 @@ Update progress only when the plan is a maintained, writable execution artifact:
 - `Last executed tasks`: record executed task IDs newest first.
 - `Current blocker or next focus`: record the blocker or next dependency-ready task.
 - `Unplanned necessary work`: record required work outside the original task list.
+
+For a maintained, writable HTML ledger, update the existing opening handoff. Link executed IDs to their rows and the next focus to its task or pending check. At a partial stop, state what changed, what was verified, and the first remaining action. For parallel work, identify active assignments and available tasks. Keep planned checks in the matrix. When retaining detailed evidence, append a dated record with the task ID, revision or environment, actual result, and remaining gaps. Link to it from the handoff or task, placing the target ID inside any collapsible record.
 
 Preserve archival plans unchanged and represent partial completion without marking the overall plan completed.
 

@@ -1,6 +1,6 @@
 ---
 name: writing-plan
-description: Write an execution-ready implementation plan from a spec or requirements, in Markdown or review-oriented HTML.
+description: Write an execution-ready implementation plan from a spec or requirements, in Markdown or as an HTML task ledger.
 disable-model-invocation: true
 ---
 
@@ -19,7 +19,7 @@ Default to the OS temporary directory, resolved through the host environment (fo
 
 ## Required Plan Contract
 
-Expose these sections in order:
+For Markdown, expose these sections in order:
 
 1. Feature name
 2. Goal
@@ -31,7 +31,7 @@ Expose these sections in order:
 8. Progress tracking
 9. Out of scope
 
-Preserve the same implementation detail in either format.
+Preserve the same implementation detail in HTML. Open with the feature name, Goal, Architecture, and Execution Metadata. Link the opening navigation to a single Progress Tracking handoff, then present File Structure, Execution Flow, Task Ledger, Verification Matrix, and Out of Scope. Append dated execution records when there is evidence to retain.
 
 Record new dependencies, version constraints, and consequential technology choices in Architecture or the relevant task; omit a standalone Tech Stack section.
 
@@ -113,15 +113,15 @@ Use this Markdown task contract:
 
 Adapt the instruction bullets and `Produces` to the task: investigation or design work should name its evidence or design artifact and affected boundary rather than invent final implementation paths. Omit the Human Review Focus blockquote when no focus applies.
 
-For HTML, render these fields visibly using the task-card presentation in [HTML Plan Artifact Guidance](./html-plan-artifact-guidance.md#task-cards).
+For HTML, give each task a [Task Ledger row](./html-plan-artifact-guidance.md#task-ledger) anchored by task ID. Keep the outcome, dependencies, required skills, outputs, and acceptance visible. Put detailed steps under `Instructions`. Label a qualifying Human Review Focus paragraph `Advisory Review` in HTML.
 
 ## Execution Flow
 
-Show task dependencies in Mermaid with task IDs as labels, backed by nearby sequencing text and task dependency fields. Put runtime behavior diagrams in Architecture or the relevant design context. Use a fenced `mermaid` block in Markdown and the renderer and fallback guidance for HTML.
+Show task dependencies in Mermaid with task IDs as labels, backed by nearby sequencing text and task dependency fields. Put runtime behavior diagrams in Architecture or the relevant design context. Use a fenced `mermaid` block in Markdown. In HTML, embed the offline rendering alongside its Mermaid source.
 
 ## Verification Matrix
 
-Keep verification commands, expected results, and required manual checks exclusively in one plan-level `Verification Matrix`, keyed by task ID or integration scope. Task cards may name test files and behavior coverage as implementation work; reserve Verification fields and run commands for the matrix.
+Keep verification commands, expected results, and required manual checks exclusively in one plan-level `Verification Matrix`, keyed by task ID or integration scope. Tasks may name test files and behavior coverage as implementation work; reserve Verification fields and run commands for the matrix. In HTML, link each task to its applicable matrix rows and link task scopes back to the ledger.
 
 Use the smallest meaningful checks for each outcome while preserving mandatory repository checks. Ground commands in repository tooling, specify expected results and any manual steps, and distinguish task checks from final integration checks. Add tests or repeat broad checks only when changes, failures, or unresolved concerns justify them.
 
@@ -131,7 +131,7 @@ Use the smallest meaningful checks for each outcome while preserving mandatory r
 
 ## Progress Tracking
 
-Place `Progress Tracking` between `Verification Matrix` and `Out of Scope`, in the plan file:
+In Markdown, place `Progress Tracking` between `Verification Matrix` and `Out of Scope`, in the plan file:
 
 ```markdown
 ## Progress Tracking
@@ -144,3 +144,5 @@ Place `Progress Tracking` between `Verification Matrix` and `Out of Scope`, in t
 ```
 
 Use `Not started`, `In progress`, `Blocked`, or `Completed` for `Current status`. Record executed task IDs newest first. Add `Unplanned necessary work` only when execution requires work outside the original task list.
+
+In HTML, use the same fields and initial values in the [opening handoff](./html-plan-artifact-guidance.md#progress-tracking). Link the next focus to its task or pending check and any recorded evidence.

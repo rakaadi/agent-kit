@@ -14,6 +14,8 @@ Assess only at a stable execution checkpoint. The originating execution must fir
 
 Use the plan path or plan content supplied by the user. Otherwise locate the plan only when the request and repository identify it unambiguously; ask the user to choose when multiple plans remain plausible. Support Markdown and HTML plans without conversion. Read the complete plan, including locked decisions, external inputs, file inventory, dependencies, task details, verification, progress, and out-of-scope boundaries.
 
+For an HTML Task Ledger, use the opening Progress Tracking handoff to identify partial work, active assignments, and available tasks. Trace each remaining task by row ID through its direct prerequisites, file ownership, collapsed `Instructions`, outputs, and acceptance criteria. Follow the applicable Verification Matrix rows for planned checks. Use actual results in the handoff or dated execution records to identify which checks and implementation steps remain.
+
 Treat the plan as the durable work record. Consult available execution handoffs, run manifests, review findings, deviations, and focused repository evidence only where they could change the assignment recommendation. Resolve repository-establishable facts through inspection. When sources conflict, resolve the discrepancy from available evidence or identify the exact conflict requiring human confirmation; never silently prefer the newest-looking artifact.
 
 Account exactly once for every incomplete, deferred, or blocked task and every substantiated unplanned-work or remediation item. Completed work may supply dependency or boundary evidence but is not an assessment candidate unless current evidence reopens it.
@@ -31,7 +33,7 @@ Evaluate each task or justified group on four dimensions:
 3. **Consequence of subtle failure:** What is the impact and reversibility of a defect? Raise the evidence bar for authentication, authorization, security, persistence, migrations, concurrency, shared state, routing, external protocols, and widely consumed APIs; consequence alone does not settle the recommendation.
 4. **External or human-only context:** Does correctness depend on product intent, an external contract, policy, compliance, operations, or undocumented organizational knowledge that repository evidence cannot establish?
 
-Treat a Human Review Focus as evidence about a human-owned judgment, not an automatic verdict. Determine whether that judgment is required before assignment, during implementation, or only during later review. Only a pre-assignment judgment blocks assignment readiness.
+Treat a Human Review Focus (labeled `Advisory Review` in an HTML ledger) as evidence about a human-owned judgment, not an automatic verdict. Determine whether that judgment is required before assignment, during implementation, or only during later review. Only a pre-assignment judgment blocks assignment readiness.
 
 Unresolved structural design favors coordinator retention. A task's `@program-design` label does not permanently settle the result: after a human-approved design freezes the relevant boundaries, assess its implementation normally.
 
