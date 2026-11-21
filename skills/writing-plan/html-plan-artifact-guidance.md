@@ -1,50 +1,35 @@
 # HTML Plan Artifact Guidance
 
-For HTML output, use this guide with [SKILL.md](./SKILL.md). HTML supports dense task lists, structured decisions and file inventories, visual explanations, and browser sharing. Preserve the full execution detail in that layout.
+Use the [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html) as the standalone HTML scaffold. Consult the [Panel Reference](./example/plan-artifact-panel-reference.html) for field placement and a worked session handoff. Replace the illustrative feature, paths, dependencies, and checks with the approved work and repository evidence.
 
-## Scaffold
+## Artifact and layout
 
-Before writing, read both examples:
+- Write one HTML file using the skill’s [output rules](./SKILL.md#output-mode). When converting a separate source plan, retain its slug and link to it. Resolve links from the output location, using absolute paths when needed. Preserve decisions, risks, open questions, detailed instructions, and existing execution evidence.
+- Use the skeleton’s embedded CSS and charcoal, parchment, ivory, and ink-blue palette. Keep the plan usable offline with JavaScript disabled. Use semantic headings, table headers, native disclosures, and stable fragment links. Highlight referenced rows with `:target` and retain field labels when rows stack on narrow screens.
+- Follow the [HTML section order](./SKILL.md#required-plan-contract). Use Execution Metadata for the source requirement, baseline, and shared execution agreements. Link it to Progress Tracking. Add navigation anchors for substantive sections.
+- Map affected paths to their responsibilities and owning tasks in File Structure. Mark existing, proposed, and conditional changes. Give shared constraints, design decisions, or risks their own section when several tasks depend on them.
 
-- [Plan Artifact Skeleton](./example/plan-artifact-skeleton.html): full-page scaffold, panel order, reusable classes, and task-card anatomy.
-- [Plan Artifact Panel Reference](./example/plan-artifact-panel-reference.html): each panel's purpose and visible content.
+## Progress Tracking
 
-Extend the skeleton by default. Add a panel only for content that needs its own section. Example architectures, APIs, phases, and migration sequences are illustrative; derive the technical approach from requirements and repository evidence. Apply [scope and decision rules](./SKILL.md#scope-and-file-structure) and [readiness criteria](./SKILL.md#readiness) from the skill.
+Keep one current checkpoint near the opening. Use the skill’s [progress fields and initial values](./SKILL.md#progress-tracking). Link executed task IDs to their ledger rows. At a partial stop, identify what changed, what was verified, and the first remaining action. If tasks can proceed in parallel, identify active assignments and available work.
 
-## Artifact and Runtime
+Append dated execution records when there is evidence to retain. Identify the task, revision or environment, actual result, and remaining gaps. Link directly from the handoff or task. For a collapsible record, put its fragment ID on the content inside the disclosure so following the link reveals the evidence.
 
-- Write one `plan-${implementation-task}.html` file with a kebab-case slug, following the skill's [output rules](./SKILL.md#output-mode). For conversions, retain the source slug and link to the source plan. Resolve source links from the output location, using absolute paths when needed. Produce both formats only when explicitly requested.
-- Load Tailwind from `<script src="https://cdn.tailwindcss.com"></script>`. Define reusable components with `@apply` in `<style type="text/tailwindcss">`; keep other CSS minimal and embedded.
-- Use JavaScript for Mermaid and lightweight readability features such as section collapse, table-of-contents highlighting, or phase filtering.
-- Use Tailwind and Mermaid CDN runtimes as the default remote assets; embed other assets and keep the artifact free of build steps. These runtimes require network access or cache even in a single-file artifact.
-- For dense Mermaid SVGs, a CDN-hosted Panzoom runtime may provide drag, wheel-zoom, pinch-zoom, and reset controls.
-- Keep required content readable with JavaScript disabled. Optional controls should improve readability while preserving access to that content.
-- Support desktop and mobile review with a utilitarian technical-document layout.
-- Apply the [Kami color palette](https://github.com/tw93/Kami/blob/main/skills/kami/CHEATSHEET.md#color) while retaining light cards on a dark background: charcoal chrome (`#141413`, `#30302e`), parchment panels (`#f5f4ed`), ivory cards (`#faf9f5`), warm ink (`#141413`, `#3d3d3a`, `#504e49`), and warm borders (`#d8d5c8`, `#e5e3d8`). Use ink-blue (`#1b365d`) as the single accent, sparingly, with solid badge tints (`#e4ecf5`); use warm neutral fills for other badges and inline code (`#f0eee6`, `#e8e6dc`). Carry these colors into Mermaid and code blocks, with light text on dark code surfaces. Preserve the scaffold's typography, spacing, and structure.
+## Execution Flow
 
-## Panels and Content
+Derive the Mermaid graph from the ledger’s direct dependencies and label nodes with task IDs. Explain which work can proceed in parallel and which file ownership or prerequisite forces serial execution. Embed a rendered SVG, keep the Mermaid source in a native disclosure, and regenerate the rendering when dependencies change. Put runtime behavior diagrams in Architecture or the relevant design context.
 
-Follow the skill's [required section order](./SKILL.md#required-plan-contract), using the skeleton's panel hierarchy. Keep the header summary, table of contents, execution flow, tasks, verification, progress, and scope boundaries visible as primary reading surfaces.
+## Task Ledger
 
-When converting a source plan, also preserve any locked decisions, current-state hotspots, planned public surface, important boundaries, risks, and open questions. Extend the matching panel; add a section only for distinct content.
+Use one row per [reviewable task](./SKILL.md#task-structure), with the task ID as its HTML `id`. Keep task fields and instruction bullets on separate source lines for targeted reads and edits.
 
-Keep exact paths, commands, low-level task instructions, and detailed counterparts of visual summaries visible nearby. Required detail must remain accessible without hover or JavaScript interactions.
+| Column | Content |
+| --- | --- |
+| Task / dependency | Show the ID, action-oriented title, and links to direct prerequisites. Use “Nothing” for a root task. Include a phase label when it explains sequencing. |
+| Change and instructions | Keep the outcome and essential context visible. Place steps, reuse constraints, failure behavior, and any labeled illustrative diff inside native `<details>` with an `Instructions` summary. Show required skills beside the disclosure when applicable. Keep readiness blockers visible in the dependency or handoff text. |
+| Produces | Name the changed files, evidence, or design artifact the task delivers. |
+| Acceptance and review | State the observable completion condition and link to the applicable verification rows. For tasks meeting the [Human Review Focus criteria](./SKILL.md#human-review-focus), add a visible `Advisory Review` paragraph naming the surface, judgment, and limit of automated validation. |
 
-### Execution Flow
+## Verification Matrix
 
-Render task dependencies with Mermaid and task IDs, retaining graph source in the HTML and readable sequencing notes nearby. Those notes must preserve dependency meaning when CDN loading or JavaScript is unavailable. Combine dependency flow and sequencing in one section when they describe the same rollout. Keep runtime behavior diagrams in Architecture or the relevant design context.
-
-### Task Cards
-
-Render the skill's [task contract](./SKILL.md#task-template) as visible fields in cards, tables, or sections:
-
-- Show Task ID, Title, Description, dependency, Produces, Acceptance, and any required skills.
-- Show dependency metadata once within each card, preferably as a top-of-card chip or label.
-- Render illustrative annotated diffs in readable `<pre>` blocks with actionable constraints alongside them; use bullets or checklists when clearer.
-- Keep commands, expected results, and required manual checks in the plan-level [Verification Matrix](./SKILL.md#verification-matrix).
-
-Apply the skill's [Human Review Focus rules](./SKILL.md#human-review-focus). For a qualifying task, place a `Human Review Focus` pill after its dependency pill and show the focus in a content box beside `Produces` and `Acceptance`. Use a responsive three-column row, give the focus slightly more room, and stack boxes on narrow screens. Omit both pill and box when no focus applies.
-
-### Progress Tracking
-
-Render [Progress Tracking](./SKILL.md#progress-tracking) as its own visible section between `Verification Matrix` and `Out of Scope`. Use the skill's field labels and initial values, including `Unplanned necessary work` only when applicable.
+Give each check a stable row ID. Link its task scope back to the ledger and reuse one row for checks shared by multiple tasks. Record the command or required manual steps, any working directory or environment prerequisites, and the expected result. Keep final integration checks identifiable by scope. Record actual results in the handoff or dated execution record.

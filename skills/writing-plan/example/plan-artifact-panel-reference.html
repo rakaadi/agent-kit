@@ -1,304 +1,105 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Plan Artifact Panel Reference</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['"Avenir Next"', '"Trebuchet MS"', '"Segoe UI"', 'sans-serif'],
-              serif: ['"Iowan Old Style"', '"Palatino Linotype"', '"Book Antiqua"', 'Georgia', 'serif'],
-              mono: ['"SFMono-Regular"', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', 'monospace'],
-            },
-          },
-        },
-      }
-    </script>
-    <style type="text/tailwindcss">
-      @layer base {
-        body {
-          margin: 0;
-          color: #141413;
-          font: 16px/1.6 theme('fontFamily.sans');
-          background:
-            radial-gradient(circle at top left, rgba(232, 230, 220, 0.06), transparent 28%),
-            linear-gradient(180deg, #30302e 0, #1f1f1d 240px, #141413 100%);
-        }
-        code {
-          @apply font-mono;
-          display: inline-block;
-          padding: 0.05rem 0.32rem;
-          font-size: 0.86em;
-          line-height: 1.25;
-          border-radius: 7px;
-          background: #f0eee6;
-          border: 1px solid #e5e3d8;
-        }
-        h1,
-        h2,
-        h3,
-        p {
-          margin: 0;
-        }
-        h1 {
-          @apply font-serif;
-          font-size: clamp(2.1rem, 4vw, 3rem);
-          line-height: 1.15;
-        }
-      }
-
-      @layer components {
-        .layout {
-          @apply max-w-[1280px] mx-auto;
-          padding: 28px 20px 64px;
-        }
-        .panel {
-          background: linear-gradient(180deg, #faf9f5, #f5f4ed);
-          @apply border border-[#d8d5c8] rounded-[18px] shadow-[0_20px_48px_rgba(20,20,19,0.08)];
-        }
-        .hero,
-        section.panel {
-          padding: 24px;
-        }
-        .eyebrow {
-          margin-bottom: 0.75rem;
-          @apply text-[#1b365d] text-[0.8rem] font-bold tracking-[0.14em] uppercase;
-        }
-        .hero-copy,
-        .section-copy,
-        .card-copy,
-        li {
-          @apply text-[#504e49];
-        }
-        .hero-copy {
-          max-width: 68ch;
-          margin-top: 0.9rem;
-        }
-        .link-row {
-          @apply flex flex-wrap gap-[0.8rem];
-          margin-top: 1.1rem;
-        }
-        .link-chip {
-          @apply inline-flex items-center border border-[#d8d5c8] bg-[#e4ecf5] text-[#1b365d] font-bold no-underline;
-          padding: 0.45rem 0.8rem;
-          border-radius: 999px;
-        }
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px;
-          margin-top: 20px;
-        }
-        .card {
-          padding: 18px;
-          @apply border border-[#d8d5c8] rounded-lg bg-[#faf9f5];
-        }
-        .card h3 {
-          margin-bottom: 0.5rem;
-        }
-        .label {
-          display: inline-block;
-          margin-bottom: 0.55rem;
-          @apply text-[#1b365d] text-[0.76rem] font-bold tracking-[0.1em] uppercase;
-        }
-        ul {
-          margin: 0.8rem 0 0;
-          padding-left: 1.2rem;
-        }
-        li + li {
-          margin-top: 0.42rem;
-        }
-        .full {
-          @apply col-span-full;
-        }
-        @media (max-width: 900px) {
-          .grid {
-            grid-template-columns: 1fr;
-          }
-        }
-        @media (max-width: 720px) {
-          .layout {
-            padding: 18px 14px 48px;
-          }
-          .hero,
-          section.panel {
-            padding: 18px;
-          }
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="layout">
-      <header class="panel hero">
-        <div class="eyebrow">Panel Purpose Map</div>
-        <h1>Plan Artifact Panel Reference</h1>
-        <p class="hero-copy">
-          Use this map to choose each panel's content. Derive the technical approach from requirements and repository evidence; the architecture and migration examples are illustrative.
-        </p>
-        <div class="link-row">
-          <a class="link-chip" href="./plan-artifact-skeleton.html">Open the full skeleton</a>
-        </div>
-      </header>
-
-      <section class="panel" style="margin-top: 20px;">
-        <div class="eyebrow">How To Use</div>
-        <h2>Stable panel intent</h2>
-        <p class="section-copy">
-          Place each concept in its matching skeleton panel. Add a top-level section only for distinct content.
-        </p>
-
-        <div class="grid">
-          <article class="card">
-            <span class="label">Header Summary</span>
-            <h3>Orient the reviewer at a glance.</h3>
-            <p class="card-copy">Carry the title, goal, architecture, and execution metadata in a compact first screen. Record material technology choices in Architecture or the relevant task.</p>
-            <ul>
-              <li>Keep visible: title, goal, architecture, status or scope metadata.</li>
-              <li>Suggested layout: summary cards plus a metadata card.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Table of Contents</span>
-            <h3>Keep long plans skimmable.</h3>
-            <p class="card-copy">Mirror the real sections with anchor links so reviewers can jump without losing context.</p>
-            <ul>
-              <li>Keep visible: anchor links matching the actual sections.</li>
-              <li>Suggested layout: sticky sidebar or compact top nav.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Locked Decisions</span>
-            <h3>Record confirmed implementation constraints.</h3>
-            <p class="card-copy">Record a decision as locked only when supported by an explicit requirement, established constraint, or approval. Keep proposals and pending decisions distinct.</p>
-            <ul>
-              <li>Keep visible: decision name, chosen constraint, and its source.</li>
-              <li>Suggested layout: two-column comparison table.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Current-State Hotspots</span>
-            <h3>Explain why the refactor exists.</h3>
-            <p class="card-copy">Point to the current files, flows, or ownership tangles that create the migration pressure.</p>
-            <ul>
-              <li>Keep visible: file or flow, current responsibility, reason it matters.</li>
-              <li>Suggested layout: table or tightly structured cards.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Target Module Shape</span>
-            <h3>Show the destination structure.</h3>
-            <p class="card-copy">Make the proposed file layout, key boundaries, and public surface concrete where established. Identify pending design and its dependent work where the shape remains unresolved.</p>
-            <ul>
-              <li>Keep visible: folder shape, boundary notes, planned public surface when applicable.</li>
-              <li>Suggested layout: two-up panels plus a monospace API block.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">File Inventory</span>
-            <h3>Identify affected files and responsibilities.</h3>
-            <p class="card-copy">Distinguish inspected existing files, proposed new files, and boundaries awaiting design. Show known changes and their purpose without presenting speculative paths as final.</p>
-            <ul>
-              <li>Keep visible: established paths, proposed files, responsibilities, and prerequisites for unresolved boundaries.</li>
-              <li>Suggested layout: create and modify tables in a two-up layout.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Execution Flow</span>
-            <h3>Show order, gates, and parallelism together.</h3>
-            <p class="card-copy">Show task dependencies with Mermaid and task IDs, alongside readable sequencing notes. Keep runtime behavior diagrams in the relevant design context.</p>
-            <ul>
-              <li>Keep visible: dependency order plus nearby text that preserves the same meaning.</li>
-              <li>Suggested layout: Mermaid task graph with sequencing notes that remain readable without JavaScript or network access.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Phase Sections</span>
-            <h3>Turn the plan into executable work.</h3>
-            <p class="card-copy">Group tasks by a real rollout phase or workstream so review tracks how the work lands.</p>
-            <ul>
-              <li>Keep visible: phase purpose and a repeatable task-card structure.</li>
-              <li>Suggested layout: one panel per phase with a vertical stack of cards.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Task Card</span>
-            <h3>Make each task independently reviewable.</h3>
-            <p class="card-copy">Show the execution unit and its metadata together so reviewers can assess its scope.</p>
-            <ul>
-              <li>Keep visible: task ID, title, description, produces, acceptance, and exactly one dependency marker.</li>
-              <li>Suggested layout: chips at the top, one-to-three-sentence description, selective annotated diff with explicit constraints or a checklist, metadata grid at the bottom.</li>
-              <li>Label diff sketches as illustrative; preserve failure behavior and prerequisites without implying approval of pending design.</li>
-              <li>Keep verification commands and expected results in the plan-level Verification Matrix.</li>
-              <li>When human judgment is especially valuable, add a Human Review Focus pill and matching content box. Omit both when no focus applies.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Human Review Focus</span>
-            <h3>Point human judgment at the narrowest valuable surface.</h3>
-            <p class="card-copy">Use the advisory focus rules in SKILL.md: name the surface, judgment, and validation limit. Record unresolved material decisions as prerequisites and explicitly required human checks in verification.</p>
-            <ul>
-              <li>Keep visible when present: the target surface, the judgment to apply, and why agent or automated validation is insufficient.</li>
-              <li>Suggested layout: a pill after the dependency marker and a slightly wider third metadata box beside Produces and Acceptance.</li>
-              <li>Use at most three concise focus items; split or prioritize instead of recreating line-by-line review.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Verification Matrix</span>
-            <h3>State the evidence needed for acceptance.</h3>
-            <p class="card-copy">Use the smallest meaningful checks while preserving mandatory repository checks. Distinguish task checks, final integration checks, and explicitly required human checks.</p>
-            <ul>
-              <li>Keep visible: task ID or integration scope, checks, commands or manual steps, expected results, and relevant environment notes.</li>
-              <li>Suggested layout: one plan-level verification table; keep task cards free of Verification fields and run-command bullets.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Progress Tracking</span>
-            <h3>Keep execution state visible without reading every task card.</h3>
-            <p class="card-copy">Show execution state, recent tasks, and blockers for a fresh or in-flight handoff. Record necessary work outside the task list when it occurs.</p>
-            <ul>
-              <li>Keep visible: current status, started on, completed on, last executed tasks, current blocker or next focus, and unplanned necessary work when it exists.</li>
-              <li>Suggested layout: compact metadata grid plus a short execution-notes list.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <span class="label">Out of Scope</span>
-            <h3>Protect the plan boundary.</h3>
-            <p class="card-copy">Name adjacent work excluded from the plan to keep execution within scope.</p>
-            <ul>
-              <li>Keep visible: explicit exclusions and a source-plan reference when converting an existing plan.</li>
-              <li>Suggested layout: numbered list plus a short source reference note.</li>
-            </ul>
-          </article>
-
-          <article class="card full">
-            <span class="label">Optional Panels</span>
-            <h3>Add only when the source plan actually contains new information.</h3>
-            <p class="card-copy">Add risks, open questions, rollout notes, or ADR links when they carry distinct content beyond the existing panels.</p>
-            <ul>
-              <li>Keep goal, architecture, and task content in their existing panels.</li>
-              <li>Omit optional panels such as locked decisions or hotspots when empty. Preserve all required sections from SKILL.md.</li>
-              <li>Extend the existing skeleton by default.</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-    </div>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML plan panel reference</title>
+<style>
+:root { color-scheme: light; --ink: #141413; --muted: #504e49; --paper: #faf9f5; --wash: #f5f4ed; --rule: #d8d5c8; --accent: #1b365d; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--wash); color: var(--ink); font: 1rem/1.55 system-ui, sans-serif; }
+main { max-width: 68rem; margin: auto; padding: 2rem clamp(1rem,4vw,3rem) 4rem; }
+header { border-block: 3px double var(--muted); padding: 1.3rem 0; }
+h1 { font-size: clamp(2rem,4.5vw,3.4rem); margin: 0; line-height: 1.1; letter-spacing: -.04em; }
+h2, p, dl { margin: 0 0 .65rem; } h2 { font-size: 1.35rem; }
+section, aside { margin: 1.8rem 0; }
+nav { display: flex; flex-wrap: wrap; gap: .4rem 1rem; padding: .65rem 1rem; background: #30302e; }
+nav a, aside a { color: var(--paper); }
+a, summary { color: var(--accent); text-underline-offset: .18em; }
+summary { cursor: pointer; font-weight: 600; }
+dt { font-weight: 650; padding-top: .65rem; border-top: 1px solid var(--rule); }
+dd { margin: .15rem 0 .75rem; max-width: 83ch; }
+code, small { font-family: ui-monospace, monospace; } small { color: var(--muted); }
+code { font-size: .9em; overflow-wrap: anywhere; }
+aside { background: #30302e; color: var(--paper); padding: 1.1rem 1.35rem; }
+aside dt { border: 0; color: #e8e6dc; }
+details { background: var(--paper); border-block: 1px solid var(--rule); padding: .65rem .9rem; }
+details[open] summary { margin-bottom: .6rem; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+details :target { background: #e4ecf5; }
+</style>
+</head>
+<body>
+<main>
+<header>
+<small>Writing-plan / HTML examples</small>
+<h1>Plan artifact panel reference</h1>
+<p>Copy the <a href="plan-artifact-skeleton.html">standalone skeleton</a> for a new plan. Replace its illustrative CSV tasks, paths and checks with the work supported by the spec and repository.</p>
+</header>
+<nav aria-label="Reference sections">
+<a href="#sections">Plan sections</a>
+<a href="#ledger-fields">Ledger fields</a>
+<a href="#handoff">Session handoff</a>
+<a href="#records">Execution records</a>
+</nav>
+<section id="sections">
+<h2>Plan sections</h2>
+<dl>
+<dt><a href="plan-artifact-skeleton.html#goal">Goal</a> and <a href="plan-artifact-skeleton.html#architecture">Architecture</a></dt>
+<dd>State the observable outcome and the boundaries that own it. Include material dependencies, version constraints and approved design choices. Give shared constraints, risks or runtime diagrams their own section when several tasks rely on them. Identify the source of confirmed decisions and the prerequisite for each unresolved choice.</dd>
+<dt><a href="plan-artifact-skeleton.html#metadata">Execution Metadata</a> and section navigation</dt>
+<dd>Record the source requirement, baseline and any execution agreement shared by the tasks. Link to the handoff for current state. Give each substantive section a stable fragment link in the navigation.</dd>
+<dt><a href="plan-artifact-skeleton.html#progress-tracking">Progress Tracking</a></dt>
+<dd>Keep the current checkpoint near the opening. A returning agent should be able to follow its next-focus link to a task, that task’s verification row and any recorded evidence. See the <a href="#handoff">worked handoff</a> below.</dd>
+<dt><a href="plan-artifact-skeleton.html#file-structure">File Structure</a></dt>
+<dd>Map affected paths to responsibilities and owning tasks. Distinguish inspected files, proposed additions and conditional changes. For an unsettled design, name the boundary and the task that will establish the path.</dd>
+<dt><a href="plan-artifact-skeleton.html#execution-flow">Execution Flow</a></dt>
+<dd>Use the ledger dependencies to draw the Mermaid graph. Label nodes with task IDs and explain what allows parallel work or forces serial work, including shared file ownership. Keep Mermaid source and a readable sequence alongside the offline rendering. Regenerate the diagram after changing an edge.</dd>
+<dt><a href="plan-artifact-skeleton.html#tasks">Task Ledger</a></dt>
+<dd>Use one row per reviewable outcome. Each row is an independently linkable unit in both the source and the browser. Use phase labels when they carry sequencing information. See <a href="#ledger-fields">ledger fields</a>.</dd>
+<dt><a href="plan-artifact-skeleton.html#verification">Verification Matrix</a></dt>
+<dd>Keep planned commands and required manual checks in this table. Identify each task or integration scope, the working directory or prerequisites when relevant, and the observable result. Cross-link the scope and task rows. A check shared by several tasks can have one row with multiple task links.</dd>
+<dt><a href="plan-artifact-skeleton.html#out-of-scope">Out of Scope</a></dt>
+<dd>Name adjacent work explicitly excluded from this handoff. Carry forward existing scope boundaries, decisions, design artifacts and execution evidence when converting a plan.</dd>
+</dl>
+</section>
+<section id="ledger-fields">
+<h2>Ledger fields</h2>
+<dl>
+<dt>Task / dependency</dt>
+<dd>Use the task ID as the row’s <code>id</code>. Show its title and link each direct prerequisite by ID. Use “Nothing” for a runnable root. Link to the same ID from the handoff and verification matrix so the browser highlights the referenced row.</dd>
+<dt>Change and instructions</dt>
+<dd>Keep the outcome and essential context visible. Put steps, reuse constraints, failure behavior and illustrative diffs inside native <code>&lt;details&gt;</code> with an <code>Instructions</code> summary. Label a diff as illustrative. List required skills beside the disclosure when applicable. Keep blockers affecting readiness visible in the dependency or handoff text.</dd>
+<dt>Produces</dt>
+<dd>Name the changed files, evidence or design artifact another task will consume. Keep each task’s instructions, outputs and acceptance on separate source lines so a local edit produces a focused diff.</dd>
+<dt>Acceptance and review</dt>
+<dd>Describe what proves the task complete and link to its verification row. Add a visible <strong>Advisory Review</strong> paragraph only where human judgment adds something checks cannot establish. Name the surface, judgment and validation limit. Keep at most three focus items. Put explicitly required human checks in the matrix and material pending decisions in prerequisites.</dd>
+</dl>
+</section>
+<section id="handoff">
+<h2>Session handoff</h2>
+<p>Start a fresh plan with the values shown in the skeleton. Use <code>Not started</code>, <code>In progress</code>, <code>Blocked</code> or <code>Completed</code> for current status. Maintain dates and executed task IDs newest first. Add “Unplanned necessary work” only when it occurs.</p>
+<p>At a partial stop, record what changed, what was actually verified and the first remaining action. For parallel tasks, identify active assignments and which work is still available.</p>
+<aside aria-label="Illustrative mid-task checkpoint">
+<strong>Example checkpoint · In progress</strong>
+<dl>
+<dt>Last executed tasks</dt>
+<dd><a href="plan-artifact-skeleton.html#csv-writer">csv-writer</a> (partial), <a href="plan-artifact-skeleton.html#csv-contract">csv-contract</a> (completed).</dd>
+<dt>Current blocker or next focus</dt>
+<dd>The contract examples were checked and the serializer changed. The focused export check is pending. Resume at the <a href="plan-artifact-skeleton.html#check-writer">writer check</a>. The <a href="plan-artifact-skeleton.html#export-guide">guide</a> is available to a separate owner.</dd>
+</dl>
+<a href="#example-contract-record">Last verified result</a>
+</aside>
+</section>
+<section id="records">
+<h2>Execution records</h2>
+<p>When work produces evidence worth retaining, append a dated record with the task ID, revision or environment, actual result and remaining gaps. Link the handoff or task to that record. Keep past checkpoints dated so the handoff can advance without rewriting history.</p>
+<p>For a collapsible record, place its target ID on the content inside the disclosure. A fragment link can then open the record directly. The example checkpoint above links to this entry.</p>
+<details>
+<summary>CSV contract check · Illustrative record</summary>
+<p id="example-contract-record"><strong>csv-contract</strong> · [Date and revision]. Compared the two contract rows with the export requirement. Column order matched, the missing reading was empty, and the measured zero was <code>0</code>. The serializer was outside the scope of this check.</p>
+</details>
+</section>
+</main>
+</body>
 </html>

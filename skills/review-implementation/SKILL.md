@@ -20,6 +20,8 @@ Require a self-contained implementation packet containing:
 
 Confirm that every complete-plan task is completed. A partial implementation, missing required plan or change-set context, or unsupported completion claim blocks this gate. Preserve the packet's scope and authorization boundaries throughout review and remediation.
 
+For an HTML Task Ledger, read each task row by ID, including its collapsed `Instructions`. Match its outputs and acceptance criteria to the implementation and to actual results for applicable task, shared, and integration checks. The Verification Matrix defines the expected results. Use Progress Tracking and dated execution records to locate evidence and check which revision or environment it covers. Treat `Advisory Review` as human judgment guidance. Required human-owned checks still need their own evidence.
+
 Follow `subagent-dispatch` for every delegated operation. Prefer the named reviewer role when available; otherwise dispatch a fresh subagent with the corresponding role contract. When no independent reviewer can be dispatched, report the missing gate and return `Blocked` rather than reviewing in the coordinating context.
 
 Maintain structured finding and family state in the active context. Emit that state in any blocked, awaiting-decision, escalation, or resumable result; do not create or modify a persistent review artifact unless the user requests one.
@@ -27,6 +29,8 @@ Maintain structured finding and family state in the active context. Emit that st
 ## Preserve Blind Review
 
 Give each fresh reviewer only the current implementation packet updated with permitted verification evidence and justified deviations. Exclude earlier reviewer prompts, findings, finding-specific validation narratives, dispositions, remediation discussion, proposed fixes, and family history. Include the current code, tests, diff, and neutral check results even when remediation introduced them; blind review removes historical framing rather than hiding current implementation evidence. A fresh reviewer answers only what is wrong with the implementation as it exists now.
+
+If an HTML handoff or linked execution record contains earlier review history, supply the complete plan requirements, approved decisions, overrides, and neutral results in the blind packet. Omit links or attachments that would reintroduce the excluded history. Preserve applicable design decisions and verification evidence recorded inside those disclosures.
 
 Validators, remediators, and targeted revalidators receive the specific findings they must evaluate or close. Their finding-aware context never enters a fresh review packet.
 
